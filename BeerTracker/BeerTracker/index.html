@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+        //REAL API 
+        //var brewUri = 'api/BrewDB';
+        //Disabled API
+        var brewUri = 'disabled';
+
+        $(document).ready(function () {
+            randomBeer();
+        });
+
+        function randomBeer() {
+            //Create By: Caleb
+            //On page load, this method will call BreweryDB to get a random beer.
+            var apiCall = {
+                call: "beer/random"
+            };
+
+            $.ajax({
+                url: brewUri + "/" + apiCall,
+                type: "POST",
+                data: apiCall,
+                success: function (data) {
+                    var rndBeer = JSON.parse(data);
+                    var foo = JSON.stringify(rndBeer, null, 4);
+
+                    //rndBeer is the beer object and data is the raw json string
+                    document.getElementById("output").innerHTML = JSON.stringify(rndBeer, null, 4);
+                },
+                error: function () {
+                    $('#output').text("ERROR: API has been disabled to avoid going over our api request limit. Change brewUri back to api/BrewDB to call api.");
+                }
+            });
+        }
+
+        function searchBrew() {
+            var brewText = $('#brewSearchText').val();
+
+            $.getJSON(brewUri)
+                .done(function (data) {
+                    var foo = JSON.parse(data);
+                    $('#output').text(foo.data);
+                });
+        }
+
+        function test() {
+
+        }
+    </script>
+</head>
+<body>
+    <h1>Brew Tracker</h1>
+
+    <h2>Search Brew - NOT WORKING</h2>
+    <input type="text" id="brewSearchText" size="10" />
+    <input type="button" value="Search" onclick="searchBrew()" />
+
+    <h2>Random Beer</h2>
+    <pre id="output"></pre>
+
+</body>
+</html>
