@@ -2,8 +2,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title></title>
+    <title>Beer Tracker</title>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+
     <script>
         //REAL API 
         //var brewUri = 'api/BrewDB';
@@ -54,14 +58,128 @@
     </script>
 </head>
 <body>
-    <h1>Brew Tracker</h1>
+    <div data-role="page" id="indexpage">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+                <a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a>
+            </div>
+            <h1>Brew Tracker</h1>
+            <div data-role="navbar" data-grid="c">
+                <ul>
+                    <li><a href="#add-page" data-icon="plus">Add</a></li>
+                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#about-page" data-icon="info">About</a></li>
+                    <li><a href="#signin" data-icon="user">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="content">
+            <div>
+                <h4>Beers you may love</h4>
+                <ul data-role="listview" data-autodividers="true" data-theme="a" id="output" data-filter="true" data-filter-placeholder="Search for a beer" data-inset="true"></ul>
+            </div>
 
-    <h2>Search Brew - NOT WORKING</h2>
-    <input type="text" id="brewSearchText" size="10" />
-    <input type="button" value="Search" onclick="searchBrew()" />
+            <!--
+            <h2>Search Brew - NOT WORKING</h2>
+            <input type="text" id="brewSearchText" size="10" />
+            <input type="button" value="Search" onclick="searchBrew()" />
+            <h2>Random Beer</h2>
+            <pre id="output"></pre>
+            -->
+        </div>
+            
+        <div data-role="footer">
+            <h4>Team Red Production 2017</h4>
+        </div>
 
-    <h2>Random Beer</h2>
-    <pre id="output"></pre>
+    </div>
+
+    <!--Add A Beer-->
+    <div data-role="page" id="add-page">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+                <a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a>
+            </div>
+            <h1>Brew Tracker</h1>
+            <div data-role="navbar" data-grid="c">
+                <ul>
+                    <li><a href="#add-page" data-icon="plus">Add</a></li>
+                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#about-page" data-icon="info">About</a></li>
+                    <li><a href="#signin" data-icon="user">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="content" data-theme="c">
+            <div>
+                Name:<input type="text" id="Name" size="5" /> <br />
+                Brand:<input type="text" id="Brand" size="5" /> <br />
+                ABV:<input type="text" id="ABV" size="5" /> <br />
+                Taste:<input type="text" id="Taste" size="5" /> <br />
+                Picture:<input type="file" id="Picture" /> <br />
+                <input type="button" value="Add" onclick="saveBeer();" />
+                <p id="saveResponse" />
+            </div>
+        </div>
+        <div data-role="footer" data-theme='c'>
+            <h1>&copy; Team Red Production</h1>
+        </div>
+    </div>
+
+    <!--Beer Detail Page-->
+    <div data-role="page" id="details-page">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+                <a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a>
+            </div>
+            <h1>Brew Tracker</h1>
+            <div data-role="navbar" data-grid="c">
+                <ul>
+                    <li><a href="#add-page" data-icon="plus">Add</a></li>
+                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#about-page" data-icon="info">About</a></li>
+                    <li><a href="#signin" data-icon="user">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div data-role="content">
+            <p id="showdata"></p>
+        </div>
+
+        <div data-role="footer">
+            <h1>&copy; Team Red Production</h1>
+        </div>
+
+    </div>
+
+    <!--About Page-->
+    <div data-role="page" id="about-page">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+                <a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a>
+            </div>
+            <h1>Brew Tracker</h1>
+            <div data-role="navbar" data-grid="c">
+                <ul>
+                    <li><a href="#add-page" data-icon="plus">Add</a></li>
+                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#about-page" data-icon="info">About</a></li>
+                    <li><a href="#signin" data-icon="user">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div data-role="content">
+            <p>This is the about info.</p>
+        </div>
+
+        <div data-role="footer">
+            <h1>&copy; Team Red Production</h1>
+        </div>
+
+    </div>
+
 
 </body>
 </html>
