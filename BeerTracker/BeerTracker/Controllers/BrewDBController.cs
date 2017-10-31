@@ -7,6 +7,7 @@ using System.Web.Http;
 //using ZenOfBeer.BreweryDb.Pcl.Public;
 using System.Threading.Tasks;
 using BeerTracker.Models;
+using Newtonsoft.Json.Linq;
 
 namespace BeerTracker.Controllers
 {
@@ -36,7 +37,8 @@ namespace BeerTracker.Controllers
             var client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(_address + apiCall.call + apiKey);
             response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadAsStringAsync();
+            string result = await response.Content.ReadAsStringAsync();
+            Beer NewBeer = new Beer(result);
             return result;
         }
 
