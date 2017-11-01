@@ -21,17 +21,15 @@ namespace BeerTracker.Models
 
         public Beer(string json)
         {
-            double doubleParseTest;
-            int intParseTest;
             JObject beerObject = JObject.Parse(json);
             try
             {
                 id = VerifyDataExist( "id", beerObject) ? beerObject["data"]["id"].ToString() : "N/A";
                 name = VerifyDataExist("name", beerObject) ? beerObject["data"]["name"].ToString() : "N/A";
                 shortName = VerifyData2Exist("style", "shortName", beerObject) ? beerObject["data"]["style"]["shortName"].ToString() : "N/A";
-                //abv = double.TryParse(beerObject["data"]["abv"].ToString(), out doubleParseTest) ? doubleParseTest : 0.0;
-                //breweryId = int.TryParse(beerObject["data"]["styleId"].ToString(), out intParseTest) ? intParseTest : 0;
-                //breweryName = !String.IsNullOrEmpty(beerObject["data"]["style"]["category"]["name"].ToString()) ? beerObject["data"]["style"]["category"]["name"].ToString() : "N/A";
+                abv = VerifyDataExist("abv", beerObject) ? Convert.ToDouble( beerObject["data"]["abv"]) : 0.0;
+                breweryId = VerifyDataExist("styleId", beerObject) ? Convert.ToInt32(beerObject["data"]["styleId"]) : 0;
+                breweryName = VerifyData3Exist("style", "category", "name", beerObject) ? beerObject["data"]["style"]["category"]["name"].ToString() : "N/A";
                 image_medium = VerifyData2Exist("labels", "medium", beerObject) ? beerObject["data"]["labels"]["medium"].ToString() : "";
                 image_large = VerifyData2Exist("labels", "large", beerObject) ? beerObject["data"]["labels"]["large"].ToString() : "";
                 description = VerifyDataExist("description", beerObject) ? beerObject["data"]["description"].ToString() : "N/A";
@@ -62,6 +60,19 @@ namespace BeerTracker.Models
             {
                 test = !String.IsNullOrEmpty(beerObject["data"][field1][field2].ToString()) ? "pass" : "fail";
                     return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        private bool VerifyData3Exist(string field1, string field2, string field3, JObject beerObject)
+        {
+            string test;
+            try
+            {
+                test = !String.IsNullOrEmpty(beerObject["data"][field1][field2][field3].ToString()) ? "pass" : "fail";
+                return true;
             }
             catch
             {
