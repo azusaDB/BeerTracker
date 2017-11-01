@@ -31,7 +31,7 @@ namespace BeerTracker.Models
                 shortName = VerifyData2Exist("style", "shortName", beerObject) ? beerObject["data"]["style"]["shortName"].ToString() : "N/A";
                 //abv = double.TryParse(beerObject["data"]["abv"].ToString(), out doubleParseTest) ? doubleParseTest : 0.0;
                 //breweryId = int.TryParse(beerObject["data"]["styleId"].ToString(), out intParseTest) ? intParseTest : 0;
-                breweryName = !String.IsNullOrEmpty(beerObject["data"]["style"]["category"]["name"].ToString()) ? beerObject["data"]["style"]["category"]["name"].ToString() : "N/A";
+                //breweryName = !String.IsNullOrEmpty(beerObject["data"]["style"]["category"]["name"].ToString()) ? beerObject["data"]["style"]["category"]["name"].ToString() : "N/A";
                 image_medium = VerifyData2Exist("labels", "medium", beerObject) ? beerObject["data"]["labels"]["medium"].ToString() : "";
                 image_large = VerifyData2Exist("labels", "large", beerObject) ? beerObject["data"]["labels"]["large"].ToString() : "";
                 description = VerifyDataExist("description", beerObject) ? beerObject["data"]["description"].ToString() : "N/A";
