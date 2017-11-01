@@ -21,55 +21,78 @@ namespace BeerTracker.Models
 
         public Beer(string json)
         {
-            //abv = 0;
-            //ibu = 0;
-            //bool throwError = false;
-            //JObject beer = JObject.Parse(json);
+            double doubleParseTest;
+            int intParseTest;
+            JObject beerObject = JObject.Parse(json);
+            try
+            {
+                id = VerifyDataExist( "id", beerObject) ? beerObject["data"]["id"].ToString() : "N/A";
+                name = VerifyDataExist("name", beerObject) ? beerObject["data"]["name"].ToString() : "N/A";
+                shortName = VerifyData2Exist("style", "shortName", beerObject) ? beerObject["data"]["style"]["shortName"].ToString() : "N/A";
+                //abv = double.TryParse(beerObject["data"]["abv"].ToString(), out doubleParseTest) ? doubleParseTest : 0.0;
+                //breweryId = int.TryParse(beerObject["data"]["styleId"].ToString(), out intParseTest) ? intParseTest : 0;
+                breweryName = !String.IsNullOrEmpty(beerObject["data"]["style"]["category"]["name"].ToString()) ? beerObject["data"]["style"]["category"]["name"].ToString() : "N/A";
+                image_medium = VerifyData2Exist("labels", "medium", beerObject) ? beerObject["data"]["labels"]["medium"].ToString() : "";
+                image_large = VerifyData2Exist("labels", "large", beerObject) ? beerObject["data"]["labels"]["large"].ToString() : "";
+                description = VerifyDataExist("description", beerObject) ? beerObject["data"]["description"].ToString() : "N/A";
+            }
+            catch (Exception ex)
+            {
+                string err = ex.ToString();
+            }
+        }
 
-            //try
-            //{
-            //    id = (string)beer.SelectToken("data.id", throwError);
-            //    name = (string)beer.SelectToken("data.name", throwError);
-            //    shortName = (string)beer.SelectToken("data.style.shortName", throwError);
-            //    //abv = (double)beer.SelectToken("data.abv", throwError);
-            //    breweryId = (int)beer.SelectToken("data.styleId", throwError);
-            //    breweryName = (string)beer.SelectToken("data.style.category.name", throwError);
-            //    image_medium = (string)beer.SelectToken("data.style.labels.medium", throwError);
-            //    image_large = (string)beer.SelectToken("data.style.labels.large", throwError);
-            //    description = (string)beer.SelectToken("data.description", throwError);
-            //    //ibu = (double)beer.SelectToken("data.style.ibuMax", throwError);
-            //}
-            //catch(Exception ex)
-            //{
-            //    string foo = ex.ToString();
-            //}
-
-            
-
-            
+        private bool VerifyDataExist( string field, JObject beerObject)
+        {
+            string test;
+            try
+            {
+                test = !String.IsNullOrEmpty(beerObject["data"][field].ToString()) ? "pass" : "fail";
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        private bool VerifyData2Exist(string field1, string field2, JObject beerObject)
+        {
+            string test;
+            try
+            {
+                test = !String.IsNullOrEmpty(beerObject["data"][field1][field2].ToString()) ? "pass" : "fail";
+                    return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
 
+//abv = 0;
+//ibu = 0;
+//bool throwError = false;
+//JObject beer = JObject.Parse(json);
 
-//id = idToken != null ? JObject.Parse(json)["data"] ["id"].ToString() : "N/A";
-//                name = !String.IsNullOrEmpty(JObject.Parse(json)["data"]["name"].ToString()) ? JObject.Parse(json)["data"] ["name"].ToString() : "N/A";
-//                shortName = !String.IsNullOrEmpty(JObject.Parse(json)["data"]["style"]["shortName"].ToString()) ? JObject.Parse(json)["data"] ["style"] ["shortName"].ToString() : "N/A";
-//                abv = double.TryParse(JObject.Parse(json)["data"]["abv"].ToString(), out doubleParseTest) ? doubleParseTest : 0.0;
-//                breweryId = int.TryParse(JObject.Parse(json)["data"]["styleId"].ToString(), out intParseTest) ? intParseTest : 0;
-//                breweryName = !String.IsNullOrEmpty(JObject.Parse(json)["data"]["style"]["category"]["name"].ToString()) ? JObject.Parse(json)["data"] ["style"] ["category"] ["name"].ToString() : "N/A";
-//                image_medium = !String.IsNullOrEmpty(JObject.Parse(json)["data"]["style"]["labels"]["medium"].ToString()) ? JObject.Parse(json)["data"] ["style"] ["labels"] ["medium"].ToString() : "";
-//                image_large = !String.IsNullOrEmpty(JObject.Parse(json)["data"]["style"]["labels"]["large"].ToString()) ? JObject.Parse(json)["data"] ["style"] ["labels"] ["large"].ToString() : "";
-//                description = !String.IsNullOrEmpty(JObject.Parse(json)["data"]["description"].ToString()) ? JObject.Parse(json)["data"] ["description"].ToString() : "N/A";
-
-
-
-
-
-
-
-
-
+//try
+//{
+//    id = (string)beer.SelectToken("data.id", throwError);
+//    name = (string)beer.SelectToken("data.name", throwError);
+//    shortName = (string)beer.SelectToken("data.style.shortName", throwError);
+//    //abv = (double)beer.SelectToken("data.abv", throwError);
+//    breweryId = (int)beer.SelectToken("data.styleId", throwError);
+//    breweryName = (string)beer.SelectToken("data.style.category.name", throwError);
+//    image_medium = (string)beer.SelectToken("data.style.labels.medium", throwError);
+//    image_large = (string)beer.SelectToken("data.style.labels.large", throwError);
+//    description = (string)beer.SelectToken("data.description", throwError);
+//    //ibu = (double)beer.SelectToken("data.style.ibuMax", throwError);
+//}
+//catch(Exception ex)
+//{
+//    string foo = ex.ToString();
+//}
 
 
 
