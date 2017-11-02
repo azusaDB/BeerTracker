@@ -19,7 +19,7 @@ namespace BeerTracker.Models
         public int availableId { get; set; }
         public int styleId { get; set; }
         public string isOrganic { get; set; }
-        public Labels labels { get; set; }
+        public Label labels { get; set; }
         public string status { get; set; }
         public string statusDisplay { get; set; }
         public string originalGravity { get; set; }
@@ -28,14 +28,9 @@ namespace BeerTracker.Models
         public Glass glass { get; set; }
         public Available available { get; set; }
         public Style style { get; set; }
-
-        //public Beer(string json)
-        //{
-        //    JsonConvert.DeserializeObject<Beer>(json);
-        //}
     }
 
-    public class Labels
+    public class Label
     {
         public string icon { get; set; }
         public string medium { get; set; }
