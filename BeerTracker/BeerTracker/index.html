@@ -29,7 +29,6 @@
                 url: brewUri + "/" + apiCall,
                 type: "POST",
                 data: apiCall,
-                async: false,
                 success: function (data) {
                     var rndBeer = JSON.parse(data);
                     var foo = JSON.stringify(rndBeer, null, 4);
@@ -91,7 +90,7 @@
         </div>
             
         <div data-role="footer">
-            <h4>Team Red Production 2017</h4>
+            <h4>Team Red Production 2017.</h4>
         </div>
 
     </div>
