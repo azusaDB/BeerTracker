@@ -1,1 +1,60 @@
-﻿
+﻿//REAL API 
+var brewUri = 'api/BrewDB';
+//Disabled API
+//var brewUri = 'disabled';
+
+$(document).ready(function () {
+    randomBeer();
+});
+
+function randomBeer() {
+    //Create By: Caleb
+    //On page load, this method will call BreweryDB to get a random beer.
+    var apiCall = {
+        call: "beer/random"
+    };
+
+    $.ajax({
+        url: brewUri + "/ApiRequest/" + apiCall,
+        type: "POST",
+        data: apiCall,
+        success: function (data) {
+            var rndBeer = JSON.parse(data);
+            var foo = JSON.stringify(rndBeer, null, 4);
+            //rndBeer is the beer object and data is the raw json string
+            document.getElementById("output").innerHTML = JSON.stringify(rndBeer, null, 4);
+            var beerJson = JSON.stringify(rndBeer.data);
+            //Save random beer to DB
+            $.ajax({
+                url: "api/BrewDB/Save",
+                type: "POST",
+                contentType: "application/json",
+                data: beerJson,
+                success: function (data) {
+                    document.getElementById("output").innerHTML = data.name + " saved to BeerMaster";
+                },
+                error: function () {
+                    $('#output').text("Error: Save Failed");
+                }
+            });
+
+        },
+        error: function () {
+            $('#output').text("ERROR: API has been disabled to avoid going over our api request limit. Change brewUri back to api/BrewDB to call api.");
+        }
+    });
+}
+
+function searchBrew() {
+    var brewText = $('#brewSearchText').val();
+
+    $.getJSON(brewUri)
+        .done(function (data) {
+            var foo = JSON.parse(data);
+            $('#output').text(foo.data);
+        });
+}
+
+function test() {
+
+}
