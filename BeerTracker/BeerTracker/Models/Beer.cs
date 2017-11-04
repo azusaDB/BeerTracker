@@ -4,11 +4,13 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace BeerTracker.Models
 {
     public class Beer
     {
+        [BsonId]
         public string id { get; set; }
         public string name { get; set; }
         public string nameDisplay { get; set; }

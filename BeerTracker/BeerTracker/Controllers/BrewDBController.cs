@@ -21,6 +21,7 @@ namespace BeerTracker.Controllers
         private string _address = "http://api.brewerydb.com/v2/";
         private string apiKey = "?key=cf17ecf24febe31afd664f4bd377a333";
         MongoDatabase mongoDatabase;
+        List<Beer> beerList = new List<Beer>();
 
         private MongoDatabase RetreiveMongohqDb()
         {
@@ -82,6 +83,27 @@ namespace BeerTracker.Controllers
                 {
                     throw new HttpResponseException(HttpStatusCode.InternalServerError);
                 }
+        }
+
+        [HttpGet]
+        public IEnumerable<Beer> GetRndBeer()
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                beerList = (from b in mongoList
+                           select new Beer
+                           {
+                               id = b["_id"].AsString,
+                               name = b["name"].AsString
+                           }).ToList();
+            }
+            catch(Exception ex)
+            {
+                throw;
+            }
+            return beerList;
         }
     }
 }

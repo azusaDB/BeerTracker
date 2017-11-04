@@ -5,7 +5,23 @@ var brewUri = 'api/BrewDB';
 
 $(document).ready(function () {
     randomBeer();
+    homePageList();
 });
+
+function homePageList() {
+    //Currently gets all the beer in the BeerMaster and displays them to the homepage
+    $.getJSON(brewUri + "/GetRndBeer")
+        .done(function (data) {
+            // On success, 'data' contains a list of products.
+            $.each(data, function (key, item) {
+                // Add a list item for the product.
+                // Change the way to format the string(Sunny)
+                $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
+                // Listview refresh after each inner loop(Sunny)
+                $("#output").listview("refresh");
+            });
+        });
+}
 
 function randomBeer() {
     //Create By: Caleb
@@ -18,6 +34,7 @@ function randomBeer() {
         url: brewUri + "/ApiRequest/" + apiCall,
         type: "POST",
         data: apiCall,
+        async: false,
         success: function (data) {
             var rndBeer = JSON.parse(data);
             var foo = JSON.stringify(rndBeer, null, 4);
@@ -30,8 +47,9 @@ function randomBeer() {
                 type: "POST",
                 contentType: "application/json",
                 data: beerJson,
+                async: false,
                 success: function (data) {
-                    document.getElementById("output").innerHTML = data.name + " saved to BeerMaster";
+                    document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
                 },
                 error: function () {
                     $('#output').text("Error: Save Failed");
