@@ -8,9 +8,9 @@
 
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-
 </head>
 <body>
+    <!--Home Page-->
     <div data-role="page" id="indexpage">
         <div data-role="header">
             <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
@@ -20,7 +20,7 @@
             <div data-role="navbar" data-grid="d">
                 <ul>
                     <li><a href="#add-page" data-icon="plus">Add</a></li>
-                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
                     <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
                     <li><a href="#about-page" data-icon="info">About</a></li>
                     <li><a href="#signin" data-icon="user">Sign In</a></li>
@@ -58,7 +58,7 @@
             <div data-role="navbar" data-grid="d">
                 <ul>
                     <li><a href="#add-page" data-icon="plus">Add</a></li>
-                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
                     <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
                     <li><a href="#about-page" data-icon="info">About</a></li>
                     <li><a href="#signin" data-icon="user">Sign In</a></li>
@@ -81,6 +81,36 @@
         </div>
     </div>
 
+    <!--Favorites Page-->
+    <div data-role="page" id="favorites-page">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+                <a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a>
+            </div>
+            <h1>Brew Tracker</h1>
+            <div data-role="navbar" data-grid="d">
+                <ul>
+                    <li><a href="#add-page" data-icon="plus">Add</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
+                    <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
+                    <li><a href="#about-page" data-icon="info">About</a></li>
+                    <li><a href="#signin" data-icon="user">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div data-role="content">
+            <div>
+                <p>Beer's you have tried and enjoyed</p>
+                <ul data-role="listview" data-autodividers="true" data-theme="a" id="outputFavList" data-filter="true" data-filter-placeholder="Search" data-inset="true"></ul>
+            </div>
+        </div>
+
+        <div data-role="footer">
+            <h1>&copy; Team Red Production</h1>
+        </div>
+    </div>
+
     <!--Wishlist Page-->
     <div data-role="page" id="wishlist-page">
         <div data-role="header">
@@ -91,7 +121,7 @@
             <div data-role="navbar" data-grid="d">
                 <ul>
                     <li><a href="#add-page" data-icon="plus">Add</a></li>
-                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
                     <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
                     <li><a href="#about-page" data-icon="info">About</a></li>
                     <li><a href="#signin" data-icon="user">Sign In</a></li>
@@ -119,7 +149,7 @@
             <div data-role="navbar" data-grid="d">
                 <ul>
                     <li><a href="#add-page" data-icon="plus">Add</a></li>
-                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
                     <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
                     <li><a href="#about-page" data-icon="info">About</a></li>
                     <li><a href="#signin" data-icon="user">Sign In</a></li>
@@ -147,7 +177,7 @@
             <div data-role="navbar" data-grid="d">
                 <ul>
                     <li><a href="#add-page" data-icon="plus">Add</a></li>
-                    <li><a href="#" id="" data-icon="heart">My Fav</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
                     <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
                     <li><a href="#about-page" data-icon="info">About</a></li>
                     <li><a href="#signin" data-icon="user">Sign In</a></li>

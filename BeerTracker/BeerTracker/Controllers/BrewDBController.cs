@@ -45,6 +45,7 @@ namespace BeerTracker.Controllers
             var result = await ExternalResponse(apiCall);
             return new string[] { result };
         }
+
         //Calls the Api
         private async Task<string> ExternalResponse(ApiCall apiCall)
         {
@@ -100,6 +101,28 @@ namespace BeerTracker.Controllers
                            }).ToList();
             }
             catch(Exception ex)
+            {
+                throw;
+            }
+            return beerList;
+        }
+
+        [HttpGet]
+        public IEnumerable<Beer> GetFavBeer()
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerSaved").FindAll().AsEnumerable();
+                beerList = (from beverage in mongoList
+                            select new Beer
+                            {
+                                id = beverage["_id"].AsString,
+                                name = beverage["name"].AsString
+
+                            }).ToList();
+            }
+            catch (Exception ex)
             {
                 throw;
             }

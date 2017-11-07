@@ -6,6 +6,7 @@ var brewUri = 'api/BrewDB';
 $(document).ready(function () {
     randomBeer();
     homePageList();
+    favList();
 });
 
 function homePageList() {
@@ -19,6 +20,21 @@ function homePageList() {
                 $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
                 // Listview refresh after each inner loop(Sunny)
                 $("#output").listview("refresh");
+            });
+        });
+}
+
+function favList() {
+    //Displays items appended to mongo 'BeerSaved' to favorites list 
+    $.getJSON(brewUri + "/GetFavBeer")
+        .done(function (data) {
+            // On success, 'data' contains a list of products.
+            $.each(data, function (key, item) {
+                // Add a list item for the product.
+                // Change the way to format the string(Sunny)
+                $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
+                // Listview refresh after each inner loop(Sunny)
+                $("#outputFavList").listview("refresh");
             });
         });
 }
