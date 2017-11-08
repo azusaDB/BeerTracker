@@ -17,7 +17,12 @@ function homePageList() {
             $.each(data, function (key, item) {
                 // Add a list item for the product.
                 // Change the way to format the string(Sunny)
-                $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
+                //$('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page?id=' + item.id + '"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
+                if (item.labels) {
+                    $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>');
+                } else {
+                    $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                }
                 // Listview refresh after each inner loop(Sunny)
                 $("#output").listview("refresh");
             });
@@ -32,7 +37,7 @@ function favList() {
             $.each(data, function (key, item) {
                 // Add a list item for the product.
                 // Change the way to format the string(Sunny)
-                $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
+                $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');               
                 // Listview refresh after each inner loop(Sunny)
                 $("#outputFavList").listview("refresh");
             });
@@ -92,3 +97,32 @@ function searchBrew() {
 function test() {
 
 }
+
+
+$(document).on('pagebeforeshow', '#indexpage', function () {
+    //changed the onclick event. It used to look like $('a').on("click", function).......
+    $(document).on("click", 'a', function (event) {
+        var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
+        $("#detailParmHere").html(parm); //set the hidden <p> to the parm
+    });
+});
+
+$(document).on('pagebeforeshow', '#details-page', function () {
+    var Name;
+    var Desc;
+    var ABV;
+    var id = $('#detailParmHere').text();
+    $.getJSON(brewUri + "/GetBeer")
+        .done(function (data) {
+            $.each(data, function (index, record) {
+                if (id == record.id) {
+                    Name = "Name: " + record.name;
+                    Desc = " Description: " + record.description;
+                    ABV = " ABV: " + record.abv;
+                    $('#showdata').text(Name).append('<br />');;
+                    $('#showdata').append(Desc).append('<br />');;
+                    $('#showdata').append(ABV);
+                }
+            });
+        });
+});

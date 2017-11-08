@@ -97,7 +97,7 @@ namespace BeerTracker.Controllers
                            select new Beer
                            {
                                id = b["_id"].AsString,
-                               name = b["name"].AsString
+                               name = b["name"].AsString,
                            }).ToList();
             }
             catch(Exception ex)
@@ -113,13 +113,13 @@ namespace BeerTracker.Controllers
             mongoDatabase = RetreiveMongohqDb();
             try
             {
-                var mongoList = mongoDatabase.GetCollection("BeerSaved").FindAll().AsEnumerable();
+                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
                 beerList = (from beverage in mongoList
                             select new Beer
                             {
-                                id = beverage["_id"].AsString,
-                                name = beverage["name"].AsString
-
+                               id = beverage["_id"].AsString,
+                                name = beverage["name"].AsString,
+                                description = beverage["description"].AsString
                             }).ToList();
             }
             catch (Exception ex)
@@ -128,6 +128,38 @@ namespace BeerTracker.Controllers
             }
             return beerList;
         }
+
+
+
+        public IHttpActionResult GetBeer(string id)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerSaved").FindAll().AsEnumerable();
+                beerList = (from beverage in mongoList
+                            select new Beer
+                            {
+                                id = beverage["id"].AsString,
+                                name = beverage["name"].AsString,
+                                description = beverage["description"].AsString,
+                                abv = beverage["abv"].AsString,
+                            }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            var beer = beerList.FirstOrDefault((p) => p.id == id);
+            if (beer == null)
+            {
+                return NotFound();
+            }
+            return Ok(beer);
+        }
+
     }
 }
 ////Get only data json
