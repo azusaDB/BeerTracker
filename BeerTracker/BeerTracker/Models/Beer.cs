@@ -22,6 +22,9 @@ namespace BeerTracker.Models
         public int styleId { get; set; }
         public string isOrganic { get; set; }
         public Label labels { get; set; }
+        public string iconImage { get; set; }
+        public string medImage { get; set; }
+        public string lrgImage { get; set; }
         public string status { get; set; }
         public string statusDisplay { get; set; }
         public string originalGravity { get; set; }

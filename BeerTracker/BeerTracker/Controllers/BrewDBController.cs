@@ -69,21 +69,34 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public Beer Save(Beer newBeer)
         {
-                mongoDatabase = RetreiveMongohqDb();
-                var noteList = mongoDatabase.GetCollection("BeerMaster");
-                WriteConcernResult result;
-                bool hasError = false;
-                result = noteList.Insert<Beer>(newBeer);
-                hasError = result.HasLastErrorMessage;
+            mongoDatabase = RetreiveMongohqDb();
+            var beerList = mongoDatabase.GetCollection("BeerMaster");
+            WriteConcernResult result;
+            bool hasError = false;
+            try
+            {
+                newBeer.iconImage = newBeer.labels.icon;
+                newBeer.medImage = newBeer.labels.medium;
+                newBeer.lrgImage = newBeer.labels.large;
+            }
+            catch
+            {
+                newBeer.iconImage = "";
+                newBeer.medImage = "";
+                newBeer.lrgImage = "";
+            }
+            
+            result = beerList.Insert<Beer>(newBeer);
+            hasError = result.HasLastErrorMessage;
 
-                if (!hasError)
-                {
-                    return newBeer;
-                }
-                else
-                {
-                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
-                }
+            if (!hasError)
+            {
+                return newBeer;
+            }
+            else
+            {
+                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            }
         }
 
         [HttpGet]
@@ -98,6 +111,7 @@ namespace BeerTracker.Controllers
                            {
                                id = b["_id"].AsString,
                                name = b["name"].AsString,
+                               medImage = b["medImage"].AsString
                            }).ToList();
 
                 Random rand = new Random();

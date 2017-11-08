@@ -18,8 +18,8 @@ function homePageList() {
                 // Add a list item for the product.
                 // Change the way to format the string(Sunny)
                 //$('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page?id=' + item.id + '"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
-                if (item.labels) {
-                    $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>');
+                if (item.medImage) {
+                    $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.medImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>');
                 } else {
                     $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
                 }
