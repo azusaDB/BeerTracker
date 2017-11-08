@@ -99,6 +99,10 @@ namespace BeerTracker.Controllers
                                id = b["_id"].AsString,
                                name = b["name"].AsString,
                            }).ToList();
+
+                Random rand = new Random();
+                int toSkip = rand.Next(0, beerList.Count);
+                beerList = beerList.Skip(toSkip).Take(10).ToList().OrderBy(x => x.name).ToList();
             }
             catch(Exception ex)
             {
