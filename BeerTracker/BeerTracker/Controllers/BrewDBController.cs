@@ -122,8 +122,7 @@ namespace BeerTracker.Controllers
                             select new Beer
                             {
                                id = beverage["_id"].AsString,
-                                name = beverage["name"].AsString,
-                                description = beverage["description"].AsString
+                               name = beverage["name"].AsString
                             }).ToList();
             }
             catch (Exception ex)
