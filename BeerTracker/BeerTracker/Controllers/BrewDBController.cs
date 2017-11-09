@@ -73,6 +73,18 @@ namespace BeerTracker.Controllers
             var beerList = mongoDatabase.GetCollection("BeerMaster");
             WriteConcernResult result;
             bool hasError = false;
+                        try
+            {
+                newBeer.iconImage = newBeer.labels.icon;
+                newBeer.medImage = newBeer.labels.medium;
+                newBeer.lrgImage = newBeer.labels.large;
+            }
+            catch
+            {
+                newBeer.iconImage = "";
+                newBeer.medImage = "";
+                newBeer.lrgImage = "";
+            }
             
             result = beerList.Insert<Beer>(newBeer);
             hasError = result.HasLastErrorMessage;
@@ -102,7 +114,7 @@ namespace BeerTracker.Controllers
                                medImage = b["medImage"].AsString,
                                abv = b["abv"].AsString
                            }).ToList();
-
+                //.Where(x => x.medImage != "")
                 Random rand = new Random();
                 int toSkip = rand.Next(0, beerList.Count);
                 beerList = beerList.Skip(toSkip).Take(10).ToList().OrderBy(x => x.name).ToList();
