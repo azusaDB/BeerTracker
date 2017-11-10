@@ -111,18 +111,38 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     var Name;
     var Desc;
     var ABV;
+    var breweryName = "N/A";
+    var breweryUrl = "N/A";
     var id = $('#detailParmHere').text();
-    $.getJSON(brewUri + "/GetBeer")
+
+    $.getJSON(brewUri + "/GetBrewery/" + id)
         .done(function (data) {
             $.each(data, function (index, record) {
                 if (id == record.id) {
-                    Name = "Name: " + record.name;
-                    Desc = " Description: " + record.description;
-                    ABV = " ABV: " + record.abv;
-                    $('#showdata').text(Name).append('<br />');;
-                    $('#showdata').append(Desc).append('<br />');;
-                    $('#showdata').append(ABV);
+                    breweryName = "Brew Name: " + record.name;
+                    breweryUrl = " Url: " + record.description;
+                    $('#showdata').text(breweryName).append('<br />');;
+                    $('#showdata').append(breweryUrl).append('<br />');;
                 }
             });
         });
-});
+    });
+
+
+
+
+
+
+//$.getJSON(brewUri + "/GetBeer")
+//        .done(function (data) {
+//            $.each(data, function (index, record) {
+//                if (id == record.id) {
+//                    Name = "Name: " + record.name;
+//                    Desc = " Description: " + record.description;
+//                    ABV = " ABV: " + record.abv;
+//                    $('#showdata').text(Name).append('<br />');;
+//                    $('#showdata').append(Desc).append('<br />');;
+//                    $('#showdata').append(ABV);
+//                }
+//            });
+//        });

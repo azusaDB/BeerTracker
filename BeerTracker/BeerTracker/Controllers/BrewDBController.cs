@@ -178,6 +178,42 @@ namespace BeerTracker.Controllers
             return Ok(beer);
         }
 
+        [HttpGet]
+        public IHttpActionResult GetBrewery(string id)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                beerList = (from beverage in mongoList
+                            select new Beer
+                            {
+                                id = beverage["_id"].AsString,
+                                breweryName = beverage["breweryName"].AsString,
+                                breweryUrl = beverage["breweryUrl"].AsString
+                            }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            var beer = beerList.FirstOrDefault((b) => b.id == id);
+            if (!String.IsNullOrEmpty(beer.breweryName) || !String.IsNullOrEmpty(beer.breweryUrl))
+            {
+                return Ok(beer);
+            }
+            else
+            {
+                ApiCall apiCall = new ApiCall();
+                apiCall.call = "/beer/" + id + "/breweries";
+                var result = ApiRequest(apiCall);
+                return Ok(beer);
+            }
+            
+        }
+
     }
 }
 ////Get only data json

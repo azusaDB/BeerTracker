@@ -33,6 +33,8 @@ namespace BeerTracker.Models
         public Glass glass { get; set; }
         public Available available { get; set; }
         public Style style { get; set; }
+        public string breweryName { get; set; } = "";
+        public string breweryUrl { get; set; } = "";
     }
 
     public class Label
