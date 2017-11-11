@@ -40,10 +40,13 @@ namespace BeerTracker.Controllers
 
         //Takes in a POST call from JS with an object ApiCall. With they type of api call you want to use.
         [HttpPost]
-        public async Task<IEnumerable<string>> ApiRequest(ApiCall apiCall)
+        public async Task<string> ApiRequest(ApiCall apiCall)
         {
-            var result = await ExternalResponse(apiCall);
-            return new string[] { result };
+            //var result = await ExternalResponse(apiCall);
+            using (var client = new HttpClient())
+            {
+                return client.GetStringAsync(_address + apiCall.call + apiKey).Result;
+            }
         }
 
         //Calls the Api
@@ -182,10 +185,11 @@ namespace BeerTracker.Controllers
         public IHttpActionResult GetBrewery(string id)
         {
             mongoDatabase = RetreiveMongohqDb();
+            WriteConcernResult writeResult;
+            var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
 
             try
             {
-                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
                 beerList = (from beverage in mongoList
                             select new Beer
                             {
@@ -200,15 +204,37 @@ namespace BeerTracker.Controllers
             }
 
             var beer = beerList.FirstOrDefault((b) => b.id == id);
+            //If beer already has breweryName and breweryUrl no need to call the api just return the beer
             if (!String.IsNullOrEmpty(beer.breweryName) || !String.IsNullOrEmpty(beer.breweryUrl))
             {
                 return Ok(beer);
             }
             else
             {
+                var brewList = mongoDatabase.GetCollection("BeerMaster");
                 ApiCall apiCall = new ApiCall();
-                apiCall.call = "/beer/" + id + "/breweries";
+                apiCall.call = "beer/" + id + "/breweries";
                 var result = ApiRequest(apiCall);
+                string breweryData = JObject.Parse(result.Result).ToString();
+                breweryData = breweryData.Replace("'", "");
+                breweryData = breweryData.Replace("\"", "'");
+                breweryData = breweryData.Replace("\r\n", "");
+
+                var obj = JObject.Parse(breweryData);
+                var brewName = (string)obj["data"][0]["name"];
+                var brewUrl = (string)obj["data"][0]["website"];
+
+                //Update Mongo
+                IMongoQuery query = Query.EQ("_id", id);
+                IMongoUpdate update = Update
+                    .Set("breweryName", brewName)
+                    .Set("breweryUrl", brewUrl);
+                writeResult = brewList.Update(query, update);
+
+                //After update send updated beer to the client
+                beer.breweryName = brewName;
+                beer.breweryUrl = brewUrl;
+
                 return Ok(beer);
             }
             
