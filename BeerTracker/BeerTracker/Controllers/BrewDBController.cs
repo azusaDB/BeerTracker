@@ -45,7 +45,7 @@ namespace BeerTracker.Controllers
             //var result = await ExternalResponse(apiCall);
             using (var client = new HttpClient())
             {
-                return client.GetStringAsync(_address + apiCall.call + apiKey).Result;
+                return client.GetStringAsync(_address + apiCall.call + apiKey + apiCall.parameters).Result;
             }
         }
 
@@ -212,8 +212,10 @@ namespace BeerTracker.Controllers
             else
             {
                 var brewList = mongoDatabase.GetCollection("BeerMaster");
-                ApiCall apiCall = new ApiCall();
-                apiCall.call = "beer/" + id + "/breweries";
+                ApiCall apiCall = new ApiCall
+                {
+                    call = "beer/" + id + "/breweries"
+                };
                 var result = ApiRequest(apiCall);
                 string breweryData = FormatJson(JObject.Parse(result.Result).ToString());
 
@@ -235,6 +237,15 @@ namespace BeerTracker.Controllers
                 return Ok(beer);
             }
             
+        }
+
+        [HttpPost]
+        public IHttpActionResult Search(ApiCall apiCall)
+        {
+            var result = ApiRequest(apiCall);
+            string searchData = JObject.Parse(result.Result).ToString();
+            
+            return Ok(searchData);
         }
 
         private string FormatJson(string json)

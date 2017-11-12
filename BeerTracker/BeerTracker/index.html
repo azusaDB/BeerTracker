@@ -309,16 +309,13 @@
                     <legend>Select Category:</legend>
                     <input type="radio" name="search" id="radio-choice-beer" value="beer" checked="checked" />
                     <label for="radio-choice-beer">Beer</label>
-                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" />
+                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" disabled="true" />
                     <label for="radio-choice-brewery">Brewery</label>
                 </fieldset>
                 <input type="search" id="searchInput" data-mini="true" width="30"/>
                 <input type="button" id="submitSearch" value="Search" />
             </form>
-            <div style="width:70%; margin:0 auto;">
-                <h4 hidden="hidden">Search Results</h4>
-                <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-inset="true"></ul>
-            </div>
+            <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search Results" data-inset="true"></ul>
         </div>
         <div data-role="footer">
             <h1>&copy; Team Red Production</h1>

@@ -8,5 +8,6 @@ namespace BeerTracker.Models
     public class ApiCall
     {
         public string call { get; set; }
+        public string parameters { get; set; } = "";
     }
 }
