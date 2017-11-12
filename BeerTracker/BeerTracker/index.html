@@ -24,6 +24,7 @@
                     <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
                     <li><a href="#about-page" data-icon="info">About</a></li>
                     <li><a href="#signin" data-icon="user">Sign In</a></li>
+                    <li><a href="#search" data-icon="search">Search</a></li>
                 </ul>
             </div>
         </div>
@@ -279,6 +280,46 @@
             </div>
         </form>
 
+        <div data-role="footer">
+            <h1>&copy; Team Red Production</h1>
+        </div>
+
+    </div>
+
+    <!--Search Page-->
+    <div data-role="page" id="search">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+                <a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a>
+            </div>
+            <h1>Brew Tracker</h1>
+            <div data-role="navbar" data-grid="d">
+                <ul>
+                    <li><a href="#add-page" data-icon="plus">Add</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
+                    <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
+                    <li><a href="#about-page" data-icon="info">About</a></li>
+                    <li><a href="#signin" data-icon="user">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="content">
+            <form>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>Select Category:</legend>
+                    <input type="radio" name="search" id="radio-choice-beer" value="beer" checked="checked" />
+                    <label for="radio-choice-beer">Beer</label>
+                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" />
+                    <label for="radio-choice-brewery">Brewery</label>
+                </fieldset>
+                <input type="search" id="searchInput" data-mini="true" width="30"/>
+                <input type="button" id="submitSearch" value="Search" />
+            </form>
+            <div style="width:70%; margin:0 auto;">
+                <h4 hidden="hidden">Search Results</h4>
+                <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-inset="true"></ul>
+            </div>
+        </div>
         <div data-role="footer">
             <h1>&copy; Team Red Production</h1>
         </div>

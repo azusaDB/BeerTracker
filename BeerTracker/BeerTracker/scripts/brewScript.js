@@ -107,6 +107,13 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
     });
 });
 
+$(document).on('pagebeforeshow', '#search', function () {
+    $(document).on("click", '#submitSearch', function (event) {
+        var searchCat = $("input[name*=search]:checked").val();
+        var searchString = $("#searchInput").val();
+    });
+});
+
 $(document).on('pagebeforeshow', '#details-page', function () {
     var Name;
     var Desc;
@@ -141,7 +148,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 //                }
 //            });
 //        });
-    });
+});
 
 
 

@@ -215,10 +215,7 @@ namespace BeerTracker.Controllers
                 ApiCall apiCall = new ApiCall();
                 apiCall.call = "beer/" + id + "/breweries";
                 var result = ApiRequest(apiCall);
-                string breweryData = JObject.Parse(result.Result).ToString();
-                breweryData = breweryData.Replace("'", "");
-                breweryData = breweryData.Replace("\"", "'");
-                breweryData = breweryData.Replace("\r\n", "");
+                string breweryData = FormatJson(JObject.Parse(result.Result).ToString());
 
                 var obj = JObject.Parse(breweryData);
                 var brewName = (string)obj["data"][0]["name"];
@@ -238,6 +235,14 @@ namespace BeerTracker.Controllers
                 return Ok(beer);
             }
             
+        }
+
+        private string FormatJson(string json)
+        {
+            json = json.Replace("'", "");
+            json = json.Replace("\"", "'");
+            json = json.Replace("\r\n", "");
+            return json;
         }
 
     }
