@@ -224,19 +224,19 @@
                 </ul>
             </div>
         </div>
-
         <h2 align="center">Sign In</h2>
-        <div class="container">
-            <label align="center"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="loginusername">
+        <form>
+            <div class="container">
+                <label align="center"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="loginusername">
 
-            <label align="center"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="loginpsw">
+                <label align="center"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="loginpsw">
 
-            <button type="submit">Login</button>
-        </div>
-        <button href="#signup" class="signuppagebtn" align="center">Sign Up</button>
-
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        <button onclick="location.href='#signup'">Sign Up</button>
         <div data-role="footer">
             <h1>&copy; Team Red Production</h1>
         </div>
@@ -262,21 +262,19 @@
         </div>
 
         <h2 align="center">Sign Up</h2>
-        <form action="">
+        <form>
             <div class="container">
-                <label><b>Username</b></label>
+                <label align="center"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" required>
 
-                <label><b>Password</b></label>
+                <label align="center"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="signuppsw" required>
 
-                <label><b>Confirm Password</b></label>
+                <label align="center"><b>Confirm Password</b></label>
                 <input type="password" placeholder="Confirm Password" name="confirmpsw" required>
 
-                <div class="clearfix">
-                    <button type="button" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn">Sign Up</button>
-                </div>
+                    <input type="button" value="Cancel" onclick="history.back()" />
+
             </div>
         </form>
 
