@@ -134,12 +134,27 @@ $(document).on('pagebeforeshow', '#search', function () {
                     {
                         li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
                     }
+                    var beerJson = JSON.stringify(item);
+                    $.ajax({
+                        url: "api/BrewDB/Save",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: beerJson,
+                        async: false,
+                        success: function (data) {
+                            document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
+                        },
+                        error: function () {
+                            $('#output').text("Error: Save Failed");
+                        }
+                    });
                 });
                 $('#search-output').append(li);
                 $('#search-output').listview().listview('refresh');
+
             },
             error: function () {
-                $('#search-output').text("ERROR: API has been disabled to avoid going over our api request limit. Change brewUri back to api/BrewDB to call api.");
+                $('#searchStatus').text("ERROR: Contact Caleb for support");
             }
         });
     });
