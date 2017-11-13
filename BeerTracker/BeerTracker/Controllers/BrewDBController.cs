@@ -181,6 +181,15 @@ namespace BeerTracker.Controllers
             return Ok(beer);
         }
 
+        //[HttpGet]
+        //public IHttpActionResult SaveBeer(string id)
+        //{
+        //    mongoDatabase = RetreiveMongohqDb();
+        //    var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+
+           
+        //}
+
         [HttpGet]
         public IHttpActionResult GetBrewery(string id)
         {
@@ -194,6 +203,9 @@ namespace BeerTracker.Controllers
                             select new Beer
                             {
                                 id = beverage["_id"].AsString,
+                                name = beverage["name"].AsString,
+                                description = beverage["description"].AsString,
+                                abv = beverage["abv"].AsString,
                                 breweryName = beverage["breweryName"].AsString,
                                 breweryUrl = beverage["breweryUrl"].AsString
                             }).ToList();

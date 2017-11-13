@@ -118,11 +118,15 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     $.getJSON(brewUri + "/GetBrewery/" + id)
         .done(function (data) {
             //******This if statment can be removed*******/
-                if (id == data.id) {
-                    breweryName = "Brew Name: " + data.breweryName;
-                    breweryUrl = " Url: " + data.breweryUrl;
-                    $('#showdata').text(breweryName).append('<br />');;
-                    $('#showdata').append(breweryUrl).append('<br />');;
+            if (id == data.id) {
+                Name = "Beer Name: " + data.name;
+                ABV = "ABV: " + data.abv;
+                breweryName = "Brewery Name: " + data.breweryName;
+                breweryUrl = " Url: " + data.breweryUrl;
+                
+                $('#showdata').text(Name).append('<br />');
+                $('#showdata').append(breweryName).append('<br />');
+                $('#showdata').append(breweryUrl).append('<br />');
             }
             //**********************************************
         });
@@ -141,7 +145,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 //                }
 //            });
 //        });
-    });
+ });
 
 
 
