@@ -107,6 +107,36 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
     });
 });
 
+$(document).on('pagebeforeshow', '#search', function () {
+    $(document).on("click", '#submitSearch', function (event) {
+        var searchCat = $("input[name*=search]:checked").val();
+        var searchString = $("#searchInput").val();
+        var id = "&q=" + searchString + "&type=" + searchCat;
+        var apiCall = {
+            call: "search",
+            parameters: id
+        };
+        var li = "";
+        $.ajax({
+            url: brewUri + "/Search/" + apiCall,
+            type: "POST",
+            data: apiCall,
+            async: false,
+            success: function (data) {
+                var searchResults = JSON.parse(data);
+                $.each(searchResults.data, function (index, item) {
+                   li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                });
+                $('#search-output').append(li);
+                $('#search-output').listview().listview('refresh');
+            },
+            error: function () {
+                $('#output').text("ERROR: API has been disabled to avoid going over our api request limit. Change brewUri back to api/BrewDB to call api.");
+            }
+        });
+    });
+});
+
 $(document).on('pagebeforeshow', '#details-page', function () {
     var Name;
     var Desc;
@@ -118,15 +148,11 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     $.getJSON(brewUri + "/GetBrewery/" + id)
         .done(function (data) {
             //******This if statment can be removed*******/
-            if (id == data.id) {
-                Name = "Beer Name: " + data.name;
-                ABV = "ABV: " + data.abv;
-                breweryName = "Brewery Name: " + data.breweryName;
-                breweryUrl = " Url: " + data.breweryUrl;
-                
-                $('#showdata').text(Name).append('<br />');
-                $('#showdata').append(breweryName).append('<br />');
-                $('#showdata').append(breweryUrl).append('<br />');
+                if (id == data.id) {
+                    breweryName = "Brew Name: " + data.breweryName;
+                    breweryUrl = " Url: " + data.breweryUrl;
+                    $('#showdata').text(breweryName).append('<br />');;
+                    $('#showdata').append(breweryUrl).append('<br />');;
             }
             //**********************************************
         });
@@ -145,7 +171,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 //                }
 //            });
 //        });
- });
+});
 
 
 

@@ -24,6 +24,7 @@
                     <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
                     <li><a href="#about-page" data-icon="info">About</a></li>
                     <li><a href="#signin" data-icon="user">Sign In</a></li>
+                    <li><a href="#search" data-icon="search">Search</a></li>
                 </ul>
             </div>
         </div>
@@ -224,19 +225,19 @@
                 </ul>
             </div>
         </div>
-
         <h2 align="center">Sign In</h2>
-        <div class="container">
-            <label align="center"><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="loginusername">
+        <form>
+            <div class="container">
+                <label align="center"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="loginusername">
 
-            <label align="center"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="loginpsw">
+                <label align="center"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="loginpsw">
 
-            <button type="submit">Login</button>
-        </div>
-        <button href="#signup" class="signuppagebtn" align="center">Sign Up</button>
-
+                <button type="submit">Login</button>
+            </div>
+        </form>
+        <button onclick="location.href='#signup'">Sign Up</button>
         <div data-role="footer">
             <h1>&copy; Team Red Production</h1>
         </div>
@@ -262,24 +263,59 @@
         </div>
 
         <h2 align="center">Sign Up</h2>
-        <form action="">
+        <form>
             <div class="container">
-                <label><b>Username</b></label>
+                <label align="center"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" required>
 
-                <label><b>Password</b></label>
+                <label align="center"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="signuppsw" required>
 
-                <label><b>Confirm Password</b></label>
+                <label align="center"><b>Confirm Password</b></label>
                 <input type="password" placeholder="Confirm Password" name="confirmpsw" required>
 
-                <div class="clearfix">
-                    <button type="button" class="cancelbtn">Cancel</button>
-                    <button type="submit" class="signupbtn">Sign Up</button>
-                </div>
+                    <input type="button" value="Cancel" onclick="history.back()" />
+
             </div>
         </form>
 
+        <div data-role="footer">
+            <h1>&copy; Team Red Production</h1>
+        </div>
+
+    </div>
+
+    <!--Search Page-->
+    <div data-role="page" id="search">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left">
+                <a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a>
+            </div>
+            <h1>Brew Tracker</h1>
+            <div data-role="navbar" data-grid="d">
+                <ul>
+                    <li><a href="#add-page" data-icon="plus">Add</a></li>
+                    <li><a href="#favorites-page" data-icon="heart">My Fav</a></li>
+                    <li><a href="#wishlist-page" data-icon="star">Wishlist</a></li>
+                    <li><a href="#about-page" data-icon="info">About</a></li>
+                    <li><a href="#signin" data-icon="user">Sign In</a></li>
+                </ul>
+            </div>
+        </div>
+        <div data-role="content">
+            <form>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>Select Category:</legend>
+                    <input type="radio" name="search" id="radio-choice-beer" value="beer" checked="checked" />
+                    <label for="radio-choice-beer">Beer</label>
+                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" disabled="true" />
+                    <label for="radio-choice-brewery">Brewery</label>
+                </fieldset>
+                <input type="search" id="searchInput" data-mini="true" width="30"/>
+                <input type="button" id="submitSearch" value="Search" />
+            </form>
+            <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search Results" data-inset="true"></ul>
+        </div>
         <div data-role="footer">
             <h1>&copy; Team Red Production</h1>
         </div>

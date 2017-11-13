@@ -45,7 +45,7 @@ namespace BeerTracker.Controllers
             //var result = await ExternalResponse(apiCall);
             using (var client = new HttpClient())
             {
-                return client.GetStringAsync(_address + apiCall.call + apiKey).Result;
+                return client.GetStringAsync(_address + apiCall.call + apiKey + apiCall.parameters).Result;
             }
         }
 
@@ -224,13 +224,12 @@ namespace BeerTracker.Controllers
             else
             {
                 var brewList = mongoDatabase.GetCollection("BeerMaster");
-                ApiCall apiCall = new ApiCall();
-                apiCall.call = "beer/" + id + "/breweries";
+                ApiCall apiCall = new ApiCall
+                {
+                    call = "beer/" + id + "/breweries"
+                };
                 var result = ApiRequest(apiCall);
-                string breweryData = JObject.Parse(result.Result).ToString();
-                breweryData = breweryData.Replace("'", "");
-                breweryData = breweryData.Replace("\"", "'");
-                breweryData = breweryData.Replace("\r\n", "");
+                string breweryData = FormatJson(JObject.Parse(result.Result).ToString());
 
                 var obj = JObject.Parse(breweryData);
                 var brewName = (string)obj["data"][0]["name"];
@@ -250,6 +249,23 @@ namespace BeerTracker.Controllers
                 return Ok(beer);
             }
             
+        }
+
+        [HttpPost]
+        public IHttpActionResult Search(ApiCall apiCall)
+        {
+            var result = ApiRequest(apiCall);
+            string searchData = JObject.Parse(result.Result).ToString();
+            
+            return Ok(searchData);
+        }
+
+        private string FormatJson(string json)
+        {
+            json = json.Replace("'", "");
+            json = json.Replace("\"", "'");
+            json = json.Replace("\r\n", "");
+            return json;
         }
 
     }
