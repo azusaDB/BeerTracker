@@ -228,16 +228,17 @@
         <h2 align="center">Sign In</h2>
         <form>
             <div class="container">
+                <p id="SignInStatus"></p>
                 <label align="center"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="loginusername">
 
                 <label align="center"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="loginpsw">
 
-                <button type="submit">Login</button>
+                <button type="submit" id="SignInSubmit">Login</button>
             </div>
         </form>
-        <button onclick="location.href='#signup'">Sign Up</button>
+        <p align=center>No account? <a href="#signup">Sign Up now</a>.</p>
         <div data-role="footer">
             <h1>&copy; Team Red Production</h1>
         </div>

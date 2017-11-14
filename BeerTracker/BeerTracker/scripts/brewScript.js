@@ -233,6 +233,29 @@ $(document).on('pagebeforeshow', '#signup', function () {
     });
 });
 
+$(document).on('pagebeforeshow', '#signin', function () {
+    $(document).on("click", '#SignInSubmit', function (event) {
+        var username = $("#loginusername").val();
+        var password = $("#loginpsw").val();
+
+        $.ajax({
+            url: brewUri + "/SignIn?username=" + username + "&password=" + password,
+            type: "POST",
+            async: false,
+            success: function (data) {
+
+            },
+            error: function () {
+                $('#SignInStatus').text("ERROR: Contact Caleb for support");
+            }
+        });
+    });
+    $(document).on("click", '.apiLi', function (event) {
+        var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
+        $("#apiParam").html(parm); //set the hidden <p> to the parm
+    });
+});
+
 
 
 
