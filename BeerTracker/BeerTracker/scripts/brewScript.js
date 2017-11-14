@@ -101,6 +101,9 @@ function test() {
 
 $(document).on('pagebeforeshow', '#indexpage', function () {
     //changed the onclick event. It used to look like $('a').on("click", function).......
+    $('#showdata').empty();
+    $('#showImage').empty();
+
     $(document).on("click", 'a', function (event) {
         var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
         $("#detailParmHere").html(parm); //set the hidden <p> to the parm
@@ -175,8 +178,6 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 
     $.getJSON(brewUri + "/GetBrewery/" + id)
         .done(function (data) {
-            $('#showdata').empty();
-            $('#showImage').empty();
             //******This if statment can be removed*******/
             if (id == data.id) {
                 Name = "<b>Beer Name: </b><br />" + data.name; 
