@@ -293,9 +293,8 @@ namespace BeerTracker.Controllers
         {
             mongoDatabase = RetreiveMongohqDb();
             WriteConcernResult writeResult;
-            //var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
             var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-            BeerUser user = symbolcollection.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
+            BeerUser user = Beer.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
 
         }
 
