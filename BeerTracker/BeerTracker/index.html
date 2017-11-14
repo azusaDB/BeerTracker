@@ -266,15 +266,16 @@
         <form>
             <div class="container">
                 <label align="center"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required>
+                <input type="text" placeholder="Enter Username" name="username" id="username" required>
 
                 <label align="center"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="signuppsw" required>
+                <input type="password" placeholder="Enter Password" name="signuppsw" id="password" required>
 
                 <label align="center"><b>Confirm Password</b></label>
                 <input type="password" placeholder="Confirm Password" name="confirmpsw" required>
 
-                    <input type="button" value="Cancel" onclick="history.back()" />
+                <input type="submit" value="Submit" id="submitSignUp"/>
+                <input type="button" value="Cancel" onclick="history.back()" />
 
             </div>
         </form>
@@ -314,7 +315,9 @@
                 <input type="search" id="searchInput" data-mini="true" width="30"/>
                 <input type="button" id="submitSearch" value="Search" />
             </form>
+            <p id="searchStatus"></p>
             <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search Results" data-inset="true"></ul>
+            <p id="apiParam" hidden></p>
         </div>
         <div data-role="footer">
             <h1>&copy; Team Red Production</h1>

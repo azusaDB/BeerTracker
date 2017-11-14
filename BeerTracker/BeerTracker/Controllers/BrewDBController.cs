@@ -73,10 +73,10 @@ namespace BeerTracker.Controllers
         public Beer Save(Beer newBeer)
         {
             mongoDatabase = RetreiveMongohqDb();
-            var beerList = mongoDatabase.GetCollection("BeerMaster");
+            var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
             WriteConcernResult result;
             bool hasError = false;
-                        try
+            try
             {
                 newBeer.iconImage = newBeer.labels.icon;
                 newBeer.medImage = newBeer.labels.medium;
@@ -88,9 +88,28 @@ namespace BeerTracker.Controllers
                 newBeer.medImage = "";
                 newBeer.lrgImage = "";
             }
-            
-            result = beerList.Insert<Beer>(newBeer);
-            hasError = result.HasLastErrorMessage;
+            //***********************Make sure beer does already exist in mongo
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                beerList = (from beverage in mongoList
+                            select new Beer
+                            {
+                                id = beverage["_id"].AsString,
+                            }).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            var beer = beerList.FirstOrDefault((p) => p.id == newBeer.id);
+            //*************************
+            if (beer == null) //if it doesn't exist save it to mongo
+            {
+                result = beerMasterList.Insert<Beer>(newBeer);
+                hasError = result.HasLastErrorMessage;
+            }
 
             if (!hasError)
             {
@@ -258,6 +277,12 @@ namespace BeerTracker.Controllers
             json = json.Replace("\"", "'");
             json = json.Replace("\r\n", "");
             return json;
+        }
+
+        [HttpPost]
+        public IHttpActionResult SignUp(string userName, string password)
+        {
+            return Ok();
         }
 
     }

@@ -124,16 +124,43 @@ $(document).on('pagebeforeshow', '#search', function () {
             async: false,
             success: function (data) {
                 var searchResults = JSON.parse(data);
+                $('#search-output').empty();
                 $.each(searchResults.data, function (index, item) {
-                   li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                    if (item.labels)
+                    {
+                        li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                    }
+                    else
+                    {
+                        li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                    }
+                    var beerJson = JSON.stringify(item);
+                    $.ajax({
+                        url: "api/BrewDB/Save",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: beerJson,
+                        async: false,
+                        success: function (data) {
+                            document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
+                        },
+                        error: function () {
+                            $('#output').text("Error: Save Failed");
+                        }
+                    });
                 });
                 $('#search-output').append(li);
                 $('#search-output').listview().listview('refresh');
+
             },
             error: function () {
-                $('#output').text("ERROR: API has been disabled to avoid going over our api request limit. Change brewUri back to api/BrewDB to call api.");
+                $('#searchStatus').text("ERROR: Contact Caleb for support");
             }
         });
+    });
+    $(document).on("click", '.apiLi', function (event) {
+        var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
+        $("#apiParam").html(parm); //set the hidden <p> to the parm
     });
 });
 
@@ -181,6 +208,29 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 //                }
 //            });
 //        });
+});
+
+$(document).on('pagebeforeshow', '#signup', function () {
+    $(document).on("click", '#submitSignUp', function (event) {
+        var password = $("#password").val();
+        var username = $("#username").val();
+
+        $.ajax({
+            url: brewUri + "/SignUp?username=" + username + "&password=" + password,
+            type: "POST",
+            async: false,
+            success: function (data) {
+
+            },
+            error: function () {
+                $('#searchStatus').text("ERROR: Contact Caleb for support");
+            }
+        });
+    });
+    $(document).on("click", '.apiLi', function (event) {
+        var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
+        $("#apiParam").html(parm); //set the hidden <p> to the parm
+    });
 });
 
 
