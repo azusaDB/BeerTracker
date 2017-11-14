@@ -288,16 +288,16 @@ namespace BeerTracker.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public IHttpActionResult SignIn(string username, string password)
-        {
-            mongoDatabase = RetreiveMongohqDb();
-            WriteConcernResult writeResult;
-            //var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-            var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-            BeerUser user = symbolcollection.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
+        //[HttpPost]
+        //public IHttpActionResult SignIn(string username, string password)
+        //{
+        //    mongoDatabase = RetreiveMongohqDb();
+        //    WriteConcernResult writeResult;
+        //    //var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+        //    var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+        //    BeerUser user = symbolcollection.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
 
-        }
+        //}
 
 
     }

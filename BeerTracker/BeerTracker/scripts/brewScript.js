@@ -170,7 +170,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     var ABV;
     var breweryName = "N/A";
     var breweryUrl = "N/A";
-    var lrgImage; 
+    var lrgImage;
     var id = $('#detailParmHere').text();
 
     $.getJSON(brewUri + "/GetBrewery/" + id)
@@ -181,15 +181,16 @@ $(document).on('pagebeforeshow', '#details-page', function () {
                 Desc = "<b>Beer Description: </b><br />" + data.Desc;
                 ABV = "<b>Beer ABV: </b><br />" + data.abv;
                 breweryName = "<b>Brewery Name: </b><br />" + data.breweryName;
+                //breweryUrl = "<b>Brewery Url: </b><br />" + $('#showdata').click(function () { data.breweryUrl });
                 breweryUrl = "<b>Brewery Url: </b><br />" + data.breweryUrl;
-                lrgImage = data.lrgImage;
+                lrgImage = $('#showImage').attr("src", data.lrgImage);
 
                 $('#showdata').append(Name).append('<br />');
                 $('#showdata').append(Desc).append('<br />');
                 $('#showdata').append(ABV).append('<br />');
                 $('#showdata').append(breweryName).append('<br />');
                 $('#showdata').append(breweryUrl).append('<br />');
-                $('#showdata').append(lrgImage).append('<br />');
+                $('#showImage').append(lrgImage).append('<br />');
             }
             //**********************************************
         });
