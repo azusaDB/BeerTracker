@@ -143,16 +143,26 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     var ABV;
     var breweryName = "N/A";
     var breweryUrl = "N/A";
+    var lrgImage; 
     var id = $('#detailParmHere').text();
 
     $.getJSON(brewUri + "/GetBrewery/" + id)
         .done(function (data) {
             //******This if statment can be removed*******/
-                if (id == data.id) {
-                    breweryName = "Brew Name: " + data.breweryName;
-                    breweryUrl = " Url: " + data.breweryUrl;
-                    $('#showdata').text(breweryName).append('<br />');;
-                    $('#showdata').append(breweryUrl).append('<br />');;
+            if (id == data.id) {
+                Name = "<b>Beer Name: </b><br />" + data.name; 
+                Desc = "<b>Beer Description: </b><br />" + data.Desc;
+                ABV = "<b>Beer ABV: </b><br />" + data.abv;
+                breweryName = "<b>Brewery Name: </b><br />" + data.breweryName;
+                breweryUrl = "<b>Brewery Url: </b><br />" + data.breweryUrl;
+                lrgImage = data.lrgImage;
+
+                $('#showdata').append(Name).append('<br />');
+                $('#showdata').append(Desc).append('<br />');
+                $('#showdata').append(ABV).append('<br />');
+                $('#showdata').append(breweryName).append('<br />');
+                $('#showdata').append(breweryUrl).append('<br />');
+                $('#showdata').append(lrgImage).append('<br />');
             }
             //**********************************************
         });

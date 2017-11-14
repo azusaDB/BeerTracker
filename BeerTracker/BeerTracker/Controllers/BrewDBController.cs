@@ -181,15 +181,6 @@ namespace BeerTracker.Controllers
             return Ok(beer);
         }
 
-        //[HttpGet]
-        //public IHttpActionResult SaveBeer(string id)
-        //{
-        //    mongoDatabase = RetreiveMongohqDb();
-        //    var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
-
-           
-        //}
-
         [HttpGet]
         public IHttpActionResult GetBrewery(string id)
         {
@@ -207,7 +198,8 @@ namespace BeerTracker.Controllers
                                 description = beverage["description"].AsString,
                                 abv = beverage["abv"].AsString,
                                 breweryName = beverage["breweryName"].AsString,
-                                breweryUrl = beverage["breweryUrl"].AsString
+                                breweryUrl = beverage["breweryUrl"].AsString,
+                                lrgImage = beverage["lrgImage"].AsString
                             }).ToList();
             }
             catch (Exception ex)
