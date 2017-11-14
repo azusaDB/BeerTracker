@@ -246,7 +246,7 @@ $(document).on('pagebeforeshow', '#signin', function () {
 
             },
             error: function () {
-                $('#SignInStatus').text("ERROR: Contact Caleb for support");
+                $('#SignInStatus').text("Sign In ERROR!");
             }
         });
     });

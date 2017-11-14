@@ -13,6 +13,7 @@ using MongoDB.Driver;
 using System.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
+using MongoDB.Driver.Linq;
 
 namespace BeerTracker.Controllers
 {
@@ -22,6 +23,8 @@ namespace BeerTracker.Controllers
         private string apiKey = "?key=cf17ecf24febe31afd664f4bd377a333";
         MongoDatabase mongoDatabase;
         List<Beer> beerList = new List<Beer>();
+        private object userList;
+        private object symbolcollection;
 
         private MongoDatabase RetreiveMongohqDb()
         {
@@ -288,11 +291,17 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SignIn(string username, string password)
         {
-            return Ok();
+            mongoDatabase = RetreiveMongohqDb();
+            WriteConcernResult writeResult;
+            //var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+            var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+            BeerUser user = symbolcollection.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
+
         }
 
 
     }
+
 }
 ////Get only data json
 //string beer = JObject.Parse(result)["data"].ToString();
