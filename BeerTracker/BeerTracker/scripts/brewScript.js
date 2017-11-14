@@ -175,6 +175,8 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 
     $.getJSON(brewUri + "/GetBrewery/" + id)
         .done(function (data) {
+            $('#showdata').empty();
+            $('#showImage').empty();
             //******This if statment can be removed*******/
             if (id == data.id) {
                 Name = "<b>Beer Name: </b><br />" + data.name; 
@@ -191,7 +193,10 @@ $(document).on('pagebeforeshow', '#details-page', function () {
                 $('#showdata').append(breweryName).append('<br />');
                 $('#showdata').append(breweryUrl).append('<br />');
                 $('#showImage').append(lrgImage).append('<br />');
+
+                empty();
             }
+           
             //**********************************************
         });
 
