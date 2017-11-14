@@ -6,12 +6,15 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using MongoDB.Bson.Serialization.Attributes;
 
-public class User
+namespace BeerUsers.Models
 {
-    [BsonId]
-    public int uid { get; set; }
-    public string email { get; set; }
-    public string password { get; set; }
-    public bool status { get; set; }
-    public string signupdate { get; set; }
+    public class Users
+    {
+        [BsonId]
+        public int uid { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
+        public bool status { get; set; }
+        public string signupdate { get; set; }
+    }
 }

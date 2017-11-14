@@ -7,6 +7,7 @@ using System.Web.Http;
 //using ZenOfBeer.BreweryDb.Pcl.Public;
 using System.Threading.Tasks;
 using BeerTracker.Models;
+using BeerUsers.Models;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using MongoDB.Driver;
@@ -294,8 +295,9 @@ namespace BeerTracker.Controllers
             mongoDatabase = RetreiveMongohqDb();
             WriteConcernResult writeResult;
             var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-            BeerUser user = Beer.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
+            //userList user = Beer.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
 
+            return Ok();
         }
 
 
