@@ -266,15 +266,16 @@
         <form>
             <div class="container">
                 <label align="center"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required>
+                <input type="text" placeholder="Enter Username" name="username" id="username" required>
 
                 <label align="center"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="signuppsw" required>
+                <input type="password" placeholder="Enter Password" name="signuppsw" id="password" required>
 
                 <label align="center"><b>Confirm Password</b></label>
                 <input type="password" placeholder="Confirm Password" name="confirmpsw" required>
 
-                    <input type="button" value="Cancel" onclick="history.back()" />
+                <input type="submit" value="Submit" id="submitSignUp"/>
+                <input type="button" value="Cancel" onclick="history.back()" />
 
             </div>
         </form>

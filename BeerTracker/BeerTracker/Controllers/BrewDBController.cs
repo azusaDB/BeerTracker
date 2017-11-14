@@ -287,6 +287,12 @@ namespace BeerTracker.Controllers
             return json;
         }
 
+        [HttpPost]
+        public IHttpActionResult SignUp(string userName, string password)
+        {
+            return Ok();
+        }
+
     }
 }
 ////Get only data json

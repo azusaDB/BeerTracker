@@ -200,6 +200,29 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 //        });
 });
 
+$(document).on('pagebeforeshow', '#signup', function () {
+    $(document).on("click", '#submitSignUp', function (event) {
+        var password = $("#password").val();
+        var username = $("#username").val();
+
+        $.ajax({
+            url: brewUri + "/SignUp?username=" + username + "&password=" + password,
+            type: "POST",
+            async: false,
+            success: function (data) {
+
+            },
+            error: function () {
+                $('#searchStatus').text("ERROR: Contact Caleb for support");
+            }
+        });
+    });
+    $(document).on("click", '.apiLi', function (event) {
+        var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
+        $("#apiParam").html(parm); //set the hidden <p> to the parm
+    });
+});
+
 
 
 
