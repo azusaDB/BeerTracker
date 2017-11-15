@@ -292,11 +292,10 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SignIn(string username, string password)
         {
-            mongoDatabase = RetreiveMongohqDb();
-            WriteConcernResult writeResult;
-            var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-            //userList user = Beer.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
-
+            //mongoDatabase = RetreiveMongohqDb();
+            //WriteConcernResult writeResult;
+            //var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+            //BeerUser user = Beer.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
             return Ok();
         }
 
