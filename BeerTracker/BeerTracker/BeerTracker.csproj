@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="header.html" />
     <Content Include="index.html" />
     <Content Include="scripts\brewScript.js" />
     <Content Include="Web.config" />
