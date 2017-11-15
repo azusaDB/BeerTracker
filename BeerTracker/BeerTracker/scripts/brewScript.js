@@ -194,8 +194,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
                 $('#showdata').append(breweryName).append('<br />');
                 $('#showdata').append(breweryUrl).append('<br />');
                 $('#showImage').append(lrgImage).append('<br />');
-
-                empty();
+                
             }
            
             //**********************************************
