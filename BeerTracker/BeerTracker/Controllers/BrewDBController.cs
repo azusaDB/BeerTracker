@@ -77,6 +77,7 @@ namespace BeerTracker.Controllers
         public Beer Save(Beer newBeer)
         {
             mongoDatabase = RetreiveMongohqDb();
+            Beer foo = new Beer();
             var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
             WriteConcernResult result;
             bool hasError = false;
@@ -96,20 +97,20 @@ namespace BeerTracker.Controllers
             try
             {
                 var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
-                beerList = (from beverage in mongoList
+                foo = (from beverage in mongoList
                             select new Beer
                             {
                                 id = beverage["_id"].AsString,
-                            }).ToList();
+                            }).Where(b => b.id == newBeer.id).FirstOrDefault();
             }
             catch (Exception ex)
             {
                 throw;
             }
 
-            var beer = beerList.FirstOrDefault((p) => p.id == newBeer.id);
+            //var beer = beerList.FirstOrDefault((p) => p.id == newBeer.id);
             //*************************
-            if (beer == null) //if it doesn't exist save it to mongo
+            if (foo == null) //if it doesn't exist save it to mongo
             {
                 result = beerMasterList.Insert<Beer>(newBeer);
                 hasError = result.HasLastErrorMessage;
@@ -122,6 +123,47 @@ namespace BeerTracker.Controllers
             else
             {
                 throw new HttpResponseException(HttpStatusCode.InternalServerError);
+            }
+        }
+
+        [HttpPost]
+        public Beer Save(string id)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            Beer beer = new Beer();
+            var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                beer = (from beverage in mongoList
+                       select new Beer
+                       {
+                           id = beverage["_id"].AsString,
+                       }).Where(b => b.id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if(beer == null)
+            {
+                ApiCall apiCall = new ApiCall
+                {
+                    call = "beer/" + id
+                };
+                var result = ApiRequest(apiCall);
+                string beerJson = FormatJson(JObject.Parse(result.Result).ToString());
+                beer = JsonConvert.DeserializeObject<Beer>(JObject.Parse(beerJson)["data"].ToString());
+                    //JsonConvert.DeserializeObject<Beer>(beerJson);
+                //beer = JsonConvert.DeserializeObject<Beer>(
+                Save(beer);
+                return beer;
+            }
+            else
+            {
+                return beer;
             }
         }
 
@@ -138,6 +180,7 @@ namespace BeerTracker.Controllers
                                id = b["_id"].AsString,
                                name = b["name"].AsString,
                                medImage = b["medImage"].AsString,
+                               iconImage = b["iconImage"].AsString,
                                abv = b["abv"].AsString
                            }).ToList();
                 //.Where(x => x.medImage != "")
@@ -222,7 +265,8 @@ namespace BeerTracker.Controllers
                                 abv = beverage["abv"].AsString,
                                 breweryName = beverage["breweryName"].AsString,
                                 breweryUrl = beverage["breweryUrl"].AsString,
-                                lrgImage = beverage["lrgImage"].AsString
+                                lrgImage = beverage["lrgImage"].AsString,
+                                medImage = beverage["medImage"].AsString
                             }).ToList();
             }
             catch (Exception ex)
