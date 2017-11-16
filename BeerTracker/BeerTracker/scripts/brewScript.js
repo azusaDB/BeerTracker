@@ -108,7 +108,15 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
 });
 
 $(document).on('pagebeforeshow', '#search', function () {
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            $("#submitSearch").click();
+        }
+    });
+
     $(document).on("click", '#submitSearch', function (event) {
+        $('#searchStatus').text("");
         var searchCat = $("input[name*=search]:checked").val();
         var searchString = $("#searchInput").val();
         var id = "&q=" + searchString + "&type=" + searchCat;
@@ -125,33 +133,37 @@ $(document).on('pagebeforeshow', '#search', function () {
             success: function (data) {
                 var searchResults = JSON.parse(data);
                 $('#search-output').empty();
-                $.each(searchResults.data, function (index, item) {
-                    if (item.labels)
-                    {
-                        li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
-                    }
-                    else
-                    {
-                        li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
-                    }
-                    //******NO MORE SAVING EACH BEER********
-                    //******ONLY SAVES TO MONGO WHEN CLICKED ON*********
-                    //******CHANGED BY CALEB*********
-                    //var beerJson = JSON.stringify(item);
-                    //$.ajax({
-                    //    url: "api/BrewDB/Save",
-                    //    type: "POST",
-                    //    contentType: "application/json",
-                    //    data: beerJson,
-                    //    async: true,
-                    //    success: function (data) {
-                    //        document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
-                    //    },
-                    //    error: function () {
-                    //        $('#output').text("Error: Save Failed");
-                    //    }
-                    //});
-                });
+                if (searchResults.data) {
+                    $.each(searchResults.data, function (index, item) {
+                        if (item.labels) {
+                            li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                        }
+                        else {
+                            li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                        }
+                        //******NO MORE SAVING EACH BEER********
+                        //******ONLY SAVES TO MONGO WHEN CLICKED ON*********
+                        //******CHANGED BY CALEB*********
+                        //var beerJson = JSON.stringify(item);
+                        //$.ajax({
+                        //    url: "api/BrewDB/Save",
+                        //    type: "POST",
+                        //    contentType: "application/json",
+                        //    data: beerJson,
+                        //    async: true,
+                        //    success: function (data) {
+                        //        document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
+                        //    },
+                        //    error: function () {
+                        //        $('#output').text("Error: Save Failed");
+                        //    }
+                        //});
+                    });
+                }
+                else
+                {
+                    $('#searchStatus').text("No Results Found");
+                }
                 $('#search-output').append(li);
                 $('#search-output').listview().listview('refresh');
 
