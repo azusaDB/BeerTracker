@@ -328,8 +328,21 @@ namespace BeerTracker.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult SignUp(string userName, string password)
+        public IHttpActionResult SignUp(User user)
         {
+            mongoDatabase = RetreiveMongohqDb();
+            var userList = mongoDatabase.GetCollection("BeerUser");
+            WriteConcernResult result;
+            bool hasError = false;
+            try
+            {
+                result = userList.Insert<User>(user);
+                hasError = result.HasLastErrorMessage;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
             return Ok();
         }
 

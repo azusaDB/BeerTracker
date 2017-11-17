@@ -35,6 +35,8 @@
         <div data-role="header" id="headerBar"></div>
         <div data-role="content">
             <div style="width:90%; margin:0 auto;">
+                <p id="userSession">User Not Logged In</p>
+                <h1 id="loginSuccessMsg">Not Logged In</h1>
                 <h4>Beers you may love</h4>
                 <ul data-role="listview" data-autodividers="false" data-theme="a" id="output" data-filter="true" data-filter-placeholder="Search for a beer" data-inset="true"></ul>
             </div>
@@ -175,7 +177,7 @@
                 <label align="center"><b>Confirm Password</b></label>
                 <input type="password" placeholder="Confirm Password" name="confirmpsw" required>
 
-                <input type="submit" value="Submit" id="submitSignUp"/>
+                <input type="button" value="Submit" id="submitSignUp"/>
                 <input type="button" value="Cancel" onclick="history.back()" />
 
             </div>

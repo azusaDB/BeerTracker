@@ -247,12 +247,21 @@ $(document).on('pagebeforeshow', '#signup', function () {
         var password = $("#password").val();
         var username = $("#username").val();
 
+        var userObj = {
+            uid: username,
+            password: password
+        };
+
         $.ajax({
-            url: brewUri + "/SignUp?username=" + username + "&password=" + password,
+            url: brewUri + "/SignUp/" + userObj,
             type: "POST",
             async: false,
+            data: userObj,
             success: function (data) {
-
+                $('#userSession').empty();
+                $('#loginSuccessMsg').empty();
+                $('#userSession').text(username);
+                $('#loginSuccessMsg').text("Welcome " + username);
             },
             error: function () {
                 $('#searchStatus').text("ERROR: Contact Caleb for support");
