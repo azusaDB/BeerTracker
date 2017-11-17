@@ -29,6 +29,29 @@ function homePageList() {
         });
 }
 
+$(document).on('pagebeforeshow', '#add-page', function () {
+    $(document).on("click", '#submitNewBeer', function (event) {
+        var name = $("#Name").val();
+        var ABV = $("#ABV").val();
+        var Description = $("#Desc").val();
+        var Brewery = $("#Brewery").val();
+        var Url = $("#Url").val();
+        var Image = $("#Image").val();
+
+        $.ajax({
+            url: brewUri + "/AddNewBeer",
+            type: "POST",
+            async: false,
+            success: function (data) {
+                $('#saveResponse').text("Success: Saved Beer");
+            },
+            error: function () {
+                $('#saveResponse').text("Error: Save Failed");
+            }
+        });
+    });
+});
+
 function favList() {
     //Displays items appended to mongo 'BeerSaved' to favorites list 
     $.getJSON(brewUri + "/GetFavBeer")
@@ -271,52 +294,6 @@ $(document).on('pagebeforeshow', '#signup', function () {
     $(document).on("click", '.apiLi', function (event) {
         var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
         $("#apiParam").html(parm); //set the hidden <p> to the parm
-    });
-});
-
-//function saveNewBeer() {
-//        name: $('#Name').val(),
-//        ABV: $('#ABV').val(),
-//        Description: $('#Desc').val(),
-//        Brewery: $('#Brewery').val(),
-//        Url: $('#Url').val(),
-//        Image: $('#Image').val()
-
-
-//        $.ajax({
-//            url: uri + "/api/BrewDB/AddNewBeer",
-//            type: "POST",
-//            contentType: "application/json",
-//            data: JSON.stringify(beer),
-//            success: function (data) {
-//                $('#saveResponse').text("Success: Saved Beer");
-//            },
-//            error: function () {
-//                $('#saveResponse').text("Error: Save Failed");
-//            }
-//        });
-//};
-
-$(document).on('pagebeforeshow', '#add-page', function () {
-    $(document).on("click", '#submitNewBeer', function (event) {
-        var name = $("#Name").val();
-        var ABV = $("#ABV").val();
-        var Description = $("#Desc").val();
-        var Brewery = $("#Brewery").val();
-        var Url = $("#Url").val();
-        var Image = $("#Image").val();
-
-        $.ajax({
-            url: brewUri + "/AddNewBeer",
-            type: "POST",
-            async: false,
-            success: function (data) {
-                $('#saveResponse').text("Success: Saved Beer");
-            },
-            error: function () {
-                $('#saveResponse').text("Error: Save Failed");
-            }
-        });
     });
 });
 
