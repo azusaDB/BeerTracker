@@ -6,7 +6,7 @@ var brewUri = 'api/BrewDB';
 $(document).ready(function () {
     randomBeer();
     homePageList();
-    favList();
+    //favList();
 });
 
 function homePageList() {
@@ -19,7 +19,7 @@ function homePageList() {
                 // Change the way to format the string(Sunny)
                 //$('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page?id=' + item.id + '"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
                 if (item.medImage) {
-                    $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.medImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                    $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
                 } else {
                     $('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
                 }
@@ -101,9 +101,6 @@ function test() {
 
 $(document).on('pagebeforeshow', '#indexpage', function () {
     //changed the onclick event. It used to look like $('a').on("click", function).......
-    $('#showdata').empty();
-    $('#showImage').empty();
-
     $(document).on("click", 'a', function (event) {
         var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
         $("#detailParmHere").html(parm); //set the hidden <p> to the parm
@@ -111,7 +108,15 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
 });
 
 $(document).on('pagebeforeshow', '#search', function () {
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            e.preventDefault();
+            $("#submitSearch").click();
+        }
+    });
+
     $(document).on("click", '#submitSearch', function (event) {
+        $('#searchStatus').text("");
         var searchCat = $("input[name*=search]:checked").val();
         var searchString = $("#searchInput").val();
         var id = "&q=" + searchString + "&type=" + searchCat;
@@ -124,34 +129,41 @@ $(document).on('pagebeforeshow', '#search', function () {
             url: brewUri + "/Search/" + apiCall,
             type: "POST",
             data: apiCall,
-            async: false,
+            async: true,
             success: function (data) {
                 var searchResults = JSON.parse(data);
                 $('#search-output').empty();
-                $.each(searchResults.data, function (index, item) {
-                    if (item.labels)
-                    {
-                        li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
-                    }
-                    else
-                    {
-                        li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
-                    }
-                    var beerJson = JSON.stringify(item);
-                    $.ajax({
-                        url: "api/BrewDB/Save",
-                        type: "POST",
-                        contentType: "application/json",
-                        data: beerJson,
-                        async: false,
-                        success: function (data) {
-                            document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
-                        },
-                        error: function () {
-                            $('#output').text("Error: Save Failed");
+                if (searchResults.data) {
+                    $.each(searchResults.data, function (index, item) {
+                        if (item.labels) {
+                            li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
                         }
+                        else {
+                            li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                        }
+                        //******NO MORE SAVING EACH BEER********
+                        //******ONLY SAVES TO MONGO WHEN CLICKED ON*********
+                        //******CHANGED BY CALEB*********
+                        //var beerJson = JSON.stringify(item);
+                        //$.ajax({
+                        //    url: "api/BrewDB/Save",
+                        //    type: "POST",
+                        //    contentType: "application/json",
+                        //    data: beerJson,
+                        //    async: true,
+                        //    success: function (data) {
+                        //        document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
+                        //    },
+                        //    error: function () {
+                        //        $('#output').text("Error: Save Failed");
+                        //    }
+                        //});
                     });
-                });
+                }
+                else
+                {
+                    $('#searchStatus').text("No Results Found");
+                }
                 $('#search-output').append(li);
                 $('#search-output').listview().listview('refresh');
 
@@ -168,6 +180,8 @@ $(document).on('pagebeforeshow', '#search', function () {
 });
 
 $(document).on('pagebeforeshow', '#details-page', function () {
+    $('#showdata').empty();
+    $('#showImage').attr("src", "");
     var Name;
     var Desc;
     var ABV;
@@ -176,30 +190,41 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     var lrgImage;
     var id = $('#detailParmHere').text();
 
-    $.getJSON(brewUri + "/GetBrewery/" + id)
-        .done(function (data) {
-            //******This if statment can be removed*******/
-            if (id == data.id) {
-                Name = "<b>Beer Name: </b><br />" + data.name; 
-                Desc = "<b>Beer Description: </b><br />" + data.Desc;
-                ABV = "<b>Beer ABV: </b><br />" + data.abv;
-                breweryName = "<b>Brewery Name: </b><br />" + data.breweryName;
-                //breweryUrl = "<b>Brewery Url: </b><br />" + $('#showdata').click(function () { data.breweryUrl });
-                breweryUrl = "<b>Brewery Url: </b><br />" + data.breweryUrl;
-                
+    $.ajax({
+        url: "api/BrewDB/Save/" + id,
+        type: "POST",
+        contentType: "application/json",
+        data: id,
+        async: false,
+        success: function (data) {
+            $.getJSON(brewUri + "/GetBrewery/" + id)
+                .done(function (data) {
+                    //******This if statment can be removed*******/
+                    if (id == data.id) {
+                        Name = "<b>Beer Name: </b><br />" + data.name;
+                        Desc = "<b>Beer Description: </b><br />" + data.Desc;
+                        ABV = "<b>Beer ABV: </b><br />" + data.abv;
+                        breweryName = "<b>Brewery Name: </b><br />" + data.breweryName;
+                        //breweryUrl = "<b>Brewery Url: </b><br />" + $('#showdata').click(function () { data.breweryUrl });
+                        breweryUrl = "<b>Brewery Url: </b><br />" + data.breweryUrl;
 
-                $('#showdata').append(Name).append('<br />');
-                $('#showdata').append(Desc).append('<br />');
-                $('#showdata').append(ABV).append('<br />');
-                $('#showdata').append(breweryName).append('<br />');
-                $('#showdata').append(breweryUrl).append('<br />');
-                $('#showImage').attr("src", data.lrgImage);
 
-                empty();
-            }
-           
-            //**********************************************
-        });
+                        $('#showdata').append(Name).append('<br />');
+                        $('#showdata').append(Desc).append('<br />');
+                        $('#showdata').append(ABV).append('<br />');
+                        $('#showdata').append(breweryName).append('<br />');
+                        $('#showdata').append(breweryUrl).append('<br />');
+                        $('#showImage').attr("src", data.medImage);
+        }
+        //**********************************************
+    });
+        },
+        error: function () {
+            $('#output').text("Error: Save Failed");
+        }
+    });
+
+
 
     //NOW CALL GETBEER TO GET ALL DATA NEEDED TO SHOW ALL BEER DETAILS
     //$.getJSON(brewUri + "/GetBeer")
