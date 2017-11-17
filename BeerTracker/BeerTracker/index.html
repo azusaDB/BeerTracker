@@ -9,11 +9,16 @@
 
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    
+    <script>
+        function testJS() {
+            location.href = "ClientSideTests/QUnitTesting.html";
+        };
+    </script>
 </head>
 <body>
     <!--Home Page-->
     <div data-role="page" id="indexpage">
+        <input type="button" onclick="testJS()" value="Test JS" />
         <div data-role="header" id="headerBar"></div>
         <div data-role="content">
             <div style="width:90%; margin:0 auto;">
