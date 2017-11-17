@@ -158,29 +158,27 @@ $(document).on('pagebeforeshow', '#search', function () {
                 $('#search-output').empty();
                 if (searchResults.data) {
                     $.each(searchResults.data, function (index, item) {
-                        if (item.labels) {
-                            li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                        if (searchCat == "beer")
+                        {
+                            if (item.labels)
+                            {
+                                li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                            }
+                            else
+                            {
+                                li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                            }
                         }
-                        else {
-                            li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                        else if (searchCat == "brewery")
+                        {
+                            if (item.images) {
+                                li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="' + item.images.squareMedium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>';
+                            }
+                            else
+                            {
+                                li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a ></li > ';
+                            }
                         }
-                        //******NO MORE SAVING EACH BEER********
-                        //******ONLY SAVES TO MONGO WHEN CLICKED ON*********
-                        //******CHANGED BY CALEB*********
-                        //var beerJson = JSON.stringify(item);
-                        //$.ajax({
-                        //    url: "api/BrewDB/Save",
-                        //    type: "POST",
-                        //    contentType: "application/json",
-                        //    data: beerJson,
-                        //    async: true,
-                        //    success: function (data) {
-                        //        document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
-                        //    },
-                        //    error: function () {
-                        //        $('#output').text("Error: Save Failed");
-                        //    }
-                        //});
                     });
                 }
                 else
