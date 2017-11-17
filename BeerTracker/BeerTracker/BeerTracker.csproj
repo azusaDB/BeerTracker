@@ -115,6 +115,7 @@
     <Content Include="header.html" />
     <Content Include="index.html" />
     <Content Include="scripts\brewScript.js" />
+    <Content Include="scripts\headerScript.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
