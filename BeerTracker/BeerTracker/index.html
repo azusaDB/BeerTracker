@@ -16,9 +16,23 @@
     <div data-role="page" id="indexpage">
         <div data-role="header" id="headerBar"></div>
         <div data-role="content">
+
+            <form>
+                <fieldset data-role="controlgroup" data-type="horizontal">
+                    <legend>Select Category:</legend>
+                    <input type="radio" name="search" id="radio-choice-beer" value="beer" checked="checked" />
+                    <label for="radio-choice-beer">Beer</label>
+                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" disabled="true" />
+                    <label for="radio-choice-brewery">Brewery</label>
+                </fieldset>
+                <input type="search" id="searchInput" data-mini="true" width="30" />
+                <input type="button" id="submitSearch" value="Search" />
+            </form>
+            <p id="searchStatus"></p>
+
             <div style="width:90%; margin:0 auto;">
                 <h4>Beers you may love</h4>
-                <ul data-role="listview" data-autodividers="false" data-theme="a" id="output" data-filter="true" data-filter-placeholder="Search for a beer" data-inset="true"></ul>
+                <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search within result" data-inset="true"></ul>
             </div>
 
         </div>
