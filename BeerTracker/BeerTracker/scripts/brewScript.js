@@ -29,6 +29,29 @@ function homePageList() {
         });
 }
 
+$(document).on('pagebeforeshow', '#add-page', function () {
+    $(document).on("click", '#submitNewBeer', function (event) {
+        var name = $("#Name").val();
+        var ABV = $("#ABV").val();
+        var Description = $("#Desc").val();
+        var Brewery = $("#Brewery").val();
+        var Url = $("#Url").val();
+        var Image = $("#Image").val();
+
+        $.ajax({
+            url: brewUri + "/AddNewBeer",
+            type: "POST",
+            async: false,
+            success: function (data) {
+                $('#saveResponse').text("Success: Saved Beer");
+            },
+            error: function () {
+                $('#saveResponse').text("Error: Save Failed");
+            }
+        });
+    });
+});
+
 function favList() {
     //Displays items appended to mongo 'BeerSaved' to favorites list 
     $.getJSON(brewUri + "/GetFavBeer")
@@ -135,29 +158,27 @@ $(document).on('pagebeforeshow', '#search', function () {
                 $('#search-output').empty();
                 if (searchResults.data) {
                     $.each(searchResults.data, function (index, item) {
-                        if (item.labels) {
-                            li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                        if (searchCat == "beer")
+                        {
+                            if (item.labels)
+                            {
+                                li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                            }
+                            else
+                            {
+                                li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                            }
                         }
-                        else {
-                            li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                        else if (searchCat == "brewery")
+                        {
+                            if (item.images) {
+                                li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="' + item.images.squareMedium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>';
+                            }
+                            else
+                            {
+                                li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a ></li > ';
+                            }
                         }
-                        //******NO MORE SAVING EACH BEER********
-                        //******ONLY SAVES TO MONGO WHEN CLICKED ON*********
-                        //******CHANGED BY CALEB*********
-                        //var beerJson = JSON.stringify(item);
-                        //$.ajax({
-                        //    url: "api/BrewDB/Save",
-                        //    type: "POST",
-                        //    contentType: "application/json",
-                        //    data: beerJson,
-                        //    async: true,
-                        //    success: function (data) {
-                        //        document.getElementById("output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
-                        //    },
-                        //    error: function () {
-                        //        $('#output').text("Error: Save Failed");
-                        //    }
-                        //});
                     });
                 }
                 else
@@ -247,12 +268,21 @@ $(document).on('pagebeforeshow', '#signup', function () {
         var password = $("#password").val();
         var username = $("#username").val();
 
+        var userObj = {
+            uid: username,
+            password: password
+        };
+
         $.ajax({
-            url: brewUri + "/SignUp?username=" + username + "&password=" + password,
+            url: brewUri + "/SignUp/" + userObj,
             type: "POST",
             async: false,
+            data: userObj,
             success: function (data) {
-
+                $('#userSession').empty();
+                $('#loginSuccessMsg').empty();
+                $('#userSession').text(username);
+                $('#loginSuccessMsg').text("Welcome " + username);
             },
             error: function () {
                 $('#searchStatus').text("ERROR: Contact Caleb for support");
@@ -282,6 +312,7 @@ $(document).on('pagebeforeshow', '#signin', function () {
             }
         });
     });
+
     $(document).on("click", '.apiLi', function (event) {
         var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
         $("#apiParam").html(parm); //set the hidden <p> to the parm

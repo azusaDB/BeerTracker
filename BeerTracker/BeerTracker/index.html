@@ -9,11 +9,16 @@
 
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    
+    <script>
+        function testJS() {
+            location.href = "ClientSideTests/QUnitTesting.html";
+        };
+    </script>
 </head>
 <body>
     <!--Home Page-->
     <div data-role="page" id="indexpage">
+        <input type="button" onclick="testJS()" value="Test JS" />
         <div data-role="header" id="headerBar"></div>
         <div data-role="content">
 
@@ -31,12 +36,12 @@
             <p id="searchStatus"></p>
 
             <div style="width:90%; margin:0 auto;">
+                <p id="userSession">User Not Logged In</p>
+                <h1 id="loginSuccessMsg">Not Logged In</h1>
                 <h4>Beers you may love</h4>
                 <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search within result" data-inset="true"></ul>
             </div>
-
         </div>
-            
         <div data-role="footer"></div>
 
     </div>
@@ -47,17 +52,17 @@
         <div data-role="content" data-theme="d">
             <div>
                 Name:<input type="text" id="Name" size="5" /> <br />
-                Brand:<input type="text" id="Brand" size="5" /> <br />
                 ABV:<input type="text" id="ABV" size="5" /> <br />
-                Taste:<input type="text" id="Taste" size="5" /> <br />
-                Picture:<input type="file" id="Picture" /> <br />
-                <input type="button" value="Add" onclick="saveBeer();" />
+                Description:<input type="text" id="Desc" size="5" /> <br />
+                Brewery Name:<input type="text" id="Brewery" size="5" /> <br />
+                Brewery Url:<input type="text" id="Url" size="5" /> <br />
+                Image:<input type="file" id="Image" /> <br />
+
+                <input type="button" value="Add" id="submitNewBeer" />
                 <p id="saveResponse" />
             </div>
         </div>
-        <div data-role="footer" data-theme='c'>
-            
-        </div>
+        <div data-role="footer"></div>
     </div>
 
     <!--Favorites Page-->
@@ -71,9 +76,7 @@
             </div>
         </div>
 
-        <div data-role="footer">
-            
-        </div>
+        <div data-role="footer"></div>
     </div>
 
     <!--Wishlist Page-->
@@ -84,9 +87,7 @@
             <p>This is the wishlist page.</p>
         </div>
 
-        <div data-role="footer">
-            
-        </div>
+        <div data-role="footer"></div>
 
     </div>
 
@@ -102,9 +103,7 @@
             <button id="saveToBeerSave">Save This Beer</button>
         </div>
 
-        <div data-role="footer">
-            
-        </div>
+        <div data-role="footer"></div>
 
     </div>
 
@@ -126,9 +125,7 @@
             </p>
         </div>
 
-        <div data-role="footer">
-            
-        </div>
+        <div data-role="footer"></div>
 
     </div>
 
@@ -149,9 +146,7 @@
             </div>
         </form>
         <p align=center>No account? <a href="#signup">Sign Up now</a>.</p>
-        <div data-role="footer">
-            
-        </div>
+        <div data-role="footer"></div>
 
     </div>
 
@@ -171,15 +166,13 @@
                 <label align="center"><b>Confirm Password</b></label>
                 <input type="password" placeholder="Confirm Password" name="confirmpsw" required>
 
-                <input type="submit" value="Submit" id="submitSignUp"/>
+                <input type="button" value="Submit" id="submitSignUp"/>
                 <input type="button" value="Cancel" onclick="history.back()" />
 
             </div>
         </form>
 
-        <div data-role="footer">
-            
-        </div>
+        <div data-role="footer"></div>
 
     </div>
 
@@ -192,7 +185,7 @@
                     <legend>Select Category:</legend>
                     <input type="radio" name="search" id="radio-choice-beer" value="beer" checked="checked" />
                     <label for="radio-choice-beer">Beer</label>
-                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" disabled="true" />
+                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" />
                     <label for="radio-choice-brewery">Brewery</label>
                 </fieldset>
                 <input type="search" id="searchInput" data-mini="true" width="30"/>
