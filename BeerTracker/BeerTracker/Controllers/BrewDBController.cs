@@ -408,13 +408,41 @@ namespace BeerTracker.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult SignIn(string username, string password)
+        public IHttpActionResult SignIn(User user)
         {
-            //mongoDatabase = RetreiveMongohqDb();
-            //WriteConcernResult writeResult;
-            //var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-            //BeerUser user = Beer.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
-            return Ok();
+            mongoDatabase = RetreiveMongohqDb();
+            User signinUser = new User();
+            var userList = mongoDatabase.GetCollection("BeerUser");
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+                signinUser = (from u in mongoList
+                        select new User
+                        {
+                            uid = u["_id"].AsString,
+                        }).Where(b => b.uid == user.uid).FirstOrDefault();
+
+                if (signinUser!=null)
+                {
+                    if (signinUser.password == user.password)
+                    {
+                        return Ok(user);
+                    } else
+                    {
+                        return Content(HttpStatusCode.BadRequest, "Password does not match");
+                    }
+                } else
+                {
+                    return Content(HttpStatusCode.BadRequest, "User does not exist");
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
 

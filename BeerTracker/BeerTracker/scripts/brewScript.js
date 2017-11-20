@@ -297,11 +297,11 @@ $(document).on('pagebeforeshow', '#signup', function () {
 
 $(document).on('pagebeforeshow', '#signin', function () {
     $(document).on("click", '#SignInSubmit', function (event) {
-        var username = $("#loginusername").val();
-        var password = $("#loginpsw").val();
+        var uid = $("#username").val();
+        var password = $("#password").val();
 
         $.ajax({
-            url: brewUri + "/SignIn?username=" + username + "&password=" + password,
+            url: brewUri + "/SignIn?uid=" + username + "&password=" + password,
             type: "POST",
             async: false,
             success: function (data) {
