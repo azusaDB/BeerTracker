@@ -421,6 +421,7 @@ namespace BeerTracker.Controllers
                         select new User
                         {
                             uid = u["_id"].AsString,
+                            password = u["password"].AsString
                         }).Where(b => b.uid == user.uid).FirstOrDefault();
 
                 if (signinUser!=null)

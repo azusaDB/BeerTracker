@@ -21,21 +21,19 @@
         <input type="button" onclick="testJS()" value="Test JS" />
         <div data-role="header" id="headerBar"></div>
         <div data-role="content">
-
-            <form>
-                <fieldset data-role="controlgroup" data-type="horizontal">
-                    <legend>Select Category:</legend>
-                    <input type="radio" name="search" id="radio-choice-beer" value="beer" checked="checked" />
-                    <label for="radio-choice-beer">Beer</label>
-                    <input type="radio" name="search" id="radio-choice-brewery" value="brewery" disabled="true" />
-                    <label for="radio-choice-brewery">Brewery</label>
-                </fieldset>
-                <input type="search" id="searchInput" data-mini="true" width="30" />
-                <input type="button" id="submitSearch" value="Search" />
-            </form>
-            <p id="searchStatus"></p>
-
             <div style="width:90%; margin:0 auto;">
+                <form>
+                    <fieldset data-role="controlgroup" data-type="horizontal">
+                        <legend>Select Category:</legend>
+                        <input type="radio" name="search" id="radio-choice-beer" value="beer" checked="checked" />
+                        <label for="radio-choice-beer">Beer</label>
+                        <input type="radio" name="search" id="radio-choice-brewery" value="brewery" />
+                        <label for="radio-choice-brewery">Brewery</label>
+                    </fieldset>
+                    <input type="search" id="searchInput" data-mini="true" width="30" />
+                    <input type="button" id="submitSearch" value="Search" />
+                </form>
+                <p id="searchStatus"></p>
                 <p id="userSession">User Not Logged In</p>
                 <h1 id="loginSuccessMsg">Not Logged In</h1>
                 <h4>Beers you may love</h4>
@@ -137,10 +135,10 @@
             <div class="container">
                 <p id="SignInStatus"></p>
                 <label align="center"><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" id="username">
+                <input type="text" placeholder="Enter Username" name="username" id="signin-username">
 
                 <label align="center"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" id="password">
+                <input type="password" placeholder="Enter Password" name="password" id="signin-password">
 
                 <button type="submit" id="SignInSubmit">Sign In</button>
             </div>
@@ -176,7 +174,7 @@
 
     </div>
 
-    <!--Search Page-->
+    <!--Search Page
     <div data-role="page" id="search">
         <div data-role="header" id="headerBar"></div>
         <div data-role="content">
@@ -197,7 +195,7 @@
         </div>
         <div data-role="footer"></div>
 
-    </div>
+    </div>-->
 
 </body>
 </html>
