@@ -359,18 +359,34 @@ namespace BeerTracker.Controllers
         {
             mongoDatabase = RetreiveMongohqDb();
             var userList = mongoDatabase.GetCollection("BeerUser");
+            User localUser = new BeerUsers.Models.User();
             WriteConcernResult result;
             bool hasError = false;
             try
             {
-                result = userList.Insert<User>(user);
-                hasError = result.HasLastErrorMessage;
+                var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+                localUser = (from u in mongoList
+                              select new User
+                              {
+                                  uid = u["_id"].AsString,
+                                  password = u["password"].AsString
+                              }).Where(b => b.uid == user.uid).FirstOrDefault();
+
+                if (localUser != null)
+                {
+                    return Content(HttpStatusCode.Forbidden, "Error: Username already exists");
+                }
+                else
+                {
+                    result = userList.Insert<User>(user);
+                    hasError = result.HasLastErrorMessage;
+                }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return Ok();
+            return Ok(user);
         }
 
         [HttpPost]
@@ -412,7 +428,11 @@ namespace BeerTracker.Controllers
 
         }
 
-
+        [HttpPost]
+        public IHttpActionResult SignOut()
+        {
+            return Ok();
+        }
 
     }
 

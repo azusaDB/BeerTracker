@@ -298,6 +298,7 @@ $(document).on('pagebeforeshow', '#signup', function () {
     });
 
     $(document).on("click", '#submitSignUp', function (event) {
+        $('#signupError').empty();
         var password = $("#password").val();
         var username = $("#username").val();
 
@@ -316,9 +317,10 @@ $(document).on('pagebeforeshow', '#signup', function () {
                 $('#loginSuccessMsg').empty();
                 $('#userSession').text(username);
                 $('#loginSuccessMsg').text("Welcome " + username);
+                $.mobile.changePage("#indexpage");
             },
-            error: function () {
-                $('#searchStatus').text("ERROR: Contact Caleb for support");
+            error: function (data) {
+                $('#signupError').text(data.responseJSON);
             }
         });
     });
@@ -343,7 +345,11 @@ $(document).on('pagebeforeshow', '#signin', function () {
             async: false,
             data: userObj,
             success: function (data) {
-
+                $('#userSession').empty();
+                $('#loginSuccessMsg').empty();
+                $('#userSession').text(username);
+                $('#loginSuccessMsg').text("Welcome " + username);
+                $.mobile.changePage("#indexpage");
             },
             error: function () {
                 $('#SignInStatus').text("Sign In ERROR!");
@@ -352,7 +358,24 @@ $(document).on('pagebeforeshow', '#signin', function () {
     });
 });
 
-
+$(document).on('pagebeforeshow', '#myprofile', function () {
+    $(document).on("click", '#SignOutSubmit', function (event) {
+        
+        $.ajax({
+            url: brewUri + "/SignOut/",
+            type: "POST",
+            async: false,
+            success: function (data) {
+                $('#userSession').empty();
+                $('#loginSuccessMsg').empty();
+                $.mobile.changePage("#indexpage");
+            },
+            error: function () {
+                $('#SignOutStatus').text("Sign Out ERROR!");
+            }
+        });
+    });
+});
 
 
 

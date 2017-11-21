@@ -171,6 +171,7 @@
         <h2 align="center">Sign Up</h2>
         <form id="form-signup">
             <div class="container">
+                <label style="color:red;" align="center" id="signupError"></label>
                 <label align="center"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" id="username" required>
 
@@ -189,6 +190,24 @@
         <div data-role="footer"></div>
 
     </div>
+
+    <!--My Profile Page-->
+    <div data-role="page" id="myprofile">
+        <div data-role="header" id="headerBar"></div>
+
+        <div data-role="content">
+            <h2 align="center">My Profile</h2>
+            <h1 id="loginSuccessMsg">Not Logged In</h1>
+            
+            <p align="center">
+                <button type="submit" id="SignOutSubmit">Sign Out</button>
+            </p>
+        </div>
+
+        <div data-role="footer"></div>
+
+    </div>
+
 
     <!--Search Page
     <div data-role="page" id="search">
