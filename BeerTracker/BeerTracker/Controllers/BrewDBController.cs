@@ -276,17 +276,17 @@ namespace BeerTracker.Controllers
 
         //    WriteConcernResult result;
 
-        //    if (string.IsNullOrEmpty(newBeer._id))
+        //    if (string.IsNullOrEmpty(newBeer.Id))
         //    {
-        //        newBeer._id = ObjectId.GenerateNewId().ToString();
+        //        newBeer.Id = ObjectId.GenerateNewId().ToString();
         //        result = newBeerList.Insert<AddBeer>(newBeer);
         //    }
         //    else
         //    {
 
-        //        IMongoQuery query = Query.EQ("_id", newBeer._id);
+        //        IMongoQuery query = Query.EQ("_id", newBeer.Id);
         //        IMongoUpdate update = Update
-        //            .Set("_id", newBeer._id)
+        //            .Set("_id", newBeer.Id)
         //            .Set("name", newBeer.name)
         //            .Set("abv", newBeer.abv)
         //            .Set("description", newBeer.description)
