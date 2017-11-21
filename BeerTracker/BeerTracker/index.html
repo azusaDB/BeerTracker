@@ -94,21 +94,27 @@
     <div data-role="page" id="details-page">
         <div data-role="header" id="headerBar"></div>
 
-        <div data-role="content" style="width:65%;margin:0 auto;">
-            <h2>Beer Details</h2>
-            <p id="detailParmHere" hidden>change1</p>
-            <div style="float:left">
-                <label><b>Beer Name: </b><span id="beerName" /></label>
-                <label><b>Description: </b><span id="beerDescription" /></label>
-                <label><b>ABV: </b><span id="beerABV" /></label>
-                <label><b>Brewery Name: </b><span id="breweryName" /></label>
-                <label><b>Website: </b><a id="beerUrl" target="_blank" href=""><span id="beerUrlText"></span></a></label>
+        <div data-role="content" style="width:70%;margin:0 auto;">      
+            <div>
+                <p id="detailParmHere" hidden>change1</p>
+                <p align="center"><img id="showImage" alt="Beer Logo" src=""><br /><br />
+                <h2><span id="beerName" /></h2></p>
+                <div>
+                    <label><b>ABV: </b><span id="beerABV" /></label>
+                    <label><b>Description: </b><span id="beerDescription" /></label>
+                    <hr />
+                    <label><b>Brewery Name: </b><span id="breweryName" /></label>
+                    <label><b>Website: </b><a id="beerUrl" target="_blank" href=""><span id="beerUrlText"></span></a></label>
+                </div>
             </div>
             <!--<p style="float:left" id="showdata"></p>-->
-            <div style="float:left;margin-left:30px;">
-                <img id="showImage" alt="Beer Logo" src="">
+            <div>
+                <fieldset class="ui-grid-a">
+                    <div class="ui-block-a"><button id="saveToBeerSave">Save This Beer</button></div>
+                    <div class="ui-block-b"><button id="saveToBeerFav">Set as Favorite</button></div>
+                </fieldset>
             </div>
-            <button id="saveToBeerSave">Save This Beer</button>
+            
         </div>
 
         <div data-role="footer"></div>

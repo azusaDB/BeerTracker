@@ -200,7 +200,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     $('#beerUrlText').empty();
     $('#beerUrl').attr("href", "");
     var Name;
-    var Desc;
+    var Desc = "N/A";
     var ABV;
     var breweryName = "N/A";
     var breweryUrl = "N/A";
