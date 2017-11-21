@@ -116,8 +116,10 @@
     <Content Include="Content\qunit.css" />
     <Content Include="Global.asax" />
     <Content Include="header.html" />
+    <Content Include="images\128-icon.png" />
+    <Content Include="images\256-icon.png" />
+    <Content Include="images\48-icon.png" />
     <Content Include="images\Header.png" />
-    <Content Include="images\OptedBeerTracker.png" />
     <Content Include="index.html" />
     <Content Include="ClientSideTests\QUnitTesting.html" />
     <Content Include="scripts\brewScript.js" />

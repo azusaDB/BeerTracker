@@ -193,6 +193,12 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
 $(document).on('pagebeforeshow', '#details-page', function () {
     $('#showdata').empty();
     $('#showImage').attr("src", "");
+    $('#beerName').empty();
+    $('#beerDescription').empty();
+    $('#beerABV').empty();
+    $('#breweryName').empty();
+    $('#beerUrlText').empty();
+    $('#beerUrl').attr("href", "");
     var Name;
     var Desc;
     var ABV;
@@ -220,12 +226,21 @@ $(document).on('pagebeforeshow', '#details-page', function () {
                         breweryUrl = "<b>Brewery Url: </b><br />" + data.breweryUrl;
 
 
-                        $('#showdata').append(Name).append('<br />');
-                        $('#showdata').append(Desc).append('<br />');
-                        $('#showdata').append(ABV).append('<br />');
-                        $('#showdata').append(breweryName).append('<br />');
-                        $('#showdata').append(breweryUrl).append('<br />');
+                        $('#beerName').text(data.name);
+                        $('#beerDescription').text(data.Desc);
+                        $('#beerABV').text(data.abv);
+                        $('#breweryName').append(data.breweryName);
+                        $('#beerUrlText').text(data.breweryUrl);
+                        $('#beerUrl').attr("href", data.breweryUrl);
                         $('#showImage').attr("src", data.medImage);
+
+
+                        //$('#showdata').append(Name).append('<br />');
+                        //$('#showdata').append(Desc).append('<br />');
+                        //$('#showdata').append(ABV).append('<br />');
+                        //$('#showdata').append(breweryName).append('<br />');
+                        //$('#showdata').append(breweryUrl).append('<br />');
+                        //$('#showImage').attr("src", data.medImage);
         }
         //**********************************************
     });

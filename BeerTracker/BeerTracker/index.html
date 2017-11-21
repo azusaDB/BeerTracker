@@ -93,11 +93,20 @@
     <div data-role="page" id="details-page">
         <div data-role="header" id="headerBar"></div>
 
-        <div data-role="content">
+        <div data-role="content" style="width:65%;margin:0 auto;">
             <h2>Beer Details</h2>
             <p id="detailParmHere" hidden>change1</p>
-            <p id="showdata"></p>
-            <img id="showImage" alt="Beer Logo" src="">
+            <div style="float:left">
+                <label><b>Beer Name: </b><span id="beerName" /></label>
+                <label><b>Description: </b><span id="beerDescription" /></label>
+                <label><b>ABV: </b><span id="beerABV" /></label>
+                <label><b>Brewery Name: </b><span id="breweryName" /></label>
+                <label><b>Website: </b><a id="beerUrl" target="_blank" href=""><span id="beerUrlText"></span></a></label>
+            </div>
+            <!--<p style="float:left" id="showdata"></p>-->
+            <div style="float:left;margin-left:30px;">
+                <img id="showImage" alt="Beer Logo" src="">
+            </div>
             <button id="saveToBeerSave">Save This Beer</button>
         </div>
 
