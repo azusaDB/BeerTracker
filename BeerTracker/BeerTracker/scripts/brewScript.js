@@ -341,7 +341,8 @@ $(document).on('pagebeforeshow', '#signin', function () {
             async: false,
             data: userObj,
             success: function (data) {
-
+                var LoginController = user.username;
+                $(location).attr('href', '#indexpage');
             },
             error: function () {
                 $('#SignInStatus').text("Sign In ERROR!");
