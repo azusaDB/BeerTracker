@@ -251,7 +251,7 @@ namespace BeerTracker.Controllers
         public IHttpActionResult AddNewBeer(AddBeer newBeer)
         {
             mongoDatabase = RetreiveMongohqDb();
-            var newBeerList = mongoDatabase.GetCollection("BeerMaster");
+            var newBeerList = mongoDatabase.GetCollection("AddBeer");
             WriteConcernResult result;
             bool hasError = false;
             try
