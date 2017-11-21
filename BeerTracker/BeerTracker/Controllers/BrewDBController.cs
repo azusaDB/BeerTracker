@@ -428,7 +428,11 @@ namespace BeerTracker.Controllers
 
         }
 
-
+        [HttpPost]
+        public IHttpActionResult SignOut()
+        {
+            return Ok();
+        }
 
     }
 
