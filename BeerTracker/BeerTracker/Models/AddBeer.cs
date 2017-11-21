@@ -11,7 +11,7 @@ namespace BeerTracker.Models
     public class AddBeer
     {
         [BsonId]
-        public string _id { get; set; }
+        public string Id { get; set; }
         public string name { get; set; }
         public string nameDisplay { get; set; }
         public string description { get; set; }
