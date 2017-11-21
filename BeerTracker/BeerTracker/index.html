@@ -6,6 +6,7 @@
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="scripts/brewScript.js"></script>
     <script type="text/javascript" src="scripts/headerScript.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
 
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
@@ -162,16 +163,16 @@
         <div data-role="header" id="headerBar"></div>
 
         <h2 align="center">Sign Up</h2>
-        <form>
+        <form id="form-signup">
             <div class="container">
                 <label align="center"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" id="username" required>
 
                 <label align="center"><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="signuppsw" id="password" required>
+                <input type="password" placeholder="Enter Password" name="password" id="password" required>
 
                 <label align="center"><b>Confirm Password</b></label>
-                <input type="password" placeholder="Confirm Password" name="confirmpsw" required>
+                <input type="password" placeholder="Confirm Password" name="cfmPassword" id="cfmPassword" required>
 
                 <input type="button" value="Submit" id="submitSignUp"/>
                 <input type="button" value="Cancel" onclick="history.back()" />

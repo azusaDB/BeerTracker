@@ -269,6 +269,32 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 });
 
 $(document).on('pagebeforeshow', '#signup', function () {
+
+    $("#form-signup").validate({
+        rules: {
+            password: {
+                required: true,
+                minlength: 6,
+                maxlength: 10,
+
+            },
+
+            cfmPassword: {
+                equalTo: "#password",
+                minlength: 6,
+                maxlength: 10
+            }
+        },
+
+        messages: {
+            password: {
+                required: "Password is required."
+
+            }
+        }
+
+    });
+
     $(document).on("click", '#submitSignUp', function (event) {
         var password = $("#password").val();
         var username = $("#username").val();
