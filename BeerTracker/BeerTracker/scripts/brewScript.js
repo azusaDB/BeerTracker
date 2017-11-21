@@ -227,7 +227,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 
 
                         $('#beerName').text(data.name);
-                        $('#beerDescription').text(data.Desc);
+                        $('#beerDescription').text(data.description);
                         $('#beerABV').text(data.abv);
                         $('#breweryName').append(data.breweryName);
                         $('#beerUrlText').text(data.breweryUrl);
