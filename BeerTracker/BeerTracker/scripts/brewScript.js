@@ -31,17 +31,20 @@ function homePageList() {
 
 $(document).on('pagebeforeshow', '#add-page', function () {
     $(document).on("click", '#submitNewBeer', function (event) {
-        var name = $("#Name").val();
-        var ABV = $("#ABV").val();
-        var Description = $("#Desc").val();
-        var Brewery = $("#Brewery").val();
-        var Url = $("#Url").val();
-        var Image = $("#Image").val();
-
+        var beerObj = {
+            name: $("#Name").val(),
+            ABV: $("#ABV").val(),
+            Description: $("#Desc").val(),
+            Brewery: $("#Brewery").val(),
+            Url: $("#Url").val(),
+            Image: $("#Image").val()
+        };
+        
         $.ajax({
-            url: brewUri + "/AddNewBeer",
+            url: brewUri + "/AddNewBeer/" + beerObj,
             type: "POST",
             async: false,
+            data: beerObj,
             success: function (data) {
                 $('#saveResponse').text("Success: Saved Beer");
             },
@@ -222,7 +225,6 @@ $(document).on('pagebeforeshow', '#details-page', function () {
                         Desc = "<b>Beer Description: </b><br />" + data.Desc;
                         ABV = "<b>Beer ABV: </b><br />" + data.abv;
                         breweryName = "<b>Brewery Name: </b><br />" + data.breweryName;
-                        //breweryUrl = "<b>Brewery Url: </b><br />" + $('#showdata').click(function () { data.breweryUrl });
                         breweryUrl = "<b>Brewery Url: </b><br />" + data.breweryUrl;
 
 
@@ -296,6 +298,7 @@ $(document).on('pagebeforeshow', '#signup', function () {
     });
 
     $(document).on("click", '#submitSignUp', function (event) {
+        $('#signupError').empty();
         var password = $("#password").val();
         var username = $("#username").val();
 
@@ -314,9 +317,10 @@ $(document).on('pagebeforeshow', '#signup', function () {
                 $('#loginSuccessMsg').empty();
                 $('#userSession').text(username);
                 $('#loginSuccessMsg').text("Welcome " + username);
+                $.mobile.changePage("#indexpage");
             },
-            error: function () {
-                $('#searchStatus').text("ERROR: Contact Caleb for support");
+            error: function (data) {
+                $('#signupError').text(data.responseJSON);
             }
         });
     });

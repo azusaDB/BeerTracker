@@ -256,8 +256,16 @@ namespace BeerTracker.Controllers
             bool hasError = false;
             try
             {
-                result = newBeerList.Insert<AddBeer>(newBeer);
-                hasError = result.HasLastErrorMessage;
+                if (string.IsNullOrEmpty(newBeer.Id))
+                {
+                    newBeer.Id = ObjectId.GenerateNewId().ToString();
+                    result = newBeerList.Insert<AddBeer>(newBeer);
+                }
+                else {
+                    result = newBeerList.Insert<AddBeer>(newBeer);
+                    hasError = result.HasLastErrorMessage;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -265,48 +273,6 @@ namespace BeerTracker.Controllers
             }
             return Ok();
         }
-
-        //[HttpPost]
-        //public AddBeer AddNewBeer(AddBeer newBeer)
-        //{
-        //    mongoDatabase = RetreiveMongohqDb();
-
-        //    var newBeerList = mongoDatabase.GetCollection("AddBeer");
-        //    bool hasError = false;
-
-        //    WriteConcernResult result;
-
-        //    if (string.IsNullOrEmpty(newBeer._id))
-        //    {
-        //        newBeer._id = ObjectId.GenerateNewId().ToString();
-        //        result = newBeerList.Insert<AddBeer>(newBeer);
-        //    }
-        //    else
-        //    {
-
-        //        IMongoQuery query = Query.EQ("_id", newBeer._id);
-        //        IMongoUpdate update = Update
-        //            .Set("_id", newBeer._id)
-        //            .Set("name", newBeer.name)
-        //            .Set("abv", newBeer.abv)
-        //            .Set("description", newBeer.description)
-        //            .Set("breweryName", newBeer.breweryName)
-        //            .Set("breweryUrl", newBeer.breweryUrl)
-        //            .Set("image", newBeer.medImage);
-        //        result = newBeerList.Update(query, update);
-        //        hasError = result.HasLastErrorMessage;
-
-
-        //    }
-        //    if (!hasError)
-        //    {
-        //        return newBeer;
-        //    }
-        //    else
-        //    {
-        //        throw new HttpResponseException(HttpStatusCode.InternalServerError);
-        //    }
-        //}
 
         [HttpGet]
         public IHttpActionResult GetBrewery(string id)
@@ -393,18 +359,34 @@ namespace BeerTracker.Controllers
         {
             mongoDatabase = RetreiveMongohqDb();
             var userList = mongoDatabase.GetCollection("BeerUser");
+            User localUser = new BeerUsers.Models.User();
             WriteConcernResult result;
             bool hasError = false;
             try
             {
-                result = userList.Insert<User>(user);
-                hasError = result.HasLastErrorMessage;
+                var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+                localUser = (from u in mongoList
+                              select new User
+                              {
+                                  uid = u["_id"].AsString,
+                                  password = u["password"].AsString
+                              }).Where(b => b.uid == user.uid).FirstOrDefault();
+
+                if (localUser != null)
+                {
+                    return Content(HttpStatusCode.Forbidden, "Error: Username already exists");
+                }
+                else
+                {
+                    result = userList.Insert<User>(user);
+                    hasError = result.HasLastErrorMessage;
+                }
             }
             catch (Exception ex)
             {
                 throw ex;
             }
-            return Ok();
+            return Ok(user);
         }
 
         [HttpPost]
