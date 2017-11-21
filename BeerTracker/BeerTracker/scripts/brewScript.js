@@ -203,7 +203,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     $('#beerUrlText').empty();
     $('#beerUrl').attr("href", "");
     var Name;
-    var Desc;
+    var Desc = "N/A";
     var ABV;
     var breweryName = "N/A";
     var breweryUrl = "N/A";
@@ -229,7 +229,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
 
 
                         $('#beerName').text(data.name);
-                        $('#beerDescription').text(data.Desc);
+                        $('#beerDescription').text(data.description);
                         $('#beerABV').text(data.abv);
                         $('#breweryName').append(data.breweryName);
                         $('#beerUrlText').text(data.breweryUrl);
