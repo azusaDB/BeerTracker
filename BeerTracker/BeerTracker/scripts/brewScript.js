@@ -296,6 +296,7 @@ $(document).on('pagebeforeshow', '#signup', function () {
     });
 
     $(document).on("click", '#submitSignUp', function (event) {
+        $('#signupError').empty();
         var password = $("#password").val();
         var username = $("#username").val();
 
@@ -314,9 +315,10 @@ $(document).on('pagebeforeshow', '#signup', function () {
                 $('#loginSuccessMsg').empty();
                 $('#userSession').text(username);
                 $('#loginSuccessMsg').text("Welcome " + username);
+                $.mobile.changePage("#indexpage");
             },
-            error: function () {
-                $('#searchStatus').text("ERROR: Contact Caleb for support");
+            error: function (data) {
+                $('#signupError').text(data.responseJSON);
             }
         });
     });
