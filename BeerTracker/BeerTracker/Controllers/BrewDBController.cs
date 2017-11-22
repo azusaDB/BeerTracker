@@ -77,6 +77,7 @@ namespace BeerTracker.Controllers
         public Beer Save(Beer newBeer)
         {
             mongoDatabase = RetreiveMongohqDb();
+            Beer foo = new Beer();
             var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
             WriteConcernResult result;
             bool hasError = false;
@@ -96,20 +97,20 @@ namespace BeerTracker.Controllers
             try
             {
                 var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
-                beerList = (from beverage in mongoList
-                            select new Beer
-                            {
-                                id = beverage["_id"].AsString,
-                            }).ToList();
+                foo = (from beverage in mongoList
+                       select new Beer
+                       {
+                           id = beverage["_id"].AsString,
+                       }).Where(b => b.id == newBeer.id).FirstOrDefault();
             }
             catch (Exception ex)
             {
                 throw;
             }
 
-            var beer = beerList.FirstOrDefault((p) => p.id == newBeer.id);
+            //var beer = beerList.FirstOrDefault((p) => p.id == newBeer.id);
             //*************************
-            if (beer == null) //if it doesn't exist save it to mongo
+            if (foo == null) //if it doesn't exist save it to mongo
             {
                 result = beerMasterList.Insert<Beer>(newBeer);
                 hasError = result.HasLastErrorMessage;
@@ -125,6 +126,47 @@ namespace BeerTracker.Controllers
             }
         }
 
+        [HttpPost]
+        public Beer Save(string id)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            Beer beer = new Beer();
+            var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                beer = (from beverage in mongoList
+                        select new Beer
+                        {
+                            id = beverage["_id"].AsString,
+                        }).Where(b => b.id == id).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (beer == null)
+            {
+                ApiCall apiCall = new ApiCall
+                {
+                    call = "beer/" + id
+                };
+                var result = ApiRequest(apiCall);
+                string beerJson = FormatJson(JObject.Parse(result.Result).ToString());
+                beer = JsonConvert.DeserializeObject<Beer>(JObject.Parse(beerJson)["data"].ToString());
+                //JsonConvert.DeserializeObject<Beer>(beerJson);
+                //beer = JsonConvert.DeserializeObject<Beer>(
+                Save(beer);
+                return beer;
+            }
+            else
+            {
+                return beer;
+            }
+        }
+
         [HttpGet]
         public IEnumerable<Beer> GetRndBeer()
         {
@@ -133,19 +175,20 @@ namespace BeerTracker.Controllers
             {
                 var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
                 beerList = (from b in mongoList
-                           select new Beer
-                           {
-                               id = b["_id"].AsString,
-                               name = b["name"].AsString,
-                               medImage = b["medImage"].AsString,
-                               abv = b["abv"].AsString
-                           }).ToList();
+                            select new Beer
+                            {
+                                id = b["_id"].AsString,
+                                name = b["name"].AsString,
+                                medImage = b["medImage"].AsString,
+                                iconImage = b["iconImage"].AsString,
+                                abv = b["abv"].AsString
+                            }).ToList();
                 //.Where(x => x.medImage != "")
                 Random rand = new Random();
                 int toSkip = rand.Next(0, beerList.Count);
                 beerList = beerList.Skip(toSkip).Take(10).ToList().OrderBy(x => x.name).ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -162,8 +205,8 @@ namespace BeerTracker.Controllers
                 beerList = (from beverage in mongoList
                             select new Beer
                             {
-                               id = beverage["_id"].AsString,
-                               name = beverage["name"].AsString
+                                id = beverage["_id"].AsString,
+                                name = beverage["name"].AsString
                             }).ToList();
             }
             catch (Exception ex)
@@ -204,6 +247,33 @@ namespace BeerTracker.Controllers
             return Ok(beer);
         }
 
+        [HttpPost]
+        public IHttpActionResult AddNewBeer(AddBeer newBeer)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            var newBeerList = mongoDatabase.GetCollection("AddBeer");
+            WriteConcernResult result;
+            bool hasError = false;
+            try
+            {
+                if (string.IsNullOrEmpty(newBeer.Id))
+                {
+                    newBeer.Id = ObjectId.GenerateNewId().ToString();
+                    result = newBeerList.Insert<AddBeer>(newBeer);
+                }
+                else {
+                    result = newBeerList.Insert<AddBeer>(newBeer);
+                    hasError = result.HasLastErrorMessage;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Ok();
+        }
+
         [HttpGet]
         public IHttpActionResult GetBrewery(string id)
         {
@@ -222,7 +292,8 @@ namespace BeerTracker.Controllers
                                 abv = beverage["abv"].AsString,
                                 breweryName = beverage["breweryName"].AsString,
                                 breweryUrl = beverage["breweryUrl"].AsString,
-                                lrgImage = beverage["lrgImage"].AsString
+                                lrgImage = beverage["lrgImage"].AsString,
+                                medImage = beverage["medImage"].AsString
                             }).ToList();
             }
             catch (Exception ex)
@@ -263,7 +334,7 @@ namespace BeerTracker.Controllers
 
                 return Ok(beer);
             }
-            
+
         }
 
         [HttpPost]
@@ -271,7 +342,7 @@ namespace BeerTracker.Controllers
         {
             var result = ApiRequest(apiCall);
             string searchData = JObject.Parse(result.Result).ToString();
-            
+
             return Ok(searchData);
         }
 
@@ -284,21 +355,84 @@ namespace BeerTracker.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult SignUp(string userName, string password)
+        public IHttpActionResult SignUp(User user)
         {
-            return Ok();
+            mongoDatabase = RetreiveMongohqDb();
+            var userList = mongoDatabase.GetCollection("BeerUser");
+            User localUser = new BeerUsers.Models.User();
+            WriteConcernResult result;
+            bool hasError = false;
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+                localUser = (from u in mongoList
+                              select new User
+                              {
+                                  uid = u["_id"].AsString,
+                                  password = u["password"].AsString
+                              }).Where(b => b.uid == user.uid).FirstOrDefault();
+
+                if (localUser != null)
+                {
+                    return Content(HttpStatusCode.Forbidden, "Error: Username already exists");
+                }
+                else
+                {
+                    result = userList.Insert<User>(user);
+                    hasError = result.HasLastErrorMessage;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return Ok(user);
         }
 
         [HttpPost]
-        public IHttpActionResult SignIn(string username, string password)
+        public IHttpActionResult SignIn(User user)
         {
-            //mongoDatabase = RetreiveMongohqDb();
-            //WriteConcernResult writeResult;
-            //var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-            //BeerUser user = Beer.AsQueryable<mongoList>().Where<mongoList>(sb => sb.Name == username).SingleOrDefault();
-            return Ok();
+            mongoDatabase = RetreiveMongohqDb();
+            User signinUser = new User();
+            var userList = mongoDatabase.GetCollection("BeerUser");
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+                signinUser = (from u in mongoList
+                        select new User
+                        {
+                            uid = u["_id"].AsString,
+                            password = u["password"].AsString
+                        }).Where(b => b.uid == user.uid).FirstOrDefault();
+
+                if (signinUser!=null)
+                {
+                    if (signinUser.password == user.password)
+                    {
+                        return Ok(user);
+                    } else
+                    {
+                        return Content(HttpStatusCode.BadRequest, "Password does not match");
+                    }
+                } else
+                {
+                    return Content(HttpStatusCode.BadRequest, "User does not exist");
+                }
+            }
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
+        [HttpPost]
+        public IHttpActionResult SignOut()
+        {
+            return Ok();
+        }
 
     }
 
