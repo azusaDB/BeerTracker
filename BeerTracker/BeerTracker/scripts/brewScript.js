@@ -347,8 +347,8 @@ $(document).on('pagebeforeshow', '#signin', function () {
             success: function (data) {
                 $('#userSession').empty();
                 $('#loginSuccessMsg').empty();
-                $('#userSession').text(username);
-                $('#loginSuccessMsg').text("Welcome " + username);
+                $('#userSession').text(uid);
+                $('#loginSuccessMsg').text("Welcome " + uid);
                 $.mobile.changePage("#indexpage");
             },
             error: function () {
