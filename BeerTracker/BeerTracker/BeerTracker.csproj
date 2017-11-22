@@ -142,6 +142,8 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\BrewTracker - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\TrackYourBeer - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\TrackYourBeer - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
