@@ -24,6 +24,7 @@ namespace BeerTracker.Controllers
         private string apiKey = "?key=cf17ecf24febe31afd664f4bd377a333";
         MongoDatabase mongoDatabase;
         List<Beer> beerList = new List<Beer>();
+        List<UserBeer> userBeerList = new List<UserBeer>();
         private object userList;
         private object symbolcollection;
 
@@ -214,6 +215,57 @@ namespace BeerTracker.Controllers
                 throw;
             }
             return beerList;
+        }
+
+        [HttpPost]
+        public IEnumerable<Beer> GetTriedBeer(User user)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("UserTriedBeer").FindAll().AsEnumerable();
+                userBeerList = (from beverage in mongoList
+                            select new UserBeer
+                            {
+                                beerId = beverage["beerId"].AsString,
+                                username = beverage["username"].AsString
+                            }).Where(b => b.username == user.uid).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            var mongoUserBeerList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+            List<Beer> triedBeers = new List<Beer>();
+            foreach (var item in userBeerList)
+            {
+                Beer temp = new Beer();
+                try
+                {
+                    temp = (from b in mongoUserBeerList
+                            select new Beer
+                            {
+                                id = b["_id"].AsString,
+                                name = b["name"].AsString,
+                                description = b["description"].AsString,
+                                abv = b["abv"].AsString,
+                                iconImage = b["iconImage"].AsString,
+                                medImage = b["medImage"].AsString,
+                                lrgImage = b["lrgImage"].AsString,
+                                breweryName = b["breweryName"].AsString,
+                                breweryUrl = b["breweryUrl"].AsString
+                            }).Where(b => b.id == item.beerId).FirstOrDefault();
+                    triedBeers.Add(temp);
+                }
+                catch (Exception ex)
+                {
+
+                }
+                
+
+            }
+
+            return triedBeers;
         }
 
 

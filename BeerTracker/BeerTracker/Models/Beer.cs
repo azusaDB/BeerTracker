@@ -12,11 +12,11 @@ namespace BeerTracker.Models
     {
         [BsonId]
         public string id { get; set; }
-        public string name { get; set; }
+        public string name { get; set; } = "N/A";
         public string nameDisplay { get; set; }
         public string description { get; set; } = "";
         public string abv { get; set; } = "N/A";
-        public string ibu { get; set; }
+        public string ibu { get; set; } = "N/A";
         public int glasswareId { get; set; }
         public int availableId { get; set; }
         public int styleId { get; set; }

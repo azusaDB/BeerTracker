@@ -384,6 +384,34 @@ $(document).on('pagebeforeshow', '#myprofile', function () {
     });
 });
 
+$(document).on('pagebeforeshow', '#favorites-page', function () {
+    $("#outputFavList").empty();
+    var userObj = {
+        uid: "admin"
+    };
+    var li = "";
+    $.ajax({
+        url: brewUri + "/GetTriedBeer/" + userObj,
+        type: "POST",
+        async: false,
+        data: userObj,
+        success: function (data) {
+            $.each(data, function (key, item) {
+                if (item.medImage) {
+                    $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                } else {
+                    $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                }
+                // Listview refresh after each inner loop(Sunny)
+                $("#outputFavList").listview().listview("refresh");
+            });
+        },
+        error: function () {
+        }
+    });
+
+});
+
 
 
 
