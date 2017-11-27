@@ -14,5 +14,6 @@ namespace BeerUsers.Models
         public string uid { get; set; }
         public string password { get; set; }
         public bool status { get; set; }
+        public string bid { get; set; }
     }
 }

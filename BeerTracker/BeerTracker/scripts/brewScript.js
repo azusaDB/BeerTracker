@@ -209,6 +209,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     var breweryUrl = "N/A";
     var lrgImage;
     var id = $('#detailParmHere').text();
+    var uid = "admin";
 
     $.ajax({
         url: "api/BrewDB/Save/" + id,
@@ -219,7 +220,6 @@ $(document).on('pagebeforeshow', '#details-page', function () {
         success: function (data) {
             $.getJSON(brewUri + "/GetBrewery/" + id)
                 .done(function (data) {
-                    //******This if statment can be removed*******/
                     if (id == data.id) {
                         Name = "<b>Beer Name: </b><br />" + data.name;
                         Desc = "<b>Beer Description: </b><br />" + data.Desc;
@@ -235,16 +235,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
                         $('#beerUrlText').text(data.breweryUrl);
                         $('#beerUrl').attr("href", data.breweryUrl);
                         $('#showImage').attr("src", data.medImage);
-
-
-                        //$('#showdata').append(Name).append('<br />');
-                        //$('#showdata').append(Desc).append('<br />');
-                        //$('#showdata').append(ABV).append('<br />');
-                        //$('#showdata').append(breweryName).append('<br />');
-                        //$('#showdata').append(breweryUrl).append('<br />');
-                        //$('#showImage').attr("src", data.medImage);
         }
-        //**********************************************
     });
         },
         error: function () {
@@ -252,22 +243,38 @@ $(document).on('pagebeforeshow', '#details-page', function () {
         }
     });
 
-
-
-    //NOW CALL GETBEER TO GET ALL DATA NEEDED TO SHOW ALL BEER DETAILS
-    //$.getJSON(brewUri + "/GetBeer")
-//        .done(function (data) {
-//            $.each(data, function (index, record) {
-//                if (id == record.id) {
-//                    Name = "Name: " + record.name;
-//                    Desc = " Description: " + record.description;
-//                    ABV = " ABV: " + record.abv;
-//                    $('#showdata').text(Name).append('<br />');;
-//                    $('#showdata').append(Desc).append('<br />');;
-//                    $('#showdata').append(ABV);
-//                }
-//            });
-//        });
+    var saveRequest = {
+        uid: uid,
+        bid: id
+    };
+    $(document).on("click", '#saveToBeerSave', function (event) {
+        $.ajax({
+            url: brewUri + "/SaveTriedBeer/" + saveRequest,
+            type: "POST",
+            async: false,
+            data: saveRequest,
+            success: function (data) {
+                $('#saveResponseLable').text("Saved!");
+            },
+            error: function (data) {
+                $('#saveResponseLable').text("Error: Beer not saved!");
+            }
+        });
+    });
+    $(document).on("click", '#saveToWishList', function (event) {
+        $.ajax({
+            url: brewUri + "/SaveToWishlist/" + saveRequest,
+            type: "POST",
+            async: false,
+            data: saveRequest,
+            success: function (data) {
+                $('#saveResponseLable').text("Saved to wishlist");
+            },
+            error: function (data) {
+                $('#saveResponseLable').text("Error: Beer not saved to wishlist!");
+            }
+        });
+    });
 });
 
 $(document).on('pagebeforeshow', '#signup', function () {

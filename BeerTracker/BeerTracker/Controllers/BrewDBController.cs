@@ -434,6 +434,107 @@ namespace BeerTracker.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public IHttpActionResult SaveTriedBeer(User user)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            UserBeer beenSaved = new UserBeer();
+            Beer beer = new Beer();
+            WriteConcernResult result;
+            var triedBeerList = mongoDatabase.GetCollection("UserTriedBeer");
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("UserTriedBeer").FindAll().AsEnumerable();
+                beenSaved = (from beverage in mongoList
+                        select new UserBeer
+                        {
+                            beerId = beverage["beerId"].AsString,
+                            username = beverage["username"].AsString
+                        }).Where(b => b.beerId == user.bid && b.username == user.uid).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if(beenSaved == null)
+            {
+                try
+                {
+                    var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                    beer = (from beverage in mongoList
+                                 select new Beer
+                                 {
+                                     id = beverage["_id"].AsString
+                                 }).Where(b => b.id == user.bid).FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                if(beer != null)
+                {
+                    UserBeer toBeSaved = new UserBeer(user.bid, user.uid);
+                    result = triedBeerList.Insert<UserBeer>(toBeSaved);
+                }
+                return Ok();
+            }
+
+            return NotFound();
+        }
+        [HttpPost]
+        public IHttpActionResult saveToWishList(User user)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            UserBeer beenSaved = new UserBeer();
+            Beer beer = new Beer();
+            WriteConcernResult result;
+            var wishList = mongoDatabase.GetCollection("BeerWishList");
+
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerWishList").FindAll().AsEnumerable();
+                beenSaved = (from beverage in mongoList
+                             select new UserBeer
+                             {
+                                 beerId = beverage["beerId"].AsString,
+                                 username = beverage["username"].AsString
+                             }).Where(b => b.beerId == user.bid && b.username == user.uid).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            if (beenSaved == null)
+            {
+                try
+                {
+                    var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                    beer = (from beverage in mongoList
+                            select new Beer
+                            {
+                                id = beverage["_id"].AsString
+                            }).Where(b => b.id == user.bid).FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                if (beer != null)
+                {
+                    UserBeer toBeSaved = new UserBeer(user.bid, user.uid);
+                    result = wishList.Insert<UserBeer>(toBeSaved);
+                }
+                return Ok();
+            }
+
+            return NotFound();
+        }
+
     }
 
 }

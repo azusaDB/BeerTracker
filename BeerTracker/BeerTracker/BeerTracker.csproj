@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="Models\AddBeer.cs" />
     <Compile Include="Models\ApiCall.cs" />
+    <Compile Include="Models\UserBeer.cs" />
     <Compile Include="Models\Beer.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
