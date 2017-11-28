@@ -1078,4 +1078,7 @@ button[disabled],
 	outline-width: 1px;
 	outline-style: auto;
 }
-			
+
+@media (max-width:960px) {
+    
+}

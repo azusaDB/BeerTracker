@@ -118,6 +118,10 @@ function randomBeer() {
     });
 }
 
+function refreshBeer() {
+
+}
+
 function searchBrew() {
     var brewText = $('#brewSearchText').val();
 

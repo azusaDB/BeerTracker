@@ -5,6 +5,7 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="-1" />
+    <meta name="viewport" content="width=device-width, initial-sale=1.0" />
     <title>Beer Tracker</title>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="scripts/brewScript.js"></script>
@@ -40,14 +41,15 @@
                         <input type="radio" name="search" id="radio-choice-brewery" value="brewery" />
                         <label for="radio-choice-brewery">Brewery</label>
                     </fieldset>
-                    <input type="search" data-theme="a" id="searchInput" data-mini="true" width="30" />
-                    <input type="button" data-theme="a" id="submitSearch" value="Search" />
+                    <input type="search" data-theme="b" id="searchInput" data-mini="true" width="30" />
+                    <input type="button" data-theme="b" id="submitSearch" value="Search" />
                 </form>
                 <p id="searchStatus"></p>
                 <p hidden id="userSession"></p>
                 <h1 id="userSessionMsg"></h1>
                 <h4>Beers you may love</h4>
                 <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search within result" data-inset="true"></ul>
+                <input type="button" data-theme="b" id="refreshBeer" value="10 More" />
             </div>
         </div>
         <div data-role="footer"></div>
@@ -169,7 +171,7 @@
                 <label align="center"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="password" id="signin-password">
 
-                <button data-theme="a" type="button" id="SignInSubmit">Sign In</button>
+                <button data-theme="b" type="button" id="SignInSubmit">Sign In</button>
             </div>
         </form>
         <p align=center>No account? <a href="#signup">Sign Up now</a>.</p>
@@ -213,7 +215,7 @@
             <label id="profileName"></label>
             
             <p align="center">
-                <button type="button" id="SignOutSubmit" data-theme="a">Sign Out</button>
+                <button type="button" id="SignOutSubmit" data-theme="d">Sign Out</button>
             </p>
         </div>
 
