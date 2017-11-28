@@ -320,10 +320,17 @@ $(document).on('pagebeforeshow', '#signup', function () {
             async: false,
             data: userObj,
             success: function (data) {
-                $('#userSession').empty();
-                $('#loginSuccessMsg').empty();
-                $('#userSession').text(username);
-                $('#loginSuccessMsg').text("Welcome " + username);
+                //$('#userSession').empty();
+                //$('#loginSuccessMsg').empty();
+                //$('#userSession').text(username);
+                //$('#loginSuccessMsg').text("Welcome " + username);
+
+                sessionStorage.removeItem('userSession');
+                sessionStorage.removeItem('userSessionMsg');
+
+                sessionStorage.setItem('userSession', uid);
+                sessionStorage.setItem('userSessionMsg', "Welcome " + username);
+
                 $.mobile.changePage("#indexpage");
             },
             error: function (data) {
@@ -352,10 +359,13 @@ $(document).on('pagebeforeshow', '#signin', function () {
             async: false,
             data: userObj,
             success: function (data) {
-                $('#userSession').empty();
-                $('#loginSuccessMsg').empty();
-                $('#userSession').text(uid);
-                $('#loginSuccessMsg').text("Welcome " + uid);
+
+                sessionStorage.removeItem('userSession');
+                sessionStorage.removeItem('userSessionMsg');
+
+                sessionStorage.setItem('userSession', uid);
+                sessionStorage.setItem('userSessionMsg', "Welcome " + uid);
+
                 $.mobile.changePage("#indexpage");
             },
             error: function () {
@@ -373,8 +383,8 @@ $(document).on('pagebeforeshow', '#myprofile', function () {
             type: "POST",
             async: false,
             success: function (data) {
-                $('#userSession').empty();
-                $('#loginSuccessMsg').empty();
+                sessionStorage.removeItem('userSession');
+                sessionStorage.removeItem('userSessionMsg');
                 $.mobile.changePage("#indexpage");
             },
             error: function () {
@@ -412,6 +422,11 @@ $(document).on('pagebeforeshow', '#favorites-page', function () {
 
 });
 
+function getUserStatus() {
 
-
-
+    if (userSession) {
+        return "success";
+    } else {
+        return false;
+    }
+}

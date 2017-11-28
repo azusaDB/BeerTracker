@@ -2,6 +2,9 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
     <title>Beer Tracker</title>
     <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="scripts/brewScript.js"></script>
@@ -36,7 +39,7 @@
                 </form>
                 <p id="searchStatus"></p>
                 <p id="userSession">User Not Logged In</p>
-                <h1 id="loginSuccessMsg">Not Logged In</h1>
+                <h1 id="userSessionMsg">Not Logged In</h1>
                 <h4>Beers you may love</h4>
                 <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search within result" data-inset="true"></ul>
             </div>
@@ -198,7 +201,7 @@
 
         <div data-role="content">
             <h2 align="center">My Profile</h2>
-            <h1 id="loginSuccessMsg">Not Logged In</h1>
+            <h1 id="userSessionMsg">Not Logged In</h1>
             
             <p align="center">
                 <button type="submit" id="SignOutSubmit">Sign Out</button>

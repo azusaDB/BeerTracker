@@ -120,11 +120,12 @@
     <Content Include="images\256-icon.png" />
     <Content Include="images\48-icon.png" />
     <Content Include="images\Header.png" />
-    <Content Include="index.html" />
     <Content Include="ClientSideTests\QUnitTesting.html" />
+    <Content Include="index.html" />
     <Content Include="scripts\brewScript.js" />
     <Content Include="scripts\headerScript.js" />
     <Content Include="scripts\qunit.js" />
+    <Content Include="signin.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

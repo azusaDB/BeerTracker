@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="-1" />
+    <title>Beer Tracker</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="scripts/brewScript.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <link rel="shortcut icon" href="images/48-icon.png" />
+    <script>
+        function testJS() {
+            location.href = "ClientSideTests/QUnitTesting.html";
+        };
+    </script>
+</head>
+<body>
+
+
+    <!--Sign In Page-->
+    <div data-role="page" id="signin">
+        <div data-role="header">
+            <div data-role="controlgroup" data-type="horizontal" class="ui-mini ui-btn-left" id="headerBar"><a href="#indexpage" class="ui-btn-icon-right ui-icon-home"></a></div><div style="width:464px;margin:0 auto;"><a href="#indexpage"><img src="images/Header.png" alt="Beer Tracker" style="margin:0 auto;" /></a></div><div data-role="navbar" data-grid="d"><ul><li><a href="#add-page" data-icon="plus">Add</a></li><li><a href="#favorites-page" data-icon="heart">My Fav</a></li><li><a href="#wishlist-page" data-icon="star">Wishlist</a></li><li><a href="#about-page" data-icon="info">About</a></li><li><a href="#myprofile" data-icon="user">My Profile</a></li></ul></div>
+        </div>
+        <h2 align="center">Sign In</h2>
+        <form>
+            <div class="container">
+                <p id="SignInStatus"></p>
+                <label align="center"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" id="signin-username">
+
+                <label align="center"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" id="signin-password">
+
+                <button type="submit" id="SignInSubmit">Sign In</button>
+            </div>
+        </form>
+        <p align=center>No account? <a href="#signup">Sign Up now</a>.</p>
+        <div data-role="footer"></div>
+
+    </div>
+
+
+
+</body>
+</html>
