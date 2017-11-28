@@ -4,7 +4,7 @@ var brewUri = 'api/BrewDB';
 //var brewUri = 'disabled';
 
 $(document).ready(function () {
-    randomBeer();
+    //randomBeer();
     homePageList();
     //favList();
 });
@@ -121,6 +121,17 @@ function searchBrew() {
 }
 
 $(document).on('pagebeforeshow', '#indexpage', function () {
+    var localuser = sessionStorage.getItem('userSession');
+    var msg = sessionStorage.getItem('userSessionMsg');
+    if (localuser){
+        $('#userSession').text(localuser);
+        $('#userSessionMsg').text(msg);
+    } else {
+        $('#userSession').text("Not Logged In");
+        $('#userSessionMsg').text("Not Logged In");
+    }
+   
+    
     //changed the onclick event. It used to look like $('a').on("click", function).......
     $(document).on("click", 'a', function (event) {
         var parm = $(this).attr("data-parm");  //Get the para from the attribute in the <a> tag
@@ -368,6 +379,8 @@ $(document).on('pagebeforeshow', '#signin', function () {
                 sessionStorage.setItem('userSessionMsg', "Welcome " + uid);
 
                 $.mobile.changePage("#indexpage");
+                location.reload(true);
+
             },
             error: function () {
                 $('#SignInStatus').text("Sign In ERROR!");
@@ -387,6 +400,7 @@ $(document).on('pagebeforeshow', '#myprofile', function () {
                 sessionStorage.removeItem('userSession');
                 sessionStorage.removeItem('userSessionMsg');
                 $.mobile.changePage("#indexpage");
+                location.reload(true);
             },
             error: function () {
                 $('#SignOutStatus').text("Sign Out ERROR!");
@@ -424,9 +438,7 @@ $(document).on('pagebeforeshow', '#favorites-page', function () {
 
 });
 
-<<<<<<< HEAD
-function getUserStatus() {
-=======
+
 $(document).on('pagebeforeshow', '#wishlist-page', function () {
     $("saveResponseLable").empty();
     $("#outputWishList").empty();
@@ -456,11 +468,14 @@ $(document).on('pagebeforeshow', '#wishlist-page', function () {
 
 });
 
->>>>>>> 8fa8112d5657f81d396491db3e47e78707157c4e
+
+
+function getUserStatus() {
+
 
     if (userSession) {
         return "success";
     } else {
         return false;
     }
-}
+};
