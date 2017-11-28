@@ -30,6 +30,14 @@ function homePageList() {
 }
 
 $(document).on('pagebeforeshow', '#add-page', function () {
+    var localuser = sessionStorage.getItem('userSession');
+    document.getElementById('addbeer-content').style.visibility = "hidden";
+    if (localuser) {
+        document.getElementById('addbeer-content').style.visibility = "visible";
+    } else {
+        $.mobile.changePage("#signin");
+    }
+    
     $(document).on("click", '#submitNewBeer', function (event) {
         var beerObj = {
             name: $("#Name").val(),
@@ -123,12 +131,17 @@ function searchBrew() {
 $(document).on('pagebeforeshow', '#indexpage', function () {
     var localuser = sessionStorage.getItem('userSession');
     var msg = sessionStorage.getItem('userSessionMsg');
-    if (localuser){
+    document.getElementById('adminUnitTest').style.visibility = 'hidden';
+    if (localuser) {
+        if (localuser == 'admin') {
+            document.getElementById('adminUnitTest').style.visibility = 'visible';
+        }
         $('#userSession').text(localuser);
         $('#userSessionMsg').text(msg);
     } else {
-        $('#userSession').text("Not Logged In");
-        $('#userSessionMsg').text("Not Logged In");
+        $('#userSession').text("");
+        $('#userSessionMsg').text("");
+        
     }
    
     
@@ -221,7 +234,7 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     var breweryUrl = "N/A";
     var lrgImage;
     var id = $('#detailParmHere').text();
-    var uid = "admin";
+    var localuser = sessionStorage.getItem('userSession');
 
     $.ajax({
         url: "api/BrewDB/Save/" + id,
@@ -256,36 +269,44 @@ $(document).on('pagebeforeshow', '#details-page', function () {
     });
 
     var saveRequest = {
-        uid: uid,
+        uid: localuser,
         bid: id
     };
     $(document).on("click", '#saveToBeerSave', function (event) {
-        $.ajax({
-            url: brewUri + "/SaveTriedBeer/" + saveRequest,
-            type: "POST",
-            async: false,
-            data: saveRequest,
-            success: function (data) {
-                $('#saveResponseLable').text("Saved!");
-            },
-            error: function (data) {
-                $('#saveResponseLable').text("Error: Beer not saved!");
-            }
-        });
+        if (localuser) {
+            $.ajax({
+                url: brewUri + "/SaveTriedBeer/" + saveRequest,
+                type: "POST",
+                async: false,
+                data: saveRequest,
+                success: function (data) {
+                    $('#saveResponseLable').text("Saved!");
+                },
+                error: function (data) {
+                    $('#saveResponseLable').text("Error: Beer not saved!");
+                }
+            });
+        } else {
+            $.mobile.changePage("#signin");
+        }
     });
     $(document).on("click", '#saveToWishList', function (event) {
-        $.ajax({
-            url: brewUri + "/SaveToWishlist/" + saveRequest,
-            type: "POST",
-            async: false,
-            data: saveRequest,
-            success: function (data) {
-                $('#saveResponseLable').text("Saved to wishlist");
-            },
-            error: function (data) {
-                $('#saveResponseLable').text("Error: Beer not saved to wishlist!");
-            }
-        });
+        if (localuser) {
+            $.ajax({
+                url: brewUri + "/SaveToWishlist/" + saveRequest,
+                type: "POST",
+                async: false,
+                data: saveRequest,
+                success: function (data) {
+                    $('#saveResponseLable').text("Saved to wishlist");
+                },
+                error: function (data) {
+                    $('#saveResponseLable').text("Error: Beer not saved to wishlist!");
+                }
+            });
+        } else {
+            $.mobile.changePage("#signin");
+        }
     });
 });
 
@@ -332,18 +353,15 @@ $(document).on('pagebeforeshow', '#signup', function () {
             async: false,
             data: userObj,
             success: function (data) {
-                //$('#userSession').empty();
-                //$('#loginSuccessMsg').empty();
-                //$('#userSession').text(username);
-                //$('#loginSuccessMsg').text("Welcome " + username);
 
                 sessionStorage.removeItem('userSession');
                 sessionStorage.removeItem('userSessionMsg');
 
-                sessionStorage.setItem('userSession', uid);
-                sessionStorage.setItem('userSessionMsg', "Welcome " + username);
+                sessionStorage.setItem('userSession', userObj.uid);
+                sessionStorage.setItem('userSessionMsg', "Welcome " + userObj.uid);
 
                 $.mobile.changePage("#indexpage");
+                location.reload(true);
             },
             error: function (data) {
                 $('#signupError').text(data.responseJSON);
@@ -390,8 +408,10 @@ $(document).on('pagebeforeshow', '#signin', function () {
 });
 
 $(document).on('pagebeforeshow', '#myprofile', function () {
+    var localuser = sessionStorage.getItem('userSession');
     $(document).on("click", '#SignOutSubmit', function (event) {
-        
+   
+
         $.ajax({
             url: brewUri + "/SignOut/",
             type: "POST",
@@ -399,6 +419,7 @@ $(document).on('pagebeforeshow', '#myprofile', function () {
             success: function (data) {
                 sessionStorage.removeItem('userSession');
                 sessionStorage.removeItem('userSessionMsg');
+                $('#userSessionMsg').empty();
                 $.mobile.changePage("#indexpage");
                 location.reload(true);
             },
@@ -407,34 +428,48 @@ $(document).on('pagebeforeshow', '#myprofile', function () {
             }
         });
     });
+    if (localuser) {
+        $("#profileName").text("Username: " + localuser);
+    } else {
+        $.mobile.changePage("#signin");
+    }
 });
 
 $(document).on('pagebeforeshow', '#favorites-page', function () {
+    document.getElementById('fav-content').style.visibility = "hidden";
     $("saveResponseLable").empty();
     $("#outputFavList").empty();
-    var userObj = {
-        uid: "admin"
-    };
-    var li = "";
-    $.ajax({
-        url: brewUri + "/GetTriedBeer/" + userObj,
-        type: "POST",
-        async: false,
-        data: userObj,
-        success: function (data) {
-            $.each(data, function (key, item) {
-                if (item.medImage) {
-                    $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
-                } else {
-                    $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
-                }
-                // Listview refresh after each inner loop(Sunny)
-                $("#outputFavList").listview().listview("refresh");
-            });
-        },
-        error: function () {
-        }
-    });
+    var localuser = sessionStorage.getItem('userSession');
+
+    if (localuser) {
+        var userObj = {
+            uid: localuser
+        };
+        var li = "";
+        $.ajax({
+            url: brewUri + "/GetTriedBeer/" + userObj,
+            type: "POST",
+            async: false,
+            data: userObj,
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    if (item.medImage) {
+                        $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                    } else {
+                        $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                    }
+                    // Listview refresh after each inner loop(Sunny)
+                    $("#outputFavList").listview().listview("refresh");
+                });
+            },
+            error: function () {
+            }
+        });
+        document.getElementById('fav-content').style.visibility = "visible";
+    } else {
+        $.mobile.changePage("#signin");
+    }
+    
 
 });
 
@@ -442,33 +477,38 @@ $(document).on('pagebeforeshow', '#favorites-page', function () {
 $(document).on('pagebeforeshow', '#wishlist-page', function () {
     $("saveResponseLable").empty();
     $("#outputWishList").empty();
-    var userObj = {
-        uid: "admin"
-    };
-    var li = "";
-    $.ajax({
-        url: brewUri + "/GetWishList/" + userObj,
-        type: "POST",
-        async: false,
-        data: userObj,
-        success: function (data) {
-            $.each(data, function (key, item) {
-                if (item.medImage) {
-                    $('#outputWishList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
-                } else {
-                    $('#outputWishList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
-                }
-                // Listview refresh after each inner loop(Sunny)
-                $("#outputWishList").listview().listview("refresh");
-            });
-        },
-        error: function () {
-        }
-    });
+    document.getElementById('wishlist-content').style.visibility = "hidden";
+    var localuser = sessionStorage.getItem('userSession');
+    if (localuser) {
+        document.getElementById('wishlist-content').style.visibility = "visible";
+        var userObj = {
+            uid: localuser
+        };
+        var li = "";
+        $.ajax({
+            url: brewUri + "/GetWishList/" + userObj,
+            type: "POST",
+            async: false,
+            data: userObj,
+            success: function (data) {
+                $.each(data, function (key, item) {
+                    if (item.medImage) {
+                        $('#outputWishList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                    } else {
+                        $('#outputWishList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                    }
+                    // Listview refresh after each inner loop(Sunny)
+                    $("#outputWishList").listview().listview("refresh");
+                });
+            },
+            error: function () {
+            }
+        });
+    } else {
+        $.mobile.changePage("#signin");
+    }
 
 });
-
-
 
 function getUserStatus() {
 

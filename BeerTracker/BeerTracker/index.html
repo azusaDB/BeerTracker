@@ -22,8 +22,10 @@
 <body>
     <!--Home Page-->
     <div data-role="page" id="indexpage">
-        <input type="button" onclick="testJS()" value="Test JS" />
         <div data-role="header" id="headerBar"></div>
+        <div id="adminUnitTest">
+            <input type="button" onclick="testJS()" value="Test JS" />
+        </div>
         <div data-role="content">
             <div style="width:90%; margin:0 auto;">
                 <form>
@@ -38,8 +40,8 @@
                     <input type="button" id="submitSearch" value="Search" />
                 </form>
                 <p id="searchStatus"></p>
-                <p id="userSession">User Not Logged In</p>
-                <h1 id="userSessionMsg">Not Logged In</h1>
+                <p hidden id="userSession"></p>
+                <h1 id="userSessionMsg"></h1>
                 <h4>Beers you may love</h4>
                 <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search within result" data-inset="true"></ul>
             </div>
@@ -51,7 +53,7 @@
     <!--Add A Beer-->
     <div data-role="page" id="add-page">
         <div data-role="header" id="headerBar"></div>
-        <div data-role="content" data-theme="d">
+        <div data-role="content" data-theme="d" id="addbeer-content">
             <div>
                 Name:<input type="text" id="Name" size="5" /> <br />
                 ABV:<input type="text" id="ABV" size="5" /> <br />
@@ -71,7 +73,7 @@
     <div data-role="page" id="favorites-page">
         <div data-role="header" id="headerBar"></div>
 
-        <div data-role="content">
+        <div data-role="content" id="fav-content">
             <div>
                 <p>Beer's you have tried and enjoyed</p>
                 <ul data-role="listview" data-theme="a" id="outputFavList" data-filter="true" data-filter-placeholder="Search" data-inset="true"></ul>
@@ -85,7 +87,7 @@
     <div data-role="page" id="wishlist-page">
         <div data-role="header" id="headerBar"></div>
 
-        <div data-role="content">
+        <div data-role="content" id="wishlist-content">
             <div>
                 <p>Beer's you want to try</p>
                 <ul data-role="listview" data-theme="a" id="outputWishList" data-filter="true" data-filter-placeholder="Search" data-inset="true"></ul>
@@ -204,10 +206,10 @@
 
         <div data-role="content">
             <h2 align="center">My Profile</h2>
-            <h1 id="userSessionMsg">Not Logged In</h1>
+            <label id="profileName"></label>
             
             <p align="center">
-                <button type="submit" id="SignOutSubmit">Sign Out</button>
+                <button type="button" id="SignOutSubmit">Sign Out</button>
             </p>
         </div>
 
