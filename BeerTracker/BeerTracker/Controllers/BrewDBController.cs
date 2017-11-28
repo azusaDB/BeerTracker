@@ -460,9 +460,10 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SignUp(User user)
         {
+            user.uid = user.uid.ToLower();
             mongoDatabase = RetreiveMongohqDb();
             var userList = mongoDatabase.GetCollection("BeerUser");
-            User localUser = new BeerUsers.Models.User();
+            User localUser = new User();
             WriteConcernResult result;
             bool hasError = false;
             try
@@ -481,6 +482,7 @@ namespace BeerTracker.Controllers
                 }
                 else
                 {
+                    
                     result = userList.Insert<User>(user);
                     hasError = result.HasLastErrorMessage;
                 }
@@ -495,6 +497,7 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SignIn(User user)
         {
+            user.uid = user.uid.ToLower();
             mongoDatabase = RetreiveMongohqDb();
             User signinUser = new User();
             var userList = mongoDatabase.GetCollection("BeerUser");
@@ -540,6 +543,7 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SaveTriedBeer(User user)
         {
+            user.uid = user.uid.ToLower();
             mongoDatabase = RetreiveMongohqDb();
             UserBeer beenSaved = new UserBeer();
             Beer beer = new Beer();
@@ -590,6 +594,7 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult saveToWishList(User user)
         {
+            user.uid = user.uid.ToLower();
             mongoDatabase = RetreiveMongohqDb();
             UserBeer beenSaved = new UserBeer();
             Beer beer = new Beer();
