@@ -22,7 +22,7 @@ if ($userSession) {
 $(document).bind('pageinit', function () {
     $.mobile.loader.prototype.options.text = "Loading..";
     $.mobile.loader.prototype.options.textVisible = true;
-    $.mobile.loader.prototype.options.theme = "b";
+    $.mobile.loader.prototype.options.theme = "c";
     $.mobile.loader.prototype.options.textonly = false;
 });
 
