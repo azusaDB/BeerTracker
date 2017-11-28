@@ -11,9 +11,11 @@
     <script type="text/javascript" src="scripts/headerScript.js"></script>
     <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.7/jquery.validate.min.js"></script>
     <link rel="stylesheet" type="text/css" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
-    <link rel="stylesheet" href="css/themes/jquery.mobile.flatui.css" />
+
+    <link rel="stylesheet" href="css/themes/beer-theme.css" />
     <link rel="stylesheet" href="css/themes/jquery.mobile.icons.min.css" />
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
     <link rel="shortcut icon" href="images/48-icon.png" />
     <script>
         function testJS() {
@@ -21,7 +23,7 @@
         };
     </script>
 </head>
-<body>
+<body>0
     <!--Home Page-->
     <div data-role="page" id="indexpage">
         <div data-role="header" id="headerBar"></div>
@@ -38,8 +40,8 @@
                         <input type="radio" name="search" id="radio-choice-brewery" value="brewery" />
                         <label for="radio-choice-brewery">Brewery</label>
                     </fieldset>
-                    <input type="search" id="searchInput" data-mini="true" width="30" />
-                    <input type="button" id="submitSearch" value="Search" />
+                    <input type="search" data-theme="a" id="searchInput" data-mini="true" width="30" />
+                    <input type="button" data-theme="a" id="submitSearch" value="Search" />
                 </form>
                 <p id="searchStatus"></p>
                 <p hidden id="userSession"></p>
@@ -55,7 +57,7 @@
     <!--Add A Beer-->
     <div data-role="page" id="add-page">
         <div data-role="header" id="headerBar"></div>
-        <div data-role="content" data-theme="g" id="addbeer-content">
+        <div data-role="content" data-theme="a" id="addbeer-content">
             <div>
                 Name:<input type="text" id="Name" size="5" /> <br />
                 ABV:<input type="text" id="ABV" size="5" /> <br />
@@ -64,7 +66,7 @@
                 Brewery Url:<input type="text" id="Url" size="5" /> <br />
                 Image:<input type="file" id="Image" /> <br />
 
-                <input type="button" value="Add" id="submitNewBeer" />
+                <input type="button" data-theme="c" value="Add" id="submitNewBeer" />
                 <p id="saveResponse" />
             </div>
         </div>
@@ -120,8 +122,8 @@
             <!--<p style="float:left" id="showdata"></p>-->
             <div>
                 <fieldset class="ui-grid-a">
-                    <div class="ui-block-a"><button id="saveToBeerSave">Tried</button></div>
-                    <div class="ui-block-b"><button id="saveToWishList">Add to Wishlist</button></div>
+                    <div class="ui-block-a"><button data-theme="a" id="saveToBeerSave">Tried</button></div>
+                    <div class="ui-block-b"><button data-theme="a" id="saveToWishList">Add to Wishlist</button></div>
                     <label id="saveResponseLable"></label>
                 </fieldset>
             </div>
@@ -167,7 +169,7 @@
                 <label align="center"><b>Password</b></label>
                 <input type="password" placeholder="Enter Password" name="password" id="signin-password">
 
-                <button type="button" id="SignInSubmit">Sign In</button>
+                <button data-theme="a" type="button" id="SignInSubmit">Sign In</button>
             </div>
         </form>
         <p align=center>No account? <a href="#signup">Sign Up now</a>.</p>
@@ -192,8 +194,8 @@
                 <label align="center"><b>Confirm Password</b></label>
                 <input type="password" placeholder="Confirm Password" name="cfmPassword" id="cfmPassword" required>
 
-                <input type="button" value="Submit" id="submitSignUp"/>
-                <input type="button" value="Cancel" onclick="history.back()" />
+                <input type="button" data-theme="a" value="Submit" id="submitSignUp"/>
+                <input type="button" data-theme="a" value="Cancel" onclick="history.back()" />
 
             </div>
         </form>
@@ -211,7 +213,7 @@
             <label id="profileName"></label>
             
             <p align="center">
-                <button type="button" id="SignOutSubmit">Sign Out</button>
+                <button type="button" id="SignOutSubmit" data-theme="a">Sign Out</button>
             </p>
         </div>
 
