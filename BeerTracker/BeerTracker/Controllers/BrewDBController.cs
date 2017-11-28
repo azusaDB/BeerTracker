@@ -220,6 +220,7 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IEnumerable<Beer> GetTriedBeer(User user)
         {
+            user.uid = user.uid.ToLower();
             mongoDatabase = RetreiveMongohqDb();
             try
             {
@@ -271,6 +272,7 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IEnumerable<Beer> GetWishList(User user)
         {
+            user.uid = user.uid.ToLower();
             mongoDatabase = RetreiveMongohqDb();
             try
             {
