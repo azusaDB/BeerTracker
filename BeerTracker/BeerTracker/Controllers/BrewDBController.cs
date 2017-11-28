@@ -268,6 +268,57 @@ namespace BeerTracker.Controllers
             return triedBeers;
         }
 
+        [HttpPost]
+        public IEnumerable<Beer> GetWishList(User user)
+        {
+            mongoDatabase = RetreiveMongohqDb();
+            try
+            {
+                var mongoList = mongoDatabase.GetCollection("BeerWishList").FindAll().AsEnumerable();
+                userBeerList = (from beverage in mongoList
+                                select new UserBeer
+                                {
+                                    beerId = beverage["beerId"].AsString,
+                                    username = beverage["username"].AsString
+                                }).Where(b => b.username == user.uid).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            var mongoUserBeerList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+            List<Beer> wishBeers = new List<Beer>();
+            foreach (var item in userBeerList)
+            {
+                Beer temp = new Beer();
+                try
+                {
+                    temp = (from b in mongoUserBeerList
+                            select new Beer
+                            {
+                                id = b["_id"].AsString,
+                                name = b["name"].AsString,
+                                description = b["description"].AsString,
+                                abv = b["abv"].AsString,
+                                iconImage = b["iconImage"].AsString,
+                                medImage = b["medImage"].AsString,
+                                lrgImage = b["lrgImage"].AsString,
+                                breweryName = b["breweryName"].AsString,
+                                breweryUrl = b["breweryUrl"].AsString
+                            }).Where(b => b.id == item.beerId).FirstOrDefault();
+                    wishBeers.Add(temp);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+
+            }
+
+            return wishBeers;
+        }
+
 
 
         public IHttpActionResult GetBeer(string id)
