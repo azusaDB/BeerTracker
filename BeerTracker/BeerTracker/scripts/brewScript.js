@@ -19,9 +19,9 @@ function homePageList() {
                 // Change the way to format the string(Sunny)
                 //$('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page?id=' + item.id + '"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
                 if (item.medImage) {
-                    $('#search-output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                    $('#search-output').append('<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
                 } else {
-                    $('#search-output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                    $('#search-output').append('<li><a  data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
                 }
                 // Listview refresh after each inner loop(Sunny)
                 $('#search-output').listview().listview('refresh');
@@ -71,7 +71,7 @@ function favList() {
             $.each(data, function (key, item) {
                 // Add a list item for the product.
                 // Change the way to format the string(Sunny)
-                $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');               
+                $('#outputFavList').append('<li><a  data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');               
                 // Listview refresh after each inner loop(Sunny)
                 $("#outputFavList").listview().listview("refresh");
             });
@@ -180,10 +180,10 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
                         $.each(searchResults.data, function (index, item) {
                             if (searchCat == "beer") {
                                 if (item.labels) {
-                                    li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                                    li += '<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
                                 }
                                 else {
-                                    li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                                    li += '<li><a data-filtertext="' + item.abv + '" class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
                                 }
                             }
                             else if (searchCat == "brewery") {
@@ -191,7 +191,7 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
                                     li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="' + item.images.squareMedium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>';
                                 }
                                 else {
-                                    li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a ></li > ';
+                                    li += '<li><a  class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a ></li > ';
                                 }
                             }
                         });
@@ -454,9 +454,9 @@ $(document).on('pagebeforeshow', '#favorites-page', function () {
             success: function (data) {
                 $.each(data, function (key, item) {
                     if (item.medImage) {
-                        $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                        $('#outputFavList').append('<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
                     } else {
-                        $('#outputFavList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                        $('#outputFavList').append('<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
                     }
                     // Listview refresh after each inner loop(Sunny)
                     $("#outputFavList").listview().listview("refresh");
@@ -493,9 +493,9 @@ $(document).on('pagebeforeshow', '#wishlist-page', function () {
             success: function (data) {
                 $.each(data, function (key, item) {
                     if (item.medImage) {
-                        $('#outputWishList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                        $('#outputWishList').append('<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
                     } else {
-                        $('#outputWishList').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                        $('#outputWishList').append('<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
                     }
                     // Listview refresh after each inner loop(Sunny)
                     $("#outputWishList").listview().listview("refresh");
