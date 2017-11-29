@@ -1,12 +1,19 @@
 ﻿//REAL API 
-var brewUri = 'api/BrewDB';
+var brewUri;
+var testing = false;
+if (testing)
+    brewUri = '../api/BrewDB'
+else
+    brewUri = 'api/BrewDB';
 //Disabled API
 //var brewUri = 'disabled';
 
 $(document).ready(function () {
-    //randomBeer();
-    homePageList();
-    //favList();
+    if (!testing) {
+        //randomBeer();
+        homePageList();
+        //favList();
+    }
 });
 
 function homePageList() {
@@ -84,6 +91,7 @@ function randomBeer() {
     var apiCall = {
         call: "beer/random"
     };
+    var success;
 
     $.ajax({
         url: brewUri + "/ApiRequest/" + apiCall,
@@ -98,24 +106,30 @@ function randomBeer() {
             var beerJson = JSON.stringify(rndBeer.data);
             //Save random beer to DB
             $.ajax({
-                url: "api/BrewDB/Save",
+                url: brewUri + "/Save",
                 type: "POST",
                 contentType: "application/json",
                 data: beerJson,
                 async: false,
                 success: function (data) {
                     //document.getElementById("search-output").innerHTML = "SUCCESS MESSAGE: " + data.name + " saved to BeerMaster";
+                    success = true;
                 },
                 error: function () {
                     $('#search-output').text("Error: Save Failed");
+                    success = false;
                 }
             });
-
+            success = true;
         },
         error: function () {
             $('#output').text("ERROR: API has been disabled to avoid going over our api request limit. Change brewUri back to api/BrewDB to call api.");
+            success = false;
         }
     });
+
+    if (testing)
+        return success;
 }
 
 function refreshBeer() {
@@ -136,12 +150,14 @@ $(document).on('pagebeforeshow', '#indexpage', function () {
     var localuser = sessionStorage.getItem('userSession');
     var msg = sessionStorage.getItem('userSessionMsg');
     document.getElementById('adminUnitTest').style.visibility = 'hidden';
-    if (localuser) {
-        if (localuser == 'admin') {
+    if (localuser || testing) {
+        if (localuser == 'admin' || testing) {
             document.getElementById('adminUnitTest').style.visibility = 'visible';
         }
-        $('#userSession').text(localuser);
-        $('#userSessionMsg').text(msg);
+        if (localuser) {
+            $('#userSession').text(localuser);
+            $('#userSessionMsg').text(msg);
+        }
     } else {
         $('#userSession').text("");
         $('#userSessionMsg').text("");
