@@ -163,7 +163,7 @@
         <div data-role="header" id="headerBar"></div>
         <h2 align="center">Sign In</h2>
         <form>
-            <div class="container">
+            <div class="container" style="width:70%; margin:0 auto;">
                 <p id="SignInStatus"></p>
                 <label align="center"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" id="signin-username">
@@ -185,7 +185,7 @@
 
         <h2 align="center">Sign Up</h2>
         <form id="form-signup">
-            <div class="container">
+            <div class="container" style="width:70%; margin:0 auto;">
                 <label style="color:red;" align="center" id="signupError"></label>
                 <label align="center"><b>Username</b></label>
                 <input type="text" placeholder="Enter Username" name="username" id="username" required>
@@ -211,13 +211,21 @@
         <div data-role="header" id="headerBar"></div>
 
         <div data-role="content">
-            <h2 align="center">My Profile</h2>
-            <label id="profileName"></label>
-            
-            <p align="center">
-                <button type="button" id="SignOutSubmit" data-theme="d">Sign Out</button>
-            </p>
-        </div>
+            <div style="width:70%; margin:0 auto;">
+                <h2 align="center">My Profile</h2>
+                <p align="center"><img src="http://moziru.com/images/alcohol-clipart-beer-drinker-16.jpg" / width=200 border=0></p>
+                <p align="center"><b><label id="profileName"></label></b></p>
+
+                <p align="center">
+                    <a href="#favorites-page" data-icon="heart"><b>My Favorite Beers</b></a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="#wishlist-page" data-icon="star"><b>My Wishlist</b></a>
+                </p>
+
+                <p align="center">
+                    <button type="button" id="SignOutSubmit" data-theme="d">Sign Out</button>
+                </p>
+            </div>
+</div>
 
         <div data-role="footer"></div>
 

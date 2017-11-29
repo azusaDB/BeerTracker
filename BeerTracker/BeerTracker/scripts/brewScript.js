@@ -433,7 +433,7 @@ $(document).on('pagebeforeshow', '#myprofile', function () {
         });
     });
     if (localuser) {
-        $("#profileName").text("Username: " + localuser);
+        $("#profileName").text("Welcome: " + localuser);
     } else {
         $.mobile.changePage("#signin");
     }
