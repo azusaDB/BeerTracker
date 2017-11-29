@@ -31,8 +31,10 @@
         <div id="adminUnitTest">
             <input type="button" onclick="testJS()" value="Test JS" />
         </div>
-        <div data-role="content">
+        <div data-role="content" align="center">
             <div style="width:90%; margin:0 auto;">
+                <p hidden id="userSession"></p>
+                <h1 id="userSessionMsg"></h1>
                 <form>
                     <fieldset data-role="controlgroup" data-type="horizontal">
                         <legend>Select Category:</legend>
@@ -45,8 +47,6 @@
                     <input type="button" data-theme="b" id="submitSearch" value="Search" />
                 </form>
                 <p id="searchStatus"></p>
-                <p hidden id="userSession"></p>
-                <h1 id="userSessionMsg"></h1>
                 <h4>Beers you may love</h4>
                 <ul data-role="listview" data-autodividers="false" data-theme="a" id="search-output" data-filter="true" data-filter-placeholder="Search within result" data-inset="true"></ul>
                 <input type="button" data-theme="b" id="refreshBeer" value="10 More" />
@@ -59,7 +59,8 @@
     <!--Add A Beer-->
     <div data-role="page" id="add-page">
         <div data-role="header" id="headerBar"></div>
-        <div data-role="content" data-theme="a" id="addbeer-content">
+        <div data-role="content" data-theme="a" id="addbeer-content" align="center">
+            <h2>Add a beer to the database</h2>
             <div>
                 Name:<input type="text" id="Name" size="5" /> <br />
                 ABV:<input type="text" id="ABV" size="5" /> <br />
@@ -79,9 +80,9 @@
     <div data-role="page" id="favorites-page">
         <div data-role="header" id="headerBar"></div>
 
-        <div data-role="content" id="fav-content">
+        <div data-role="content" id="fav-content" align="center">
             <div>
-                <p>Beer's you have tried and enjoyed</p>
+                <h2>Beers you have tried and enjoyed</h2>
                 <ul data-role="listview" data-theme="a" id="outputFavList" data-filter="true" data-filter-placeholder="Search" data-inset="true"></ul>
             </div>
         </div>
@@ -93,9 +94,9 @@
     <div data-role="page" id="wishlist-page">
         <div data-role="header" id="headerBar"></div>
 
-        <div data-role="content" id="wishlist-content">
+        <div data-role="content" id="wishlist-content" align="center">
             <div>
-                <p>Beer's you want to try</p>
+                <h2>Beers you want to try</h2>
                 <ul data-role="listview" data-theme="a" id="outputWishList" data-filter="true" data-filter-placeholder="Search" data-inset="true"></ul>
             </div>
         </div>
