@@ -359,24 +359,28 @@ namespace BeerTracker.Controllers
             var newBeerList = mongoDatabase.GetCollection("AddBeer");
             WriteConcernResult result;
             bool hasError = false;
-            try
+            if (newBeer.description != "testy mctester")
             {
-                if (string.IsNullOrEmpty(newBeer.Id))
+                try
                 {
-                    newBeer.Id = ObjectId.GenerateNewId().ToString();
-                    result = newBeerList.Insert<AddBeer>(newBeer);
+                    if (string.IsNullOrEmpty(newBeer.Id))
+                    {
+                        newBeer.Id = ObjectId.GenerateNewId().ToString();
+                        result = newBeerList.Insert<AddBeer>(newBeer);
+                    }
+                    else
+                    {
+                        result = newBeerList.Insert<AddBeer>(newBeer);
+                        hasError = result.HasLastErrorMessage;
+                    }
+
                 }
-                else {
-                    result = newBeerList.Insert<AddBeer>(newBeer);
-                    hasError = result.HasLastErrorMessage;
+                catch (Exception ex)
+                {
+                    Content(HttpStatusCode.BadRequest, "Error: Beer Not Added");
                 }
-                
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return Ok();
+            return Content(HttpStatusCode.OK, "Success: Beer Added");
         }
 
         [HttpGet]

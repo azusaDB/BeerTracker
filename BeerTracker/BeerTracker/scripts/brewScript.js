@@ -1,6 +1,7 @@
 ﻿//REAL API 
 var brewUri;
-var testing = false;
+var testingResult;
+var testing = true;
 if (testing)
     brewUri = '../api/BrewDB'
 else
@@ -230,18 +231,27 @@ $(document).on('pagebeforeshow', '#wishlist-page', function () {
 });
 
 function addBeer(beerObj) {
+    
     $.ajax({
         url: brewUri + "/AddNewBeer/" + beerObj,
         type: "POST",
         async: false,
         data: beerObj,
         success: function (data) {
-            $('#saveResponse').text("Success: Saved Beer");
+            if (testing)
+                testingResult = data;
+            else
+                $('#saveResponse').text("Success: Saved Beer");
         },
-        error: function () {
-            $('#saveResponse').text("Error: Save Failed");
+        error: function (data) {
+            if (testing)
+                testingResult = data;
+            else
+                $('#saveResponse').text("Error: Save Failed");
         }
     });
+    if (testing)
+        return testingResult;
 };
 function displayDetails(id) {
     $("#saveResponseLable").empty();
