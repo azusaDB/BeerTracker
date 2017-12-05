@@ -37,6 +37,8 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     /*refreshBeer() - NOT USED*/
     result = saveToTried(saveRequest);
     assert.ok(result == "Success: Beer Saved", "saveToTried - Expected Result: \"Success: Beer Saved\" - Acutal Result: \"" + result + "\"");
+    result = saveToWishlist(saveRequest);
+    assert.ok(result == "Success: Beer Saved", "saveToWishlist - Expected Result: \"Success: Beer Saved\" - Acutal Result: \"" + result + "\"");
     
 });
 

@@ -485,11 +485,15 @@ function saveToWishlist(saveRequest) {
         data: saveRequest,
         success: function (data) {
             $('#saveResponseLable').text("Saved to wishlist");
+            testingResult = data;
         },
         error: function (data) {
             $('#saveResponseLable').text("Error: Beer not saved to wishlist!");
+            testingResult = data;
         }
     });
+    if (testing)
+        return testingResult;
 };
 function search(apiCall, searchCat) {
     var li = "";
