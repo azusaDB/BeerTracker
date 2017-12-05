@@ -15,6 +15,7 @@ namespace BeerTracker.Tests
     public class TestBrewDBController
     {
         List<Beer> beerList = new List<Beer>();
+        List<AddBeer> addBeerList = new List<AddBeer>();
         private List<Beer> GenerateFakeBeerList()
         {
             List<Beer> workingList = new List<Beer>();
@@ -23,6 +24,19 @@ namespace BeerTracker.Tests
                 string index = i.ToString();
                 Beer nextBeer = new Beer();
                 nextBeer.id = index;
+                nextBeer.name = "Test " + index;
+                workingList.Add(nextBeer);
+            }
+            return workingList;
+        }
+        private List<AddBeer> GenerateFakeAddBeerList()
+        {
+            List<AddBeer> workingList = new List<AddBeer>();
+            for (int i = 0; i < 3; i++)
+            {
+                string index = i.ToString();
+                AddBeer nextBeer = new AddBeer();
+                nextBeer.Id = index;
                 nextBeer.name = "Test " + index;
                 workingList.Add(nextBeer);
             }
@@ -86,6 +100,18 @@ namespace BeerTracker.Tests
             };
             beerList = (List<Beer>)controller.GetWishList(user);
             Assert.AreEqual(beerList.Count, 3);
+        }
+
+        [TestMethod]
+        public void AddNewBeer_Fake()
+        {
+            List<AddBeer> testBeers = GenerateFakeAddBeerList();
+            AddBeer beerToAdd = new AddBeer();
+            beerToAdd.name = "Test Details";
+            beerToAdd.Id = 2.ToString();
+            var controller = new BrewDBController(testBeers);
+            IHttpActionResult result = controller.AddNewBeer(beerToAdd);
+            Assert.IsInstanceOfType(result, typeof(OkResult));
         }
     }
 }

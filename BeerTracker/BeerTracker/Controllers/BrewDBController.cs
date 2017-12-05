@@ -24,6 +24,7 @@ namespace BeerTracker.Controllers
         private string apiKey = "?key=cf17ecf24febe31afd664f4bd377a333";
         MongoDatabase mongoDatabase;
         List<Beer> beerList = new List<Beer>();
+        List<AddBeer> addBeerList = new List<AddBeer>();
         List<UserBeer> userBeerList = new List<UserBeer>();
         private object userList;
         private object symbolcollection;
@@ -38,6 +39,11 @@ namespace BeerTracker.Controllers
         {
             testing = true;
             beerList = FakeBeerList;
+        }
+        public BrewDBController(List<AddBeer> FakeAddBeerList)
+        {
+            testing = true;
+            addBeerList = FakeAddBeerList;
         }
 
         private MongoDatabase RetreiveMongohqDb()
@@ -400,32 +406,39 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult AddNewBeer(AddBeer newBeer)
         {
-            mongoDatabase = RetreiveMongohqDb();
-            var newBeerList = mongoDatabase.GetCollection("AddBeer");
-            WriteConcernResult result;
-            bool hasError = false;
-            if (newBeer.description != "testy mctester")
+            if (!testing)
             {
-                try
+                mongoDatabase = RetreiveMongohqDb();
+                var newBeerList = mongoDatabase.GetCollection("AddBeer");
+                WriteConcernResult result;
+                bool hasError = false;
+                if (newBeer.description != "testy mctester")
                 {
-                    if (string.IsNullOrEmpty(newBeer.Id))
+                    try
                     {
-                        newBeer.Id = ObjectId.GenerateNewId().ToString();
-                        result = newBeerList.Insert<AddBeer>(newBeer);
-                    }
-                    else
-                    {
-                        result = newBeerList.Insert<AddBeer>(newBeer);
-                        hasError = result.HasLastErrorMessage;
-                    }
+                        if (string.IsNullOrEmpty(newBeer.Id))
+                        {
+                            newBeer.Id = ObjectId.GenerateNewId().ToString();
+                            result = newBeerList.Insert<AddBeer>(newBeer);
+                        }
+                        else
+                        {
+                            result = newBeerList.Insert<AddBeer>(newBeer);
+                            hasError = result.HasLastErrorMessage;
+                        }
 
+                    }
+                    catch (Exception ex)
+                    {
+                        Content(HttpStatusCode.BadRequest, "Error: Beer Not Added");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Content(HttpStatusCode.BadRequest, "Error: Beer Not Added");
-                }
+                return Content(HttpStatusCode.OK, "Success: Beer Added");
+            } else
+            {
+                addBeerList.Add(newBeer);
+                return Ok();
             }
-            return Content(HttpStatusCode.OK, "Success: Beer Added");
         }
 
         [HttpGet]
