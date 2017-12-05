@@ -1,7 +1,7 @@
 ﻿//REAL API 
 var brewUri;
 var testingResult;
-var testing = false;
+var testing = true;
 if (testing)
     brewUri = '../api/BrewDB'
 else
@@ -548,21 +548,26 @@ function signIn(userObj) {
         async: false,
         data: userObj,
         success: function (data) {
+            testingResult = data;
+            if (!testing) {
+                sessionStorage.removeItem('userSession');
+                sessionStorage.removeItem('userSessionMsg');
 
-            sessionStorage.removeItem('userSession');
-            sessionStorage.removeItem('userSessionMsg');
+                sessionStorage.setItem('userSession', userObj.uid);
+                sessionStorage.setItem('userSessionMsg', "Welcome " + userObj.uid);
 
-            sessionStorage.setItem('userSession', userObj.uid);
-            sessionStorage.setItem('userSessionMsg', "Welcome " + userObj.uid);
-
-            $.mobile.changePage("#indexpage");
-            location.reload(true);
+                $.mobile.changePage("#indexpage");
+                location.reload(true);
+            }
 
         },
-        error: function () {
+        error: function (data) {
+            testingResult = data;
             $('#SignInStatus').text("Sign In ERROR!");
         }
     });
+    if (testing)
+        return testingResult;
 };
 function signOut() {
     $.ajax({
@@ -570,16 +575,22 @@ function signOut() {
         type: "POST",
         async: false,
         success: function (data) {
-            sessionStorage.removeItem('userSession');
-            sessionStorage.removeItem('userSessionMsg');
-            $('#userSessionMsg').empty();
-            $.mobile.changePage("#indexpage");
-            location.reload(true);
+            testingResult = data;
+            if (!testing) {
+                sessionStorage.removeItem('userSession');
+                sessionStorage.removeItem('userSessionMsg');
+                $('#userSessionMsg').empty();
+                $.mobile.changePage("#indexpage");
+                location.reload(true);
+            }
         },
-        error: function () {
+        error: function (data) {
+            testingResult = data;
             $('#SignOutStatus').text("Sign Out ERROR!");
         }
     });
+    if (testing)
+        return testingResult;
 };
 function signUp(userObj) {
     $.ajax({

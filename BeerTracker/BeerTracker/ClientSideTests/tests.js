@@ -27,11 +27,9 @@ var searchBrewery = {
 };
 
 QUnit.test("Client Side Unit Tests", function (assert) {
-    assert.ok(1 == "1", "Passed!");
-
     /*
     I had to edit the randomBeer method in brewScript.js to return true if the method was successful
-    assert.ok(<condition>, <name of test>); See above example for more simplified version of a test.
+    assert.ok(<condition>, <name of test>);
     */
     result = randomBeer();
     assert.ok(result == "Request Successful", "randomBeer - Expected Result: \"Request Successful\" - Actual Result: \"" + result + "\"");
@@ -52,7 +50,11 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     result = search(searchBeer, "beer");
     assert.ok(result == 10, "search beer - Expected Result: 10 beers found - Acutal Result: " + result + " beers found.");
     result = search(searchBrewery, "brewery");
-    assert.ok(result == 3, "search brewery - Expected Result: 3 - Acutal Result: " + result);
+    assert.ok(result == 3, "search brewery - Expected Result: 3 breweries found - Acutal Result: " + result + " breweries found");
+    result = signIn(userObj);
+    assert.ok(result == "User has been signed in", "signIn - Expected Result: \"User has been signed in\" - Acutal Result: \"" + result + "\"");
+    result = signOut();
+    assert.ok(result == "User has been signed out", "signOut - Expected Result: \"User has been signed out\" - Acutal Result: \"" + result + "\"");
 });
 
 

@@ -522,7 +522,7 @@ namespace BeerTracker.Controllers
                 {
                     if (signinUser.password == user.password)
                     {
-                        return Ok(user);
+                        return Content(HttpStatusCode.OK, "User has been signed in");
                     } else
                     {
                         return Content(HttpStatusCode.BadRequest, "Password does not match");
@@ -543,7 +543,7 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SignOut()
         {
-            return Ok();
+            return Content(HttpStatusCode.OK, "User has been signed out");
         }
 
         [HttpPost]
