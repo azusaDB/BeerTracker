@@ -11,6 +11,15 @@ var userObj = {
     uid: "tester",
     password: "bcuser17"
 };
+var signInUser = {
+    uid: "admin",
+    password: "bcuser17"
+};
+
+var signUpUser = {
+    uid: "testy",
+    password: "bcuser17"
+};
 
 var saveRequest = {
     uid: "saveTester",
@@ -53,11 +62,11 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(result == 10, "search beer - Expected Result: 10 beers found - Acutal Result: " + result + " beers found.");
     result = search(searchBrewery, "brewery");
     assert.ok(result == 3, "search brewery - Expected Result: 3 breweries found - Acutal Result: " + result + " breweries found");
-    result = signIn(userObj);
+    result = signIn(signInUser);
     assert.ok(result == "User has been signed in", "signIn - Expected Result: \"User has been signed in\" - Acutal Result: \"" + result + "\"");
     result = signOut();
     assert.ok(result == "User has been signed out", "signOut - Expected Result: \"User has been signed out\" - Acutal Result: \"" + result + "\"");
-    result = signUp(userObj);
+    result = signUp(signUpUser);
     assert.ok(result == "Success: User Signed up", "signUp - Expected Result: \"Success: User Signed up\" - Acutal Result: \"" + result + "\"");
 });
 

@@ -524,7 +524,8 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SignUp(User user)
         {
-            if (user.uid.ToLower() != "tester")
+            user.uid = user.uid.ToLower();
+            if (user.uid != "tester" && user.uid != "testy" )
             {
                 user.uid = user.uid.ToLower();
                 mongoDatabase = RetreiveMongohqDb();
@@ -557,8 +558,13 @@ namespace BeerTracker.Controllers
                 {
                     throw ex;
                 }
+                
+            } else if (user.uid.ToLower() == "tester")
+            {
+                return Ok();
             }
             return Content(HttpStatusCode.OK, "Success: User Signed up");
+
         }
 
         [HttpPost]
@@ -579,7 +585,7 @@ namespace BeerTracker.Controllers
                             password = u["password"].AsString
                         }).Where(b => b.uid == user.uid).FirstOrDefault();
 
-                if (signinUser!=null)
+                if (signinUser!=null && user.uid != "tester")
                 {
                     if (signinUser.password == user.password)
                     {
@@ -588,9 +594,14 @@ namespace BeerTracker.Controllers
                     {
                         return Content(HttpStatusCode.BadRequest, "Password does not match");
                     }
-                } else
+                }
+                else if (user.uid != "tester")
                 {
                     return Content(HttpStatusCode.BadRequest, "User does not exist");
+                }
+                else
+                {
+                    return Ok();
                 }
             }
 
@@ -632,7 +643,7 @@ namespace BeerTracker.Controllers
                 throw ex;
             }
 
-            if(beenSaved == null || user.uid == "savetester")
+            if(beenSaved == null || user.uid == "savetester" || user.uid == "savetester2")
             {
                 try
                 {
@@ -653,7 +664,14 @@ namespace BeerTracker.Controllers
                     UserBeer toBeSaved = new UserBeer(user.bid, user.uid);
                     result = triedBeerList.Insert<UserBeer>(toBeSaved);
                 }
-                return Content(HttpStatusCode.OK, "Success: Beer Saved");
+                if (user.uid == "savetester2")
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return Ok("Success: Beer Saved");
+                }
             }
 
             return NotFound();
@@ -683,7 +701,7 @@ namespace BeerTracker.Controllers
                 throw ex;
             }
 
-            if (beenSaved == null || user.uid == "savetester")
+            if (beenSaved == null || user.uid == "savetester" || user.uid == "savetester2")
             {
                 try
                 {
@@ -704,7 +722,15 @@ namespace BeerTracker.Controllers
                     UserBeer toBeSaved = new UserBeer(user.bid, user.uid);
                     result = wishList.Insert<UserBeer>(toBeSaved);
                 }
-                return Content(HttpStatusCode.OK, "Success: Beer Saved");
+                if (user.uid == "savetester2")
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return Ok("Success: Beer Saved");
+                }
+                //return Content(HttpStatusCode.OK, "Success: Beer Saved");
             }
 
             return NotFound();

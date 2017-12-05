@@ -151,5 +151,56 @@ namespace BeerTracker.Tests
             Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<string>));
         }
 
+        [TestMethod]
+        public void SignUpUser()
+        {
+            User user = new User
+            {
+                uid = "tester",
+                password = "bcuser17"
+            };
+            var controller = new BrewDBController();
+            IHttpActionResult result = controller.SignUp(user);
+            Assert.IsInstanceOfType(result, typeof(OkResult));
+        }
+        [TestMethod]
+        public void SignInUser()
+        {
+            User user = new User
+            {
+                uid = "tester",
+                password = "bcuser17"
+            };
+            var controller = new BrewDBController();
+            IHttpActionResult result = controller.SignIn(user);
+            Assert.IsInstanceOfType(result, typeof(OkResult));
+        }
+
+        [TestMethod]
+        public void SaveTriedBeer()
+        {
+            User user = new User
+            {
+                uid = "saveTester2",
+                bid = "1TLb7b"
+            };
+            var controller = new BrewDBController();
+            var result = controller.SaveTriedBeer(user);
+            Assert.IsInstanceOfType(result, typeof(OkResult));
+        }
+
+        [TestMethod]
+        public void SaveWishListBeer()
+        {
+            User user = new User
+            {
+                uid = "saveTester2",
+                bid = "1TLb7b"
+            };
+            var controller = new BrewDBController();
+            var result = controller.saveToWishList(user);
+            Assert.IsInstanceOfType(result, typeof(OkResult));
+        }
+
     }
 }
