@@ -37,6 +37,8 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(result == "Success: Beer Added", "addBeer - Expected Result: \"Success: Beer Added\" - Actual Result: \"" + result + "\"")
     /*favList() - NOT USED*/
     /*getUserStatus() - NOT USED*/
+    result = getTriedBeers(userObj);
+    assert.ok(result == 3, "getTriedBeers - Expected Result: 3 - Acutal Result: " + result);
     result = getWishlistBeers(userObj);
     assert.ok(result == 3, "getWishlistBeers - Expected Result: 3 - Acutal Result: " + result);
     result = homePageList();
