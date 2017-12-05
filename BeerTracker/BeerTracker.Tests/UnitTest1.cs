@@ -42,7 +42,7 @@ namespace BeerTracker.Tests
         }
 
         [TestMethod]
-        public void GetSingleBeer_FakeBeer_ByBeerId()
+        public void SaveSingleBeer_FakeBeer_ByBeerId()
         {
             List<Beer> testNotes = GenerateFakeBeerList();
             Beer beerToAdd = new Beer();
