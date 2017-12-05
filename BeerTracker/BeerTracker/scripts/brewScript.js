@@ -1,7 +1,7 @@
 ﻿//REAL API 
 var brewUri;
 var testingResult;
-var testing = true;
+var testing = false;
 if (testing)
     brewUri = '../api/BrewDB'
 else
