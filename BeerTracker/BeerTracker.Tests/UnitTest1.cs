@@ -113,5 +113,29 @@ namespace BeerTracker.Tests
             IHttpActionResult result = controller.AddNewBeer(beerToAdd);
             Assert.IsInstanceOfType(result, typeof(OkResult));
         }
+
+        [TestMethod]
+        public void GetBreweryDetails()
+        {
+            Beer beer = new Beer();
+            var controller = new BrewDBController();
+            IHttpActionResult result = controller.GetBrewery("1TLb7b");
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<Beer>));
+        }
+
+        [TestMethod]
+        public void SearchBeer()
+        {
+            ApiCall apiCall = new ApiCall
+            {
+                call = "search",
+                parameters = "&q=trickster&type=beer"
+            };
+            var controller = new BrewDBController();
+
+            IHttpActionResult result = controller.Search(apiCall);
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<string>));
+        }
+
     }
 }
