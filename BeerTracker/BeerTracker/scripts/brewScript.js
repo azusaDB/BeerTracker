@@ -1,7 +1,7 @@
 ﻿//REAL API 
 var brewUri;
 var testingResult;
-var testing = true;
+var testing = false;
 if (testing)
     brewUri = '../api/BrewDB'
 else
@@ -379,22 +379,37 @@ function getWishlistBeers(userObj) {
 };
 function homePageList() {
     //Currently gets all the beer in the BeerMaster and displays them to the homepage
-    $.getJSON(brewUri + "/GetRndBeer")
-        .done(function (data) {
-            // On success, 'data' contains a list of products.
-            $.each(data, function (key, item) {
-                // Add a list item for the product.
-                // Change the way to format the string(Sunny)
-                //$('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page?id=' + item.id + '"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
-                if (item.medImage) {
-                    $('#search-output').append('<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
-                } else {
-                    $('#search-output').append('<li><a  data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
-                }
-                // Listview refresh after each inner loop(Sunny)
-                $('#search-output').listview().listview('refresh');
+    if (!testing) {
+        $.getJSON(brewUri + "/GetRndBeer")
+            .done(function (data) {
+                // On success, 'data' contains a list of products.
+                $.each(data, function (key, item) {
+                    // Add a list item for the product.
+                    // Change the way to format the string(Sunny)
+                    //$('#output').append('<li><a data-transition="pop" data-parm=' + item.id + ' href="#details-page?id=' + item.id + '"><div hidden>' + item.name + '</div>' + item.name + '</a></li>');
+                    if (item.medImage) {
+                        $('#search-output').append('<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.iconImage + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>');
+                    } else {
+                        $('#search-output').append('<li><a  data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ');
+                    }
+                    // Listview refresh after each inner loop(Sunny)
+                    $('#search-output').listview().listview('refresh');
+                });
             });
+    } else {
+        $.ajax({
+            url: brewUri + "/GetRndBeer",
+            type: "GET",
+            async: false,
+            success: function (data) {
+                testingResult = data.length;
+            },
+            error: function (data) {
+                testingResult = "FAIL";
+            }
         });
+        return testingResult;
+    }
 };
 function randomBeer() {
     //Create By: Caleb
