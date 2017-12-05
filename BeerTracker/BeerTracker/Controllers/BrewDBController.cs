@@ -27,6 +27,18 @@ namespace BeerTracker.Controllers
         List<UserBeer> userBeerList = new List<UserBeer>();
         private object userList;
         private object symbolcollection;
+        bool testing = false;
+
+        public BrewDBController()
+        {
+            testing = false;
+        }
+
+        public BrewDBController(List<Beer> FakeBeerList)
+        {
+            testing = true;
+            beerList = FakeBeerList;
+        }
 
         private MongoDatabase RetreiveMongohqDb()
         {
@@ -77,94 +89,119 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public Beer Save(Beer newBeer)
         {
-            mongoDatabase = RetreiveMongohqDb();
-            Beer foo = new Beer();
-            var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
-            WriteConcernResult result;
-            bool hasError = false;
-            try
+            if (!testing)
             {
-                newBeer.iconImage = newBeer.labels.icon;
-                newBeer.medImage = newBeer.labels.medium;
-                newBeer.lrgImage = newBeer.labels.large;
-            }
-            catch
-            {
-                newBeer.iconImage = "";
-                newBeer.medImage = "";
-                newBeer.lrgImage = "";
-            }
-            //***********************Make sure beer does already exist in mongo
-            try
-            {
-                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
-                foo = (from beverage in mongoList
-                       select new Beer
-                       {
-                           id = beverage["_id"].AsString,
-                       }).Where(b => b.id == newBeer.id).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+                mongoDatabase = RetreiveMongohqDb();
+                Beer foo = new Beer();
+                var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
+                WriteConcernResult result;
+                bool hasError = false;
+                try
+                {
+                    newBeer.iconImage = newBeer.labels.icon;
+                    newBeer.medImage = newBeer.labels.medium;
+                    newBeer.lrgImage = newBeer.labels.large;
+                }
+                catch
+                {
+                    newBeer.iconImage = "";
+                    newBeer.medImage = "";
+                    newBeer.lrgImage = "";
+                }
+                //***********************Make sure beer does already exist in mongo
+                try
+                {
+                    var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                    foo = (from beverage in mongoList
+                           select new Beer
+                           {
+                               id = beverage["_id"].AsString,
+                           }).Where(b => b.id == newBeer.id).FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
 
-            //var beer = beerList.FirstOrDefault((p) => p.id == newBeer.id);
-            //*************************
-            if (foo == null) //if it doesn't exist save it to mongo
-            {
-                result = beerMasterList.Insert<Beer>(newBeer);
-                hasError = result.HasLastErrorMessage;
-            }
+                //var beer = beerList.FirstOrDefault((p) => p.id == newBeer.id);
+                //*************************
+                if (foo == null) //if it doesn't exist save it to mongo
+                {
+                    result = beerMasterList.Insert<Beer>(newBeer);
+                    hasError = result.HasLastErrorMessage;
+                }
 
-            if (!hasError)
-            {
-                return newBeer;
+                if (!hasError)
+                {
+                    return newBeer;
+                }
+                else
+                {
+                    throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                }
             }
             else
             {
-                throw new HttpResponseException(HttpStatusCode.InternalServerError);
+                try
+                {
+                    beerList.Add(newBeer);
+                }
+                catch
+                {
+                    Beer emptyBeer = new Beer();
+                    return emptyBeer;
+                }
+                return newBeer;
             }
         }
 
         [HttpPost]
         public Beer Save(string id)
         {
-            mongoDatabase = RetreiveMongohqDb();
-            Beer beer = new Beer();
-            var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
+            if (!testing)
+            {
+                mongoDatabase = RetreiveMongohqDb();
+                Beer beer = new Beer();
+                var beerMasterList = mongoDatabase.GetCollection("BeerMaster");
 
-            try
-            {
-                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
-                beer = (from beverage in mongoList
-                        select new Beer
-                        {
-                            id = beverage["_id"].AsString,
-                        }).Where(b => b.id == id).FirstOrDefault();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            if (beer == null)
-            {
-                ApiCall apiCall = new ApiCall
+                try
                 {
-                    call = "beer/" + id
-                };
-                var result = ApiRequest(apiCall);
-                string beerJson = FormatJson(JObject.Parse(result.Result).ToString());
-                beer = JsonConvert.DeserializeObject<Beer>(JObject.Parse(beerJson)["data"].ToString());
-                //JsonConvert.DeserializeObject<Beer>(beerJson);
-                //beer = JsonConvert.DeserializeObject<Beer>(
-                Save(beer);
-                return beer;
-            }
-            else
+                    var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                    beer = (from beverage in mongoList
+                            select new Beer
+                            {
+                                id = beverage["_id"].AsString,
+                            }).Where(b => b.id == id).FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+                if (beer == null)
+                {
+                    ApiCall apiCall = new ApiCall
+                    {
+                        call = "beer/" + id
+                    };
+                    var result = ApiRequest(apiCall);
+                    string beerJson = FormatJson(JObject.Parse(result.Result).ToString());
+                    beer = JsonConvert.DeserializeObject<Beer>(JObject.Parse(beerJson)["data"].ToString());
+                    //JsonConvert.DeserializeObject<Beer>(beerJson);
+                    //beer = JsonConvert.DeserializeObject<Beer>(
+                    Save(beer);
+                    return beer;
+                }
+                else
+                {
+                    return beer;
+                }
+            } else
             {
-                return beer;
+                Beer beerToAdd = new Beer();
+                beerToAdd.name = "Test Details";
+                beerToAdd.id = 2.ToString();
+                return beerToAdd;
             }
         }
 
