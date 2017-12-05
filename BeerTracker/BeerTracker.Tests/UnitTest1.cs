@@ -137,5 +137,19 @@ namespace BeerTracker.Tests
             Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<string>));
         }
 
+        [TestMethod]
+        public void SearchBrewery()
+        {
+            ApiCall apiCall = new ApiCall
+            {
+                call = "search",
+                parameters = "&q=coors&type=brewery"
+            };
+            var controller = new BrewDBController();
+
+            IHttpActionResult result = controller.Search(apiCall);
+            Assert.IsInstanceOfType(result, typeof(OkNegotiatedContentResult<string>));
+        }
+
     }
 }
