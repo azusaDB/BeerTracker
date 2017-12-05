@@ -42,7 +42,8 @@ namespace BeerTracker.Controllers
 
         private MongoDatabase RetreiveMongohqDb()
         {
-            MongoUrl myMongoURL = new MongoUrl(ConfigurationManager.ConnectionStrings["MongoHQ"].ConnectionString);
+            string connectionString = "mongodb://reddevteam:bcuser17@ds062448.mlab.com:62448/reddevteam";
+            MongoUrl myMongoURL = new MongoUrl(connectionString);
             MongoClient mongoClient = new MongoClient(myMongoURL);
             MongoServer server = mongoClient.GetServer();
             return mongoClient.GetServer().GetDatabase("reddevteam");
@@ -208,51 +209,58 @@ namespace BeerTracker.Controllers
         [HttpGet]
         public IEnumerable<Beer> GetRndBeer()
         {
-            mongoDatabase = RetreiveMongohqDb();
-            try
+            if (!testing)
             {
-                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
-                beerList = (from b in mongoList
-                            select new Beer
-                            {
-                                id = b["_id"].AsString,
-                                name = b["name"].AsString,
-                                medImage = b["medImage"].AsString,
-                                iconImage = b["iconImage"].AsString,
-                                abv = b["abv"].AsString
-                            }).ToList();
-                //.Where(x => x.medImage != "")
-                Random rand = new Random();
-                int toSkip = rand.Next(0, beerList.Count);
-                beerList = beerList.Skip(toSkip).Take(10).ToList().OrderBy(x => x.name).ToList();
+                mongoDatabase = RetreiveMongohqDb();
+                try
+                {
+                    var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+                    beerList = (from b in mongoList
+                                select new Beer
+                                {
+                                    id = b["_id"].AsString,
+                                    name = b["name"].AsString,
+                                    medImage = b["medImage"].AsString,
+                                    iconImage = b["iconImage"].AsString,
+                                    abv = b["abv"].AsString
+                                }).ToList();
+                    //.Where(x => x.medImage != "")
+                    Random rand = new Random();
+                    int toSkip = rand.Next(0, beerList.Count);
+                    beerList = beerList.Skip(toSkip).Take(10).ToList().OrderBy(x => x.name).ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+                return beerList;
             }
-            catch (Exception ex)
+            else
             {
-                throw;
+                return beerList;
             }
-            return beerList;
         }
 
-        [HttpGet]
-        public IEnumerable<Beer> GetFavBeer()
-        {
-            mongoDatabase = RetreiveMongohqDb();
-            try
-            {
-                var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
-                beerList = (from beverage in mongoList
-                            select new Beer
-                            {
-                                id = beverage["_id"].AsString,
-                                name = beverage["name"].AsString
-                            }).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            return beerList;
-        }
+        //[HttpGet]
+        //public IEnumerable<Beer> GetFavBeer()
+        //{
+        //    mongoDatabase = RetreiveMongohqDb();
+        //    try
+        //    {
+        //        var mongoList = mongoDatabase.GetCollection("BeerMaster").FindAll().AsEnumerable();
+        //        beerList = (from beverage in mongoList
+        //                    select new Beer
+        //                    {
+        //                        id = beverage["_id"].AsString,
+        //                        name = beverage["name"].AsString
+        //                    }).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //    return beerList;
+        //}
 
         [HttpPost]
         public IEnumerable<Beer> GetTriedBeer(User user)
@@ -360,34 +368,34 @@ namespace BeerTracker.Controllers
 
 
 
-        public IHttpActionResult GetBeer(string id)
-        {
-            mongoDatabase = RetreiveMongohqDb();
+        //public IHttpActionResult GetBeer(string id)
+        //{
+        //    mongoDatabase = RetreiveMongohqDb();
 
-            try
-            {
-                var mongoList = mongoDatabase.GetCollection("BeerSaved").FindAll().AsEnumerable();
-                beerList = (from beverage in mongoList
-                            select new Beer
-                            {
-                                id = beverage["id"].AsString,
-                                name = beverage["name"].AsString,
-                                description = beverage["description"].AsString,
-                                abv = beverage["abv"].AsString,
-                            }).ToList();
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+        //    try
+        //    {
+        //        var mongoList = mongoDatabase.GetCollection("BeerSaved").FindAll().AsEnumerable();
+        //        beerList = (from beverage in mongoList
+        //                    select new Beer
+        //                    {
+        //                        id = beverage["id"].AsString,
+        //                        name = beverage["name"].AsString,
+        //                        description = beverage["description"].AsString,
+        //                        abv = beverage["abv"].AsString,
+        //                    }).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
 
-            var beer = beerList.FirstOrDefault((p) => p.id == id);
-            if (beer == null)
-            {
-                return NotFound();
-            }
-            return Ok(beer);
-        }
+        //    var beer = beerList.FirstOrDefault((p) => p.id == id);
+        //    if (beer == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(beer);
+        //}
 
         [HttpPost]
         public IHttpActionResult AddNewBeer(AddBeer newBeer)
