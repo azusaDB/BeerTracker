@@ -622,7 +622,7 @@ namespace BeerTracker.Controllers
                 throw ex;
             }
 
-            if (beenSaved == null || user.uid == "testsaver")
+            if (beenSaved == null || user.uid == "savetester")
             {
                 try
                 {

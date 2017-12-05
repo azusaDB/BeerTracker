@@ -1,7 +1,7 @@
 ﻿//REAL API 
 var brewUri;
 var testingResult;
-var testing = true;
+var testing = false;
 if (testing)
     brewUri = '../api/BrewDB'
 else
@@ -501,41 +501,45 @@ function search(apiCall, searchCat) {
         url: brewUri + "/Search/" + apiCall,
         type: "POST",
         data: apiCall,
-        async: true,
+        async: false,
         success: function (data) {
             var searchResults = JSON.parse(data);
-            $('#search-output').empty();
-            if (searchResults.data) {
-                $.each(searchResults.data, function (index, item) {
-                    if (searchCat == "beer") {
-                        if (item.labels) {
-                            li += '<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+            testingResult = searchResults.totalResults;
+            if (!testing) {
+                $('#search-output').empty();
+                if (searchResults.data) {
+                    $.each(searchResults.data, function (index, item) {
+                        if (searchCat == "beer") {
+                            if (item.labels) {
+                                li += '<li><a data-filtertext="' + item.abv + '" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="' + item.labels.medium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a></li>';
+                            }
+                            else {
+                                li += '<li><a data-filtertext="' + item.abv + '" class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                            }
                         }
-                        else {
-                            li += '<li><a data-filtertext="' + item.abv + '" class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="#details-page"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2><p>ABV: ' + item.abv + '</p></a ></li > ';
+                        else if (searchCat == "brewery") {
+                            if (item.images) {
+                                li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="' + item.images.squareMedium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>';
+                            }
+                            else {
+                                li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a ></li > ';
+                            }
                         }
-                    }
-                    else if (searchCat == "brewery") {
-                        if (item.images) {
-                            li += '<li><a data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="' + item.images.squareMedium + '"><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a></li>';
-                        }
-                        else {
-                            li += '<li><a class="apiLi" data-transition="pop" data-parm=' + item.id + ' href="' + item.website + '" target="_blank"><img src="https://brewmasons.co.uk/wp-content/uploads/2017/05/gold-10-247x300.jpg" width=150><div hidden>' + item.name + '</div><h2>' + item.name + '</h2></a ></li > ';
-                        }
-                    }
-                });
+                    });
+                }
+                else {
+                    $('#searchStatus').text("No Results Found");
+                }
+                $('#search-output').append(li);
+                $('#search-output').listview().listview('refresh');
             }
-            else {
-                $('#searchStatus').text("No Results Found");
-            }
-            $('#search-output').append(li);
-            $('#search-output').listview().listview('refresh');
-
         },
         error: function () {
             $('#searchStatus').text("ERROR: Contact Caleb for support");
+            testingResult = "FAIL";
         }
     });
+    return testingResult;
 };
 function signIn(userObj) {
     $.ajax({

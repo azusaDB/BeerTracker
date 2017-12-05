@@ -16,6 +16,16 @@ var saveRequest = {
     uid: "saveTester",
     bid: "1TLb7b"
 };
+
+var searchBeer = {
+    call: "search",
+    parameters: "&q=trickster&type=beer"
+};
+var searchBrewery = {
+    call: "search",
+    parameters: "&q=coors&type=brewery"
+};
+
 QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(1 == "1", "Passed!");
 
@@ -39,7 +49,10 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(result == "Success: Beer Saved", "saveToTried - Expected Result: \"Success: Beer Saved\" - Acutal Result: \"" + result + "\"");
     result = saveToWishlist(saveRequest);
     assert.ok(result == "Success: Beer Saved", "saveToWishlist - Expected Result: \"Success: Beer Saved\" - Acutal Result: \"" + result + "\"");
-    
+    result = search(searchBeer, "beer");
+    assert.ok(result == 10, "search beer - Expected Result: 10 beers found - Acutal Result: " + result + " beers found.");
+    result = search(searchBrewery, "brewery");
+    assert.ok(result == 3, "search brewery - Expected Result: 3 - Acutal Result: " + result);
 });
 
 
