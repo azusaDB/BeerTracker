@@ -7,6 +7,10 @@ var beerObj = {
     Url: "",
     Image: "", 
 };
+var userObj = {
+    uid: "tester",
+    password: "bcuser17"
+};
 QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(1 == "1", "Passed!");
 
@@ -18,6 +22,11 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(result == "Request Successful", "randomBeer - Expected Result: \"Request Successful\" - Actual Result: \"" + result + "\"");
     result = addBeer(beerObj);
     assert.ok(result == "Success: Beer Added", "addBeer - Expected Result: \"Success: Beer Added\" - Actual Result: \"" + result + "\"")
+    /*favList() - NOT USED IN PRODUCTION*/
+    /*getUserStatus() - NOT USED IN PRODUCTION*/
+    result = getWishlistBeers(userObj);
+    assert.ok(result == 3, "getWishlistBeers - Expected Result: 3 - Acutal Result: " + result);
+    
 });
 
 
