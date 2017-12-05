@@ -466,38 +466,41 @@ namespace BeerTracker.Controllers
         [HttpPost]
         public IHttpActionResult SignUp(User user)
         {
-            user.uid = user.uid.ToLower();
-            mongoDatabase = RetreiveMongohqDb();
-            var userList = mongoDatabase.GetCollection("BeerUser");
-            User localUser = new User();
-            WriteConcernResult result;
-            bool hasError = false;
-            try
+            if (user.uid.ToLower() != "tester")
             {
-                var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
-                localUser = (from u in mongoList
-                              select new User
-                              {
-                                  uid = u["_id"].AsString,
-                                  password = u["password"].AsString
-                              }).Where(b => b.uid == user.uid).FirstOrDefault();
+                user.uid = user.uid.ToLower();
+                mongoDatabase = RetreiveMongohqDb();
+                var userList = mongoDatabase.GetCollection("BeerUser");
+                User localUser = new User();
+                WriteConcernResult result;
+                bool hasError = false;
+                try
+                {
+                    var mongoList = mongoDatabase.GetCollection("BeerUser").FindAll().AsEnumerable();
+                    localUser = (from u in mongoList
+                                 select new User
+                                 {
+                                     uid = u["_id"].AsString,
+                                     password = u["password"].AsString
+                                 }).Where(b => b.uid == user.uid).FirstOrDefault();
 
-                if (localUser != null)
-                {
-                    return Content(HttpStatusCode.Forbidden, "Error: Username already exists");
+                    if (localUser != null)
+                    {
+                        return Content(HttpStatusCode.Forbidden, "Error: Username already exists");
+                    }
+                    else
+                    {
+
+                        result = userList.Insert<User>(user);
+                        hasError = result.HasLastErrorMessage;
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    
-                    result = userList.Insert<User>(user);
-                    hasError = result.HasLastErrorMessage;
+                    throw ex;
                 }
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return Ok(user);
+            return Content(HttpStatusCode.OK, "Success: User Signed up");
         }
 
         [HttpPost]

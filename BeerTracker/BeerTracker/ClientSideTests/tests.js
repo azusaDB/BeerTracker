@@ -55,6 +55,8 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(result == "User has been signed in", "signIn - Expected Result: \"User has been signed in\" - Acutal Result: \"" + result + "\"");
     result = signOut();
     assert.ok(result == "User has been signed out", "signOut - Expected Result: \"User has been signed out\" - Acutal Result: \"" + result + "\"");
+    result = signUp(userObj);
+    assert.ok(result == "Success: User Signed up", "signUp - Expected Result: \"Success: User Signed up\" - Acutal Result: \"" + result + "\"");
 });
 
 

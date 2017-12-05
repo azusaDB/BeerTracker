@@ -1,7 +1,7 @@
 ﻿//REAL API 
 var brewUri;
 var testingResult;
-var testing = true;
+var testing = false;
 if (testing)
     brewUri = '../api/BrewDB'
 else
@@ -599,18 +599,23 @@ function signUp(userObj) {
         async: false,
         data: userObj,
         success: function (data) {
+            testingResult = data;
+            if (!testing) {
+                sessionStorage.removeItem('userSession');
+                sessionStorage.removeItem('userSessionMsg');
 
-            sessionStorage.removeItem('userSession');
-            sessionStorage.removeItem('userSessionMsg');
+                sessionStorage.setItem('userSession', userObj.uid);
+                sessionStorage.setItem('userSessionMsg', "Welcome " + userObj.uid);
 
-            sessionStorage.setItem('userSession', userObj.uid);
-            sessionStorage.setItem('userSessionMsg', "Welcome " + userObj.uid);
-
-            $.mobile.changePage("#indexpage");
-            location.reload(true);
+                $.mobile.changePage("#indexpage");
+                location.reload(true);
+            }
         },
         error: function (data) {
             $('#signupError').text(data.responseJSON);
+            testingResult = data;
         }
     });
+    if (testing)
+        return testingResult;
 };
