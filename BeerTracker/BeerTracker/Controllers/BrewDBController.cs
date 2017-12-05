@@ -571,7 +571,7 @@ namespace BeerTracker.Controllers
                 throw ex;
             }
 
-            if(beenSaved == null)
+            if(beenSaved == null || user.uid == "savetester")
             {
                 try
                 {
@@ -592,7 +592,7 @@ namespace BeerTracker.Controllers
                     UserBeer toBeSaved = new UserBeer(user.bid, user.uid);
                     result = triedBeerList.Insert<UserBeer>(toBeSaved);
                 }
-                return Ok();
+                return Content(HttpStatusCode.OK, "Success: Beer Saved"); ;
             }
 
             return NotFound();

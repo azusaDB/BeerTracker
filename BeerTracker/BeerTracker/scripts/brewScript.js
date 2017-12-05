@@ -1,7 +1,7 @@
 ﻿//REAL API 
 var brewUri;
 var testingResult;
-var testing = false;
+var testing = true;
 if (testing)
     brewUri = '../api/BrewDB'
 else
@@ -468,11 +468,14 @@ function saveToTried(saveRequest) {
         data: saveRequest,
         success: function (data) {
             $('#saveResponseLable').text("Saved!");
+            testingResult = data;
         },
         error: function (data) {
             $('#saveResponseLable').text("Error: Beer not saved!");
         }
     });
+    if (testing)
+        return testingResult;
 };
 function saveToWishlist(saveRequest) {
     $.ajax({

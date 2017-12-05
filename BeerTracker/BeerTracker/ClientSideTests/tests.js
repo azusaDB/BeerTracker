@@ -11,6 +11,11 @@ var userObj = {
     uid: "tester",
     password: "bcuser17"
 };
+
+var saveRequest = {
+    uid: "saveTester",
+    bid: "1TLb7b"
+};
 QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(1 == "1", "Passed!");
 
@@ -22,12 +27,16 @@ QUnit.test("Client Side Unit Tests", function (assert) {
     assert.ok(result == "Request Successful", "randomBeer - Expected Result: \"Request Successful\" - Actual Result: \"" + result + "\"");
     result = addBeer(beerObj);
     assert.ok(result == "Success: Beer Added", "addBeer - Expected Result: \"Success: Beer Added\" - Actual Result: \"" + result + "\"")
-    /*favList() - NOT USED IN PRODUCTION*/
-    /*getUserStatus() - NOT USED IN PRODUCTION*/
+    /*favList() - NOT USED*/
+    /*getUserStatus() - NOT USED*/
     result = getWishlistBeers(userObj);
     assert.ok(result == 3, "getWishlistBeers - Expected Result: 3 - Acutal Result: " + result);
     result = homePageList();
-    assert.ok(result == 10, "getWishlistBeers - Expected Result: 10 - Acutal Result: " + result);
+    assert.ok(result == 10, "homePageList - Expected Result: 10 - Acutal Result: " + result);
+    /*randomBeer() - NOT USED*/
+    /*refreshBeer() - NOT USED*/
+    result = saveToTried(saveRequest);
+    assert.ok(result == "Success: Beer Saved", "saveToTried - Expected Result: \"Success: Beer Saved\" - Acutal Result: \"" + result + "\"");
     
 });
 
